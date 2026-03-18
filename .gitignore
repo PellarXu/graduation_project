@@ -1,0 +1,55 @@
+# =========================
+# OS
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# IDE
+# =========================
+.vscode/
+.idea/
+*.iml
+
+# =========================
+# Frontend (Node.js)
+# =========================
+resume_screening_system/frontend/node_modules/
+resume_screening_system/frontend/dist/
+resume_screening_system/frontend/build/
+resume_screening_system/frontend/.cache/
+resume_screening_system/frontend/.parcel-cache/
+resume_screening_system/frontend/.vite/
+resume_screening_system/frontend/coverage/
+
+resume_screening_system/frontend/.env
+resume_screening_system/frontend/.env.local
+resume_screening_system/frontend/.env.development.local
+resume_screening_system/frontend/.env.test.local
+resume_screening_system/frontend/.env.production.local
+
+# =========================
+# Backend (Python)
+# =========================
+resume_screening_system/backend/__pycache__/
+resume_screening_system/backend/**/*.py[cod]
+resume_screening_system/backend/.pytest_cache/
+resume_screening_system/backend/.mypy_cache/
+resume_screening_system/backend/.ruff_cache/
+resume_screening_system/backend/.tox/
+resume_screening_system/backend/.coverage
+resume_screening_system/backend/htmlcov/
+
+resume_screening_system/backend/venv/
+resume_screening_system/backend/.venv/
+resume_screening_system/backend/env/
+
+resume_screening_system/backend/.env
+resume_screening_system/backend/.env.local
+
+# =========================
+# Logs / temp
+# =========================
+*.log
+*.tmp
+*.temp
