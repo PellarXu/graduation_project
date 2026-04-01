@@ -1,8 +1,8 @@
 from sqlalchemy.orm import Session
+
+from algorithm.matcher.scorer import calculate_match_result
 from app.models.job import Job
 from app.models.resume import Resume
-from app.services.extract_service import extract_resume_by_id
-from algorithm.matcher.basic_matcher import calculate_match_score, get_weight_config
 
 
 def match_resumes_for_job(db: Session, job_id: int, selected_resume_ids=None):
@@ -11,48 +11,56 @@ def match_resumes_for_job(db: Session, job_id: int, selected_resume_ids=None):
         return None
 
     query = db.query(Resume).filter(Resume.parse_status == "parsed")
-
     if selected_resume_ids:
         query = query.filter(Resume.id.in_(selected_resume_ids))
 
-    resumes = query.all()
-    weights = get_weight_config(job.job_type)
+    resumes = query.order_by(Resume.id.desc()).all()
+    weights = {
+        "skill_weight": float(job.skill_weight),
+        "experience_weight": float(job.experience_weight),
+        "degree_weight": float(job.degree_weight),
+        "major_weight": float(job.major_weight),
+    }
 
     results = []
-
+    available_resume_count = 0
     for resume in resumes:
-        extracted = extract_resume_by_id(db, resume.id)
-        if not extracted:
+        profile_masked = resume.profile_masked or {}
+        if resume.extract_status != "ready" or not resume.profile_raw:
+            results.append(
+                {
+                    "resume_id": resume.id,
+                    "file_name": resume.file_name,
+                    "analysis_status": resume.extract_status or "pending",
+                    "total_score": None,
+                    "dimension_scores": {},
+                    "matched_skills": [],
+                    "missing_skills": [],
+                    "final_explanations": ["模型尚未就绪或该简历尚未完成分析，暂不能生成正式匹配结果。"],
+                    "fairness_notes": [],
+                    "profile_masked": profile_masked,
+                }
+            )
             continue
 
-        score_result = calculate_match_score(job, extracted)
+        available_resume_count += 1
+        match_result = calculate_match_result(job, resume.profile_raw, profile_masked)
+        results.append(
+            {
+                "resume_id": resume.id,
+                "file_name": resume.file_name,
+                "analysis_status": "ready",
+                **match_result,
+            }
+        )
 
-        results.append({
-            "resume_id": resume.id,
-            "file_name": resume.file_name,
-            "phone": extracted.get("phone"),
-            "email": extracted.get("email"),
-            "degree": extracted.get("degree"),
-            "major": extracted.get("major"),
-            "skills": extracted.get("skills", []),
-            "raw_skill_score": score_result["raw_skill_score"],
-            "raw_degree_score": score_result["raw_degree_score"],
-            "raw_major_score": score_result["raw_major_score"],
-            "skill_score": score_result["skill_score"],
-            "degree_score": score_result["degree_score"],
-            "major_score": score_result["major_score"],
-            "total_score": score_result["total_score"]
-        })
-
-    results.sort(key=lambda x: x["total_score"], reverse=True)
-
+    results.sort(key=lambda item: item["total_score"] if item["total_score"] is not None else -1, reverse=True)
     return {
         "job_id": job.id,
         "job_name": job.job_name,
         "job_type": job.job_type,
-        "skill_weight": weights["skill_weight"],
-        "degree_weight": weights["degree_weight"],
-        "major_weight": weights["major_weight"],
+        "weights": weights,
         "selected_resume_count": len(resumes),
-        "results": results
+        "available_resume_count": available_resume_count,
+        "results": results,
     }

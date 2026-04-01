@@ -12,12 +12,16 @@ export function getResumeList() {
   return request.get('/api/resumes/')
 }
 
+export function getResumeDetail(id) {
+  return request.get(`/api/resumes/${id}`)
+}
+
 export function parseResume(id) {
   return request.post(`/api/resumes/${id}/parse`)
 }
 
-export function extractResume(id) {
-  return request.get(`/api/resumes/${id}/extract`)
+export function analyzeResume(id) {
+  return request.post(`/api/resumes/${id}/analyze`)
 }
 
 export function deleteResume(id) {

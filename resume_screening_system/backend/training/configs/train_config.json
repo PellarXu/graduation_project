@@ -1,0 +1,14 @@
+{
+  "model_version": "albert-bigru-crf-v1",
+  "pretrained_model_name": "uer/albert-base-chinese-cluecorpussmall",
+  "train_file": "data/annotations/train.jsonl",
+  "dev_file": "data/annotations/dev.jsonl",
+  "max_length": 512,
+  "batch_size": 4,
+  "learning_rate": 3e-5,
+  "epochs": 6,
+  "hidden_size": 256,
+  "dropout": 0.1,
+  "seed": 42,
+  "output_dir": "model/checkpoints/albert-bigru-crf-v1"
+}

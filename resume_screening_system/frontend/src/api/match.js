@@ -1,12 +1,7 @@
 import request from './request'
 
 export function getMatchResult(jobId, resumeIds = []) {
-  return request.get(`/api/match/${jobId}`, {
-    params: {
-      resume_ids: resumeIds,
-    },
-    paramsSerializer: {
-      indexes: null,
-    },
+  return request.post(`/api/match/jobs/${jobId}`, {
+    resume_ids: resumeIds,
   })
 }

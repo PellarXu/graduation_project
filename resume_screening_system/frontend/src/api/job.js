@@ -4,6 +4,10 @@ export function getJobList() {
   return request.get('/api/jobs/')
 }
 
+export function getJobDetail(id) {
+  return request.get(`/api/jobs/${id}`)
+}
+
 export function createJob(data) {
   return request.post('/api/jobs/', data)
 }

@@ -1,9 +1,6 @@
-from app.core.database import Base, engine
-from app.models.job import Job
-from app.models.resume import Resume
-from app.models.weight_template import WeightTemplate
+from app.core.database import bootstrap_schema
 
 
 if __name__ == "__main__":
-    Base.metadata.create_all(bind=engine)
-    print("Database tables created successfully.")
+    bootstrap_schema()
+    print("数据库结构初始化完成。")

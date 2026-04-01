@@ -1,9 +1,10 @@
 from sqlalchemy.orm import Session
-from app.models.resume import Resume
-from algorithm.parser.txt_parser import parse_txt
+
+from algorithm.parser.cleaner import clean_text
 from algorithm.parser.docx_parser import parse_docx
 from algorithm.parser.pdf_parser import parse_pdf
-from algorithm.parser.cleaner import clean_text
+from algorithm.parser.txt_parser import parse_txt
+from app.models.resume import Resume
 
 
 def parse_resume_by_id(db: Session, resume_id: int):
@@ -12,7 +13,6 @@ def parse_resume_by_id(db: Session, resume_id: int):
         return None
 
     file_type = (resume.file_type or "").lower()
-
     if file_type == "txt":
         raw_text = parse_txt(resume.file_path)
     elif file_type == "docx":
@@ -22,13 +22,16 @@ def parse_resume_by_id(db: Session, resume_id: int):
     else:
         raw_text = ""
 
-    cleaned_text = clean_text(raw_text)
-
     resume.raw_text = raw_text
-    resume.clean_text = cleaned_text
-    resume.parse_status = "parsed"
+    resume.clean_text = clean_text(raw_text)
+    resume.parse_status = "parsed" if resume.clean_text else "failed"
+    resume.extract_status = "pending"
+    resume.model_version = None
+    resume.entity_result = None
+    resume.profile_raw = None
+    resume.profile_masked = None
+    resume.sensitive_summary = None
 
     db.commit()
     db.refresh(resume)
-
     return resume

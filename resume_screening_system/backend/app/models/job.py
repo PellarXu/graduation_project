@@ -1,5 +1,6 @@
-from sqlalchemy import Column, BigInteger, String, DateTime, Text
+from sqlalchemy import BigInteger, Column, DateTime, Numeric, String, Text
 from sqlalchemy.sql import func
+
 from app.core.database import Base
 
 
@@ -16,4 +17,9 @@ class Job(Base):
     city = Column(String(50))
     description = Column(Text)
     weight_template_id = Column(BigInteger)
+    skill_weight = Column(Numeric(6, 4), nullable=False, default=0.25)
+    experience_weight = Column(Numeric(6, 4), nullable=False, default=0.25)
+    degree_weight = Column(Numeric(6, 4), nullable=False, default=0.25)
+    major_weight = Column(Numeric(6, 4), nullable=False, default=0.25)
     created_at = Column(DateTime, server_default=func.now())
+    updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())

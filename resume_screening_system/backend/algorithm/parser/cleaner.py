@@ -5,9 +5,11 @@ def clean_text(text: str) -> str:
     if not text:
         return ""
 
-    text = text.replace("\u3000", " ")
-    text = text.replace("\r", "")
-    text = re.sub(r"[ \t]+", " ", text)
-    text = re.sub(r"\n{2,}", "\n", text)
-    text = text.replace("：", ":")
-    return text.strip()
+    cleaned = text.replace("\u3000", " ")
+    cleaned = cleaned.replace("\r", "")
+    cleaned = cleaned.replace("\t", " ")
+    cleaned = cleaned.replace("：", ":")
+    cleaned = re.sub(r"[ ]{2,}", " ", cleaned)
+    cleaned = re.sub(r"\n{3,}", "\n\n", cleaned)
+    cleaned = re.sub(r"[^\S\n]+", " ", cleaned)
+    return cleaned.strip()
