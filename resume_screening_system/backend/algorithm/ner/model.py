@@ -18,17 +18,18 @@ class AlbertBiGruCrf(nn.Module):
             bidirectional=True,
         )
         self.classifier = nn.Linear(hidden_size, num_labels)
-        self.crf = CRF(num_labels, batch_first=True)
+        self.crf = CRF(num_labels, use_gpu=torch.cuda.is_available())
 
     def forward(self, input_ids, attention_mask, labels=None):
         encoded = self.encoder(input_ids=input_ids, attention_mask=attention_mask).last_hidden_state
         encoded = self.dropout(encoded)
         sequence_output, _ = self.bigru(encoded)
         emissions = self.classifier(sequence_output)
+        mask = attention_mask.bool()
 
         if labels is not None:
-            loss = -self.crf(emissions, labels, mask=attention_mask.bool(), reduction="mean")
+            loss = -self.crf(emissions, labels, mask).mean()
             return {"loss": loss, "emissions": emissions}
 
-        decoded = self.crf.decode(emissions, mask=attention_mask.bool())
+        decoded = self.crf.viterbi_decode(emissions, mask)
         return {"emissions": emissions, "decoded": decoded}

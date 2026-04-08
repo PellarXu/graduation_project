@@ -3,6 +3,7 @@ import os
 from sqlalchemy.orm import Session
 
 from app.models.resume import Resume
+from app.services.resume_view_service import build_resume_summary_payload
 
 
 def create_resume_record(db: Session, file_name: str, file_path: str, file_type: str):
@@ -21,6 +22,10 @@ def create_resume_record(db: Session, file_name: str, file_path: str, file_type:
 
 def list_resumes(db: Session):
     return db.query(Resume).order_by(Resume.id.desc()).all()
+
+
+def build_resume_list_payload(db: Session):
+    return [build_resume_summary_payload(resume) for resume in list_resumes(db)]
 
 
 def get_resume_by_id(db: Session, resume_id: int):

@@ -5,6 +5,7 @@ from algorithm.parser.docx_parser import parse_docx
 from algorithm.parser.pdf_parser import parse_pdf
 from algorithm.parser.txt_parser import parse_txt
 from app.models.resume import Resume
+from app.services.resume_view_service import build_resume_summary_payload
 
 
 def parse_resume_by_id(db: Session, resume_id: int):
@@ -35,3 +36,10 @@ def parse_resume_by_id(db: Session, resume_id: int):
     db.commit()
     db.refresh(resume)
     return resume
+
+
+def parse_resume_payload_by_id(db: Session, resume_id: int):
+    resume = parse_resume_by_id(db, resume_id)
+    if not resume:
+        return None
+    return build_resume_summary_payload(resume)

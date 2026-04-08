@@ -35,7 +35,6 @@ class ResumeAnalysisOut(BaseModel):
     model_version: Optional[str] = None
     raw_text: Optional[str] = None
     clean_text: Optional[str] = None
-    source_type: str = "model"
     message: Optional[str] = None
     entity_result: List[EntityItem] = Field(default_factory=list)
     profile_raw: Dict[str, Any] = Field(default_factory=dict)

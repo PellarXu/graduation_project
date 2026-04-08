@@ -7,8 +7,9 @@ from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.schemas.resume_schema import ResumeAnalysisOut, ResumeOut
 from app.services.analysis_service import analyze_resume_by_id, get_resume_analysis_by_id
-from app.services.parse_service import parse_resume_by_id
-from app.services.resume_service import create_resume_record, delete_resume_record, list_resumes
+from app.services.parse_service import parse_resume_payload_by_id
+from app.services.resume_service import build_resume_list_payload, create_resume_record, delete_resume_record
+from app.services.resume_view_service import build_resume_summary_payload
 
 router = APIRouter()
 
@@ -30,12 +31,13 @@ def upload_resume(file: UploadFile = File(...), db: Session = Depends(get_db)):
     with open(save_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
 
-    return create_resume_record(db, file_name, str(save_path), ext)
+    resume = create_resume_record(db, file_name, str(save_path), ext)
+    return build_resume_summary_payload(resume)
 
 
 @router.get("/", response_model=list[ResumeOut], summary="获取简历列表")
 def get_resume_list(db: Session = Depends(get_db)):
-    return list_resumes(db)
+    return build_resume_list_payload(db)
 
 
 @router.get("/{resume_id}", response_model=ResumeAnalysisOut, summary="获取简历分析详情")
@@ -48,10 +50,10 @@ def get_resume_detail(resume_id: int, db: Session = Depends(get_db)):
 
 @router.post("/{resume_id}/parse", response_model=ResumeOut, summary="解析简历文本")
 def parse_resume(resume_id: int, db: Session = Depends(get_db)):
-    resume = parse_resume_by_id(db, resume_id)
-    if not resume:
+    payload = parse_resume_payload_by_id(db, resume_id)
+    if not payload:
         raise HTTPException(status_code=404, detail="简历不存在")
-    return resume
+    return payload
 
 
 @router.post("/{resume_id}/analyze", response_model=ResumeAnalysisOut, summary="执行简历分析")

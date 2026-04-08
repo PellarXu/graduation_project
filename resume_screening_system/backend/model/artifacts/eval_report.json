@@ -1,0 +1,27 @@
+{
+  "samples": 15,
+  "precision": 0.9608,
+  "recall": 0.9608,
+  "f1_score": 0.9608,
+  "entity_distribution": {
+    "AGE": 15,
+    "COMPANY": 15,
+    "DEGREE": 15,
+    "EMAIL": 15,
+    "EXPERIENCE_YEARS": 15,
+    "GENDER": 15,
+    "HOMETOWN": 15,
+    "MAJOR": 15,
+    "NAME": 15,
+    "PHONE": 15,
+    "PROJECT": 15,
+    "SCHOOL": 15,
+    "SKILL": 60,
+    "TITLE": 15
+  },
+  "epoch": 6,
+  "train_loss": 19.0877,
+  "device": "cpu",
+  "batch_size": 2,
+  "max_length": 256
+}

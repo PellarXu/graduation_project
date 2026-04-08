@@ -31,7 +31,7 @@
             <el-option
               v-for="resume in resumeList"
               :key="resume.id"
-              :label="`${resume.file_name}（${resume.extract_status || 'pending'}）`"
+              :label="`${resume.file_name}（${resume.extract_status || '待分析'}）`"
               :value="resume.id"
             />
           </el-select>
@@ -48,7 +48,7 @@
         <div class="metric-value">{{ matchResult.selected_resume_count }}</div>
       </div>
       <div class="metric-card">
-        <div class="metric-label">可正式评分</div>
+        <div class="metric-label">可评分简历</div>
         <div class="metric-value">{{ matchResult.available_resume_count }}</div>
       </div>
       <div class="metric-card">
@@ -67,7 +67,7 @@
           <template #header>
             <div>
               <div class="panel-title">候选人总分排名</div>
-              <div class="panel-subtitle">仅当简历完成正式分析后，系统才会输出总分。</div>
+              <div class="panel-subtitle">基于岗位权重和结构化画像展示候选人综合评分。</div>
             </div>
           </template>
           <BaseChart :option="scoreBarOption" />
@@ -77,9 +77,24 @@
       <el-col :span="12">
         <el-card class="panel-card">
           <template #header>
-            <div>
-              <div class="panel-title">候选人维度雷达图</div>
-              <div class="panel-subtitle">展示技能、经验、学历、专业四个维度的原始得分。</div>
+            <div class="chart-header">
+              <div>
+                <div class="panel-title">候选人维度雷达图</div>
+                <div class="panel-subtitle">默认展示当前最高分候选人，也可手动切换查看四个维度的原始得分。</div>
+              </div>
+              <el-select
+                v-if="candidateOptions.length"
+                v-model="selectedCandidateId"
+                placeholder="选择候选人"
+                style="width: 220px"
+              >
+                <el-option
+                  v-for="candidate in candidateOptions"
+                  :key="candidate.resume_id"
+                  :label="`${candidate.file_name} / ${candidate.total_score ?? '--'}分`"
+                  :value="candidate.resume_id"
+                />
+              </el-select>
             </div>
           </template>
           <BaseChart :option="radarOption" />
@@ -95,7 +110,14 @@
         </div>
       </template>
 
-      <el-table :data="matchResult.results" border style="width: 100%" @row-click="handleSelectCandidate">
+      <el-table
+        :data="matchResult.results"
+        border
+        highlight-current-row
+        style="width: 100%"
+        :row-class-name="getRowClassName"
+        @row-click="handleSelectCandidate"
+      >
         <el-table-column prop="file_name" label="简历名称" min-width="220" />
         <el-table-column prop="analysis_status" label="分析状态" width="140" />
         <el-table-column prop="total_score" label="总分" width="120" />
@@ -172,7 +194,7 @@ const resumeList = ref([])
 const selectedJobId = ref(null)
 const selectedResumeIds = ref([])
 const matchResult = ref(null)
-const selectedCandidate = ref(null)
+const selectedCandidateId = ref(null)
 
 const loadBaseData = async () => {
   ;[jobList.value, resumeList.value] = await Promise.all([getJobList(), getResumeList()])
@@ -190,7 +212,7 @@ const runMatch = async () => {
 
   try {
     matchResult.value = await getMatchResult(selectedJobId.value, selectedResumeIds.value)
-    selectedCandidate.value = matchResult.value.results?.[0] || null
+    selectedCandidateId.value = matchResult.value.results?.[0]?.resume_id || null
     ElMessage.success('匹配完成')
   } catch (error) {
     ElMessage.error(error?.response?.data?.detail || '匹配失败')
@@ -198,10 +220,28 @@ const runMatch = async () => {
 }
 
 const handleSelectCandidate = (row) => {
-  selectedCandidate.value = row
+  selectedCandidateId.value = row.resume_id
 }
 
 const formatWeight = (value) => Number(value || 0).toFixed(2)
+
+const candidateOptions = computed(() => matchResult.value?.results || [])
+
+const selectedCandidate = computed(() => {
+  const candidates = candidateOptions.value
+  if (!candidates.length) {
+    return null
+  }
+  return (
+    candidates.find((candidate) => candidate.resume_id === selectedCandidateId.value) ||
+    candidates[0] ||
+    null
+  )
+})
+
+const getRowClassName = ({ row }) => {
+  return row.resume_id === selectedCandidateId.value ? 'selected-candidate-row' : ''
+}
 
 const scoreBarOption = computed(() => {
   const results = matchResult.value?.results || []
@@ -289,5 +329,16 @@ onMounted(loadBaseData)
   color: #f8f2da;
   font-size: 13px;
   line-height: 1.7;
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+}
+
+:deep(.selected-candidate-row) {
+  --el-table-tr-bg-color: #f9f1d9;
 }
 </style>

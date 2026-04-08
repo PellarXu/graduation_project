@@ -1,5 +1,4 @@
 import json
-from pathlib import Path
 
 import torch
 from transformers import AutoTokenizer
@@ -23,6 +22,7 @@ class NERInferenceService:
         self._tokenizer = None
         self._id2label = None
         self._model_version = DEFAULT_MODEL_VERSION
+        self._max_length = 256
 
     def _ensure_ready(self):
         config_path = self.artifacts_dir / "inference_config.json"
@@ -31,7 +31,7 @@ class NERInferenceService:
         tokenizer_path = self.artifacts_dir / "tokenizer"
 
         if not (config_path.exists() and weights_path.exists() and labels_path.exists() and tokenizer_path.exists()):
-            raise ModelNotReadyError("模型未就绪：尚未检测到训练后的权重和推理资源。")
+            raise ModelNotReadyError("分析资源暂不可用。")
 
         if self._model is not None:
             return
@@ -43,6 +43,7 @@ class NERInferenceService:
 
         self._id2label = {int(key): value for key, value in label_map["id2label"].items()}
         self._model_version = config.get("model_version", DEFAULT_MODEL_VERSION)
+        self._max_length = config.get("max_length", 256)
         self._tokenizer = AutoTokenizer.from_pretrained(str(tokenizer_path))
         self._model = AlbertBiGruCrf(
             pretrained_model_name=config["pretrained_model_name"],
@@ -61,7 +62,7 @@ class NERInferenceService:
             is_split_into_words=True,
             return_tensors="pt",
             truncation=True,
-            max_length=512,
+            max_length=self._max_length,
         )
         tokens = {key: value.to(self.device) for key, value in tokens.items() if key in {"input_ids", "attention_mask"}}
 

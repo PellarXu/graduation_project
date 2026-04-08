@@ -4,7 +4,7 @@
       <template #header>
         <div>
           <div class="panel-title">简历上传与分析</div>
-          <div class="panel-subtitle">当前阶段已接入最终版分析接口。若模型权重尚未训练，页面会明确提示“模型未就绪”。</div>
+          <div class="panel-subtitle">支持简历上传、文本解析、结构化提取与脱敏画像展示。</div>
         </div>
       </template>
 
@@ -42,9 +42,8 @@
           <el-descriptions :column="1" border>
             <el-descriptions-item label="解析状态">{{ detail.parse_status || '-' }}</el-descriptions-item>
             <el-descriptions-item label="分析状态">{{ detail.extract_status || '-' }}</el-descriptions-item>
-            <el-descriptions-item label="模型版本">{{ detail.model_version || '未加载' }}</el-descriptions-item>
-            <el-descriptions-item label="结果来源">{{ detail.source_type }}</el-descriptions-item>
-            <el-descriptions-item label="接口说明">{{ detail.message || '已就绪' }}</el-descriptions-item>
+            <el-descriptions-item label="模型版本">{{ detail.model_version || '待生成' }}</el-descriptions-item>
+            <el-descriptions-item label="结果说明">{{ detail.message || '分析结果已更新' }}</el-descriptions-item>
           </el-descriptions>
 
           <div class="analysis-section">
@@ -163,7 +162,7 @@ const handleParse = async (id) => {
 const handleAnalyze = async (id) => {
   try {
     detail.value = await analyzeResume(id)
-    ElMessage.success(detail.value.message || '简历分析已执行')
+    ElMessage.success(detail.value.message || '简历分析完成')
     await loadResumeList()
   } catch (error) {
     ElMessage.error(error?.response?.data?.detail || '简历分析失败')

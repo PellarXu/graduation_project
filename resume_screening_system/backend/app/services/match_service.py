@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from algorithm.matcher.scorer import calculate_match_result
 from app.models.job import Job
 from app.models.resume import Resume
+from app.services.resume_view_service import format_extract_status
 
 
 def match_resumes_for_job(db: Session, job_id: int, selected_resume_ids=None):
@@ -27,16 +28,19 @@ def match_resumes_for_job(db: Session, job_id: int, selected_resume_ids=None):
     for resume in resumes:
         profile_masked = resume.profile_masked or {}
         if resume.extract_status != "ready" or not resume.profile_raw:
+            explanation = "该简历尚未完成分析，暂不能生成匹配结果。"
+            if resume.extract_status == "failed":
+                explanation = "该简历的分析结果暂不可用，暂不能生成匹配结果。"
             results.append(
                 {
                     "resume_id": resume.id,
                     "file_name": resume.file_name,
-                    "analysis_status": resume.extract_status or "pending",
+                    "analysis_status": format_extract_status(resume.extract_status),
                     "total_score": None,
                     "dimension_scores": {},
                     "matched_skills": [],
                     "missing_skills": [],
-                    "final_explanations": ["模型尚未就绪或该简历尚未完成分析，暂不能生成正式匹配结果。"],
+                    "final_explanations": [explanation],
                     "fairness_notes": [],
                     "profile_masked": profile_masked,
                 }
@@ -49,7 +53,7 @@ def match_resumes_for_job(db: Session, job_id: int, selected_resume_ids=None):
             {
                 "resume_id": resume.id,
                 "file_name": resume.file_name,
-                "analysis_status": "ready",
+                "analysis_status": format_extract_status("ready"),
                 **match_result,
             }
         )

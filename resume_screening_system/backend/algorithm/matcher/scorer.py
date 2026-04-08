@@ -5,11 +5,16 @@ DEGREE_ORDER = {
     "中专": 0,
     "大专": 1,
     "专科": 1,
+    "associate": 1,
     "本科": 2,
     "学士": 2,
+    "bachelor": 2,
     "硕士": 3,
     "研究生": 3,
+    "master": 3,
     "博士": 4,
+    "phd": 4,
+    "doctor": 4,
 }
 
 RELATED_MAJOR_GROUPS = {
@@ -17,6 +22,10 @@ RELATED_MAJOR_GROUPS = {
     "传媒类": {"新闻学", "传播学", "广告学", "广播电视编导", "网络与新媒体"},
     "设计类": {"视觉传达设计", "数字媒体艺术", "艺术设计", "产品设计"},
     "管理类": {"工商管理", "行政管理", "市场营销", "人力资源管理"},
+    "Computer Science": {"Computer Science", "Software Engineering", "Information Security", "Artificial Intelligence"},
+    "Data Science": {"Data Science", "Statistics", "Applied Mathematics", "Business Analytics"},
+    "Marketing": {"Marketing", "Advertising", "Journalism", "New Media"},
+    "Business Administration": {"Business Administration", "Management", "Project Management"},
 }
 
 SKILL_PATTERN = re.compile(r"[A-Za-z][A-Za-z0-9+\-#.]{1,30}|[\u4e00-\u9fa5]{2,12}")
@@ -38,7 +47,8 @@ def _highest_degree(degrees):
     best = None
     best_order = -1
     for degree in degrees or []:
-        order = DEGREE_ORDER.get(degree, -1)
+        normalized_degree = _normalize_text(degree)
+        order = DEGREE_ORDER.get(normalized_degree, DEGREE_ORDER.get(degree, -1))
         if order > best_order:
             best_order = order
             best = degree
@@ -73,19 +83,21 @@ def _skill_score(job_skills, resume_skills):
 
 def _experience_score(job_requirement, profile_raw):
     target_years = _extract_years(job_requirement)
+    experience_summary = profile_raw.get("experience_summary", {})
     experience_years = max(
         _extract_years(profile_raw.get("experience_years")),
-        _extract_years(profile_raw.get("experience_summary", {}).get("work_years")),
+        _extract_years(experience_summary.get("work_years")),
     )
     evidence = []
+    work_texts = experience_summary.get("work_texts", [])
+    internship_texts = experience_summary.get("internship_texts", [])
+    project_texts = experience_summary.get("project_texts", [])
 
     if experience_years:
         evidence.append(f"识别到相关经验约 {experience_years:g} 年")
 
     experience_text = "\n".join(
-        profile_raw.get("experience_summary", {}).get("work_texts", [])
-        + profile_raw.get("experience_summary", {}).get("internship_texts", [])
-        + profile_raw.get("experience_summary", {}).get("project_texts", [])
+        work_texts + internship_texts + project_texts
     )
     if experience_text:
         evidence.append("已将工作经历、实习经历和项目经历纳入经验维度参考")
@@ -96,6 +108,12 @@ def _experience_score(job_requirement, profile_raw):
         return 100, evidence
     if experience_years > 0:
         return round(experience_years / target_years * 100, 2), evidence
+    if work_texts or internship_texts:
+        evidence.append("未识别到明确年限，基于工作/实习内容给予经验基础分")
+        return 60, evidence
+    if project_texts:
+        evidence.append("未识别到明确年限，基于项目经历给予经验参考分")
+        return 40, evidence
     return 0, evidence
 
 
@@ -107,7 +125,9 @@ def _degree_score(job_degree, degrees):
     if not highest:
         return 0, ["未识别到明确学历信息"]
 
-    score = 100 if DEGREE_ORDER.get(highest, -1) >= DEGREE_ORDER.get(job_degree, -1) else 0
+    highest_order = DEGREE_ORDER.get(_normalize_text(highest), DEGREE_ORDER.get(highest, -1))
+    job_order = DEGREE_ORDER.get(_normalize_text(job_degree), DEGREE_ORDER.get(job_degree, -1))
+    score = 100 if highest_order >= job_order else 0
     return score, [f"识别到最高学历为 {highest}"]
 
 
@@ -120,6 +140,10 @@ def _major_score(job_major, majors):
     primary_major = majors[0]
     if primary_major == job_major:
         return 100, [f"专业与岗位要求完全一致：{primary_major}"]
+
+    if job_major in RELATED_MAJOR_GROUPS:
+        if primary_major in RELATED_MAJOR_GROUPS[job_major]:
+            return 100, [f"专业属于岗位要求类别：{job_major}"]
 
     for group_name, majors_in_group in RELATED_MAJOR_GROUPS.items():
         if job_major in majors_in_group and primary_major in majors_in_group:

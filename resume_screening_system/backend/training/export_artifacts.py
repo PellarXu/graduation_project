@@ -45,12 +45,16 @@ def export_artifacts():
                 "pretrained_model_name": config["pretrained_model_name"],
                 "hidden_size": config["hidden_size"],
                 "dropout": config["dropout"],
+                "max_length": config["max_length"],
             },
             ensure_ascii=False,
             indent=2,
         ),
         encoding="utf-8",
     )
+    eval_report_path = output_dir / "eval_report.json"
+    if eval_report_path.exists():
+        shutil.copy2(eval_report_path, artifacts_dir / "eval_report.json")
     print(f"推理资源已导出到 {artifacts_dir}")
 
 
