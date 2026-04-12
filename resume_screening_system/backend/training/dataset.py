@@ -20,6 +20,15 @@ class ResumeNERDataset(Dataset):
     def __len__(self):
         return len(self.samples)
 
+    def build_sample_weights(self, tail_labels: list[str]) -> list[float]:
+        weights = []
+        tail_set = set(tail_labels)
+        for sample in self.samples:
+            sample_labels = {entity["label"] for entity in sample.get("entities", [])}
+            tail_hits = len(sample_labels & tail_set)
+            weights.append(1.0 + tail_hits * 1.5)
+        return weights
+
     def __getitem__(self, index):
         sample = self.samples[index]
         text = sample["text"]
@@ -57,4 +66,6 @@ class ResumeNERDataset(Dataset):
             "input_ids": input_ids,
             "attention_mask": attention_mask,
             "labels": labels,
+            "text": text,
+            "sample_index": index,
         }

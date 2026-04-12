@@ -1,4 +1,6 @@
 import json
+from datetime import datetime
+from pathlib import Path
 
 import torch
 from transformers import AutoTokenizer
@@ -72,6 +74,62 @@ class NERInferenceService:
         decoded = outputs["decoded"][0]
         entities = self._decode_entities(text, decoded)
         return entities, self._model_version
+
+    def get_model_status(self):
+        config_path = self.artifacts_dir / "inference_config.json"
+        weights_path = self.artifacts_dir / "model.pt"
+        labels_path = self.artifacts_dir / "label_map.json"
+        tokenizer_path = self.artifacts_dir / "tokenizer"
+        evaluation_path = self.artifacts_dir / "evaluation_report.json"
+        summary_path = self.artifacts_dir / "training_summary.json"
+        dataset_manifest_path = self.artifacts_dir / "dataset_manifest.json"
+        source_manifest_path = self.artifacts_dir / "source_manifest.json"
+
+        required_paths = [config_path, weights_path, labels_path, tokenizer_path]
+        missing = [path.name for path in required_paths if not path.exists()]
+        if missing:
+            return {
+                "status": "artifacts_missing",
+                "ready": False,
+                "message": f"尚未检测到训练后的权重和推理资源：{', '.join(missing)}",
+                "model_version": self._model_version,
+                "overall_f1": None,
+                "macro_f1": None,
+                "per_label_metrics": {},
+                "dataset_size": {},
+                "dataset_source_breakdown": {},
+                "paper_ready": False,
+                "trained_at": None,
+            }
+
+        summary = self._read_json(summary_path)
+        evaluation = self._read_json(evaluation_path)
+        dataset_manifest = self._read_json(dataset_manifest_path)
+        source_manifest = self._read_json(source_manifest_path)
+        trained_at = summary.get("trained_at")
+        if trained_at is None and weights_path.exists():
+            trained_at = datetime.fromtimestamp(weights_path.stat().st_mtime).isoformat()
+
+        return {
+            "status": "ready",
+            "ready": True,
+            "message": "模型已就绪，可用于简历实体识别。",
+            "model_version": summary.get("model_version", self._model_version),
+            "overall_f1": evaluation.get("entity_micro_f1", summary.get("test_report", {}).get("entity_micro_f1")),
+            "macro_f1": evaluation.get("entity_macro_f1", summary.get("test_report", {}).get("entity_macro_f1")),
+            "per_label_metrics": evaluation.get("per_label_metrics", summary.get("test_report", {}).get("per_label_metrics", {})),
+            "dataset_size": summary.get("dataset_size", {}),
+            "dataset_source_breakdown": summary.get("dataset_source_breakdown", source_manifest.get("source_summary", {})),
+            "paper_ready": summary.get("paper_ready", False),
+            "trained_at": trained_at,
+            "dataset_manifest": dataset_manifest,
+        }
+
+    @staticmethod
+    def _read_json(path: Path):
+        if not path.exists():
+            return {}
+        return json.loads(path.read_text(encoding="utf-8"))
 
     def _decode_entities(self, text: str, decoded_labels):
         if not decoded_labels:

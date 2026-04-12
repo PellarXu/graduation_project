@@ -1,488 +1,79 @@
 import json
-import random
+import sys
 from pathlib import Path
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
+
+from training.corpus_builder import build_resume_corpus, write_jsonl
+from training.public_data import (
+    ensure_cluener_download,
+    map_cluener_records,
+    map_resume_ner_records,
+    try_download_resume_ner,
+)
+
+
 DATA_DIR = ROOT_DIR / "data" / "annotations"
-
-TECH_RECORDS = [
-    {
-        "name": "张晨宇",
-        "phone": "13812340001",
-        "email": "zhangcy01@example.com",
-        "gender": "男",
-        "age": "24",
-        "hometown": "湖北武汉",
-        "school": "华中科技大学",
-        "degree": "本科",
-        "major": "软件工程",
-        "company": "星河科技",
-        "title": "后端开发工程师",
-        "years": "2年开发经验",
-        "project": "智能排课平台",
-        "skills": ["Python", "FastAPI", "MySQL", "Docker"],
-    },
-    {
-        "name": "李沐阳",
-        "phone": "13812340002",
-        "email": "limy02@example.com",
-        "gender": "男",
-        "age": "25",
-        "hometown": "湖南长沙",
-        "school": "武汉理工大学",
-        "degree": "本科",
-        "major": "计算机科学与技术",
-        "company": "云帆软件",
-        "title": "Java开发工程师",
-        "years": "3年开发经验",
-        "project": "企业审批系统",
-        "skills": ["Java", "Spring Boot", "Redis", "MySQL"],
-    },
-    {
-        "name": "王书宁",
-        "phone": "13812340003",
-        "email": "wangsn03@example.com",
-        "gender": "女",
-        "age": "23",
-        "hometown": "江西南昌",
-        "school": "中南财经政法大学",
-        "degree": "本科",
-        "major": "信息管理与信息系统",
-        "company": "数联网络",
-        "title": "测试开发工程师",
-        "years": "1年测试经验",
-        "project": "接口自动化平台",
-        "skills": ["Python", "Pytest", "Postman", "Jenkins"],
-    },
-    {
-        "name": "赵嘉豪",
-        "phone": "13812340004",
-        "email": "zhaojh04@example.com",
-        "gender": "男",
-        "age": "26",
-        "hometown": "河南郑州",
-        "school": "华中农业大学",
-        "degree": "本科",
-        "major": "数据科学与大数据技术",
-        "company": "北辰数据",
-        "title": "数据分析工程师",
-        "years": "2年数据分析经验",
-        "project": "用户增长分析平台",
-        "skills": ["Python", "SQL", "PowerBI", "Pandas"],
-    },
-    {
-        "name": "陈语桐",
-        "phone": "13812340005",
-        "email": "chenyt05@example.com",
-        "gender": "女",
-        "age": "24",
-        "hometown": "安徽合肥",
-        "school": "湖北大学",
-        "degree": "硕士",
-        "major": "人工智能",
-        "company": "智行科技",
-        "title": "算法工程师",
-        "years": "1年算法实习经验",
-        "project": "简历实体识别系统",
-        "skills": ["PyTorch", "BERT", "CRF", "NLP"],
-    },
-]
-
-OPS_RECORDS = [
-    {
-        "name": "周雨欣",
-        "phone": "13812340006",
-        "email": "zhouyx06@example.com",
-        "gender": "女",
-        "age": "22",
-        "hometown": "湖北襄阳",
-        "school": "湖北第二师范学院",
-        "degree": "本科",
-        "major": "广告学",
-        "company": "橙果传媒",
-        "title": "新媒体运营专员",
-        "years": "2年运营经验",
-        "project": "校园短视频账号项目",
-        "skills": ["剪映", "Photoshop", "公众号运营", "数据复盘"],
-    },
-    {
-        "name": "吴佳怡",
-        "phone": "13812340007",
-        "email": "wujy07@example.com",
-        "gender": "女",
-        "age": "23",
-        "hometown": "四川成都",
-        "school": "华中师范大学",
-        "degree": "本科",
-        "major": "新闻传播学",
-        "company": "青禾文化",
-        "title": "内容运营专员",
-        "years": "1年内容运营经验",
-        "project": "品牌公众号改版项目",
-        "skills": ["选题策划", "内容编辑", "公众号运营", "数据分析"],
-    },
-    {
-        "name": "徐浩然",
-        "phone": "13812340008",
-        "email": "xuhr08@example.com",
-        "gender": "男",
-        "age": "24",
-        "hometown": "江苏苏州",
-        "school": "武汉纺织大学",
-        "degree": "本科",
-        "major": "市场营销",
-        "company": "云鲸互动",
-        "title": "活动运营专员",
-        "years": "2年活动运营经验",
-        "project": "品牌直播推广项目",
-        "skills": ["活动策划", "直播运营", "Excel", "用户增长"],
-    },
-    {
-        "name": "郑梦瑶",
-        "phone": "13812340009",
-        "email": "zhengmy09@example.com",
-        "gender": "女",
-        "age": "23",
-        "hometown": "浙江杭州",
-        "school": "武汉大学",
-        "degree": "本科",
-        "major": "传播学",
-        "company": "星火传媒",
-        "title": "品牌运营专员",
-        "years": "1年品牌运营经验",
-        "project": "品牌种草内容项目",
-        "skills": ["小红书运营", "文案撰写", "数据复盘", "内容策划"],
-    },
-    {
-        "name": "何嘉宁",
-        "phone": "13812340010",
-        "email": "hejn10@example.com",
-        "gender": "男",
-        "age": "25",
-        "hometown": "广东深圳",
-        "school": "中南民族大学",
-        "degree": "本科",
-        "major": "电子商务",
-        "company": "远航电商",
-        "title": "电商运营专员",
-        "years": "3年电商运营经验",
-        "project": "双十一促销项目",
-        "skills": ["店铺运营", "数据分析", "详情页策划", "客服协同"],
-    },
-]
-
-PM_RECORDS = [
-    {
-        "name": "郭思远",
-        "phone": "13812340011",
-        "email": "guosy11@example.com",
-        "gender": "男",
-        "age": "26",
-        "hometown": "山东济南",
-        "school": "中南大学",
-        "degree": "硕士",
-        "major": "工业工程",
-        "company": "领航科技",
-        "title": "产品经理",
-        "years": "2年产品经验",
-        "project": "校园招聘系统",
-        "skills": ["Axure", "PRD编写", "需求分析", "原型设计"],
-    },
-    {
-        "name": "唐诗琪",
-        "phone": "13812340012",
-        "email": "tangsq12@example.com",
-        "gender": "女",
-        "age": "24",
-        "hometown": "福建厦门",
-        "school": "暨南大学",
-        "degree": "本科",
-        "major": "工商管理",
-        "company": "明日企服",
-        "title": "项目经理",
-        "years": "2年项目管理经验",
-        "project": "企业数字化转型项目",
-        "skills": ["项目排期", "需求沟通", "风险控制", "PPT汇报"],
-    },
-    {
-        "name": "罗景行",
-        "phone": "13812340013",
-        "email": "luojx13@example.com",
-        "gender": "男",
-        "age": "27",
-        "hometown": "广西南宁",
-        "school": "湖南大学",
-        "degree": "本科",
-        "major": "信息管理与信息系统",
-        "company": "启航软件",
-        "title": "实施顾问",
-        "years": "3年实施经验",
-        "project": "ERP实施项目",
-        "skills": ["流程梳理", "客户培训", "项目推进", "SQL"],
-    },
-    {
-        "name": "宋婉清",
-        "phone": "13812340014",
-        "email": "songwq14@example.com",
-        "gender": "女",
-        "age": "25",
-        "hometown": "重庆",
-        "school": "西南大学",
-        "degree": "本科",
-        "major": "人力资源管理",
-        "company": "智聘网络",
-        "title": "招聘项目专员",
-        "years": "2年招聘经验",
-        "project": "校招流程优化项目",
-        "skills": ["流程设计", "数据统计", "沟通协调", "Excel"],
-    },
-    {
-        "name": "谢承泽",
-        "phone": "13812340015",
-        "email": "xiecz15@example.com",
-        "gender": "男",
-        "age": "28",
-        "hometown": "河北石家庄",
-        "school": "武汉科技大学",
-        "degree": "本科",
-        "major": "物流管理",
-        "company": "安达供应链",
-        "title": "项目协调经理",
-        "years": "4年项目协调经验",
-        "project": "仓储协同平台项目",
-        "skills": ["跨部门沟通", "项目推进", "流程优化", "Visio"],
-    },
-]
+PUBLIC_DIR = ROOT_DIR / "data" / "public"
 
 
-def build_segments(record, template_id):
-    skills = record["skills"]
-    templates = {
-        0: [
-            (record["name"], "NAME"),
-            ("，", None),
-            (record["gender"], "GENDER"),
-            ("，", None),
-            (record["age"], "AGE"),
-            ("岁，", None),
-            (record["hometown"], "HOMETOWN"),
-            ("，电话", None),
-            (record["phone"], "PHONE"),
-            ("，邮箱", None),
-            (record["email"], "EMAIL"),
-            ("。", None),
-            (record["school"], "SCHOOL"),
-            (record["degree"], "DEGREE"),
-            ("，", None),
-            (record["major"], "MAJOR"),
-            ("。曾在", None),
-            (record["company"], "COMPANY"),
-            ("担任", None),
-            (record["title"], "TITLE"),
-            ("，拥有", None),
-            (record["years"], "EXPERIENCE_YEARS"),
-            ("，参与", None),
-            (record["project"], "PROJECT"),
-            ("，熟悉", None),
-            (skills[0], "SKILL"),
-            ("、", None),
-            (skills[1], "SKILL"),
-            ("、", None),
-            (skills[2], "SKILL"),
-            ("和", None),
-            (skills[3], "SKILL"),
-            ("。", None),
-        ],
-        1: [
-            (record["name"], "NAME"),
-            ("来自", None),
-            (record["hometown"], "HOMETOWN"),
-            ("，", None),
-            (record["gender"], "GENDER"),
-            ("，", None),
-            (record["age"], "AGE"),
-            ("岁。毕业于", None),
-            (record["school"], "SCHOOL"),
-            (record["degree"], "DEGREE"),
-            ("，专业为", None),
-            (record["major"], "MAJOR"),
-            ("。联系电话", None),
-            (record["phone"], "PHONE"),
-            ("，邮箱", None),
-            (record["email"], "EMAIL"),
-            ("。在", None),
-            (record["company"], "COMPANY"),
-            ("任", None),
-            (record["title"], "TITLE"),
-            ("，累计", None),
-            (record["years"], "EXPERIENCE_YEARS"),
-            ("，主导", None),
-            (record["project"], "PROJECT"),
-            ("，掌握", None),
-            (skills[0], "SKILL"),
-            ("、", None),
-            (skills[1], "SKILL"),
-            ("、", None),
-            (skills[2], "SKILL"),
-            ("、", None),
-            (skills[3], "SKILL"),
-            ("。", None),
-        ],
-        2: [
-            (record["name"], "NAME"),
-            ("，", None),
-            (record["school"], "SCHOOL"),
-            (record["degree"], "DEGREE"),
-            ("，", None),
-            (record["major"], "MAJOR"),
-            ("。求职方向与", None),
-            (record["title"], "TITLE"),
-            ("相关，具备", None),
-            (record["years"], "EXPERIENCE_YEARS"),
-            ("。曾在", None),
-            (record["company"], "COMPANY"),
-            ("参与", None),
-            (record["project"], "PROJECT"),
-            ("，长期使用", None),
-            (skills[0], "SKILL"),
-            ("、", None),
-            (skills[1], "SKILL"),
-            ("、", None),
-            (skills[2], "SKILL"),
-            ("和", None),
-            (skills[3], "SKILL"),
-            ("。基本信息：", None),
-            (record["gender"], "GENDER"),
-            ("，", None),
-            (record["age"], "AGE"),
-            ("岁，", None),
-            (record["hometown"], "HOMETOWN"),
-            ("，电话", None),
-            (record["phone"], "PHONE"),
-            ("，邮箱", None),
-            (record["email"], "EMAIL"),
-            ("。", None),
-        ],
-        3: [
-            ("候选人", None),
-            (record["name"], "NAME"),
-            ("，", None),
-            (record["gender"], "GENDER"),
-            ("，", None),
-            (record["age"], "AGE"),
-            ("岁，籍贯", None),
-            (record["hometown"], "HOMETOWN"),
-            ("。毕业院校", None),
-            (record["school"], "SCHOOL"),
-            ("，学历", None),
-            (record["degree"], "DEGREE"),
-            ("，专业", None),
-            (record["major"], "MAJOR"),
-            ("。曾在", None),
-            (record["company"], "COMPANY"),
-            ("担任", None),
-            (record["title"], "TITLE"),
-            ("，具备", None),
-            (record["years"], "EXPERIENCE_YEARS"),
-            ("。项目经历包括", None),
-            (record["project"], "PROJECT"),
-            ("，核心技能为", None),
-            (skills[0], "SKILL"),
-            ("、", None),
-            (skills[1], "SKILL"),
-            ("、", None),
-            (skills[2], "SKILL"),
-            ("、", None),
-            (skills[3], "SKILL"),
-            ("。联系方式", None),
-            (record["phone"], "PHONE"),
-            ("，", None),
-            (record["email"], "EMAIL"),
-            ("。", None),
-        ],
-        4: [
-            (record["name"], "NAME"),
-            ("希望应聘", None),
-            (record["title"], "TITLE"),
-            ("岗位。", None),
-            (record["gender"], "GENDER"),
-            ("，", None),
-            (record["age"], "AGE"),
-            ("岁，来自", None),
-            (record["hometown"], "HOMETOWN"),
-            ("。", None),
-            (record["school"], "SCHOOL"),
-            (record["degree"], "DEGREE"),
-            ("毕业，", None),
-            (record["major"], "MAJOR"),
-            ("。曾就职于", None),
-            (record["company"], "COMPANY"),
-            ("，累计", None),
-            (record["years"], "EXPERIENCE_YEARS"),
-            ("，负责", None),
-            (record["project"], "PROJECT"),
-            ("。熟练掌握", None),
-            (skills[0], "SKILL"),
-            ("、", None),
-            (skills[1], "SKILL"),
-            ("、", None),
-            (skills[2], "SKILL"),
-            ("和", None),
-            (skills[3], "SKILL"),
-            ("。联系电话", None),
-            (record["phone"], "PHONE"),
-            ("，电子邮箱", None),
-            (record["email"], "EMAIL"),
-            ("。", None),
-        ],
-    }
-    return templates[template_id]
+def build_warm_start_samples() -> tuple[list[dict], dict]:
+    raw_dir = PUBLIC_DIR / "raw"
+
+    warm_start_sources = {}
+    cluener_samples = []
+    cluener_files = ensure_cluener_download(raw_dir / "cluener")
+    for split in ("train", "dev"):
+        if split not in cluener_files:
+            continue
+        limit = 1200 if split == "train" else 300
+        cluener_samples.extend(map_cluener_records(cluener_files[split], max_samples=limit))
+    if cluener_samples:
+        warm_start_sources["cluener2020"] = len(cluener_samples)
+
+    resume_ner_dir = try_download_resume_ner(raw_dir)
+    resume_ner_samples = map_resume_ner_records(resume_ner_dir, max_samples=400)
+    if resume_ner_samples:
+        warm_start_sources["resume_ner"] = len(resume_ner_samples)
+
+    return cluener_samples + resume_ner_samples, warm_start_sources
 
 
-def build_sample(record, template_id):
-    text_parts = []
-    entities = []
-    cursor = 0
-
-    for value, label in build_segments(record, template_id):
-        text_parts.append(value)
-        if label:
-            entities.append(
-                {
-                    "start": cursor,
-                    "end": cursor + len(value),
-                    "label": label,
-                }
-            )
-        cursor += len(value)
-
-    return {"text": "".join(text_parts), "entities": entities}
-
-
-def generate_dataset():
-    all_records = TECH_RECORDS + OPS_RECORDS + PM_RECORDS
-    samples = []
-    for template_id in range(5):
-        for record in all_records:
-            samples.append(build_sample(record, template_id))
-
-    random.Random(42).shuffle(samples)
-    train_samples = samples[:60]
-    dev_samples = samples[60:75]
-
+def main():
     DATA_DIR.mkdir(parents=True, exist_ok=True)
-    (DATA_DIR / "train.jsonl").write_text(
-        "\n".join(json.dumps(item, ensure_ascii=False) for item in train_samples) + "\n",
-        encoding="utf-8",
-    )
-    (DATA_DIR / "dev.jsonl").write_text(
-        "\n".join(json.dumps(item, ensure_ascii=False) for item in dev_samples) + "\n",
-        encoding="utf-8",
-    )
+    generated = build_resume_corpus(seed=42, total_profiles=150, templates_per_profile=8)
+    corpus = generated["corpus"]
 
-    print(f"训练集样本数: {len(train_samples)}")
-    print(f"验证集样本数: {len(dev_samples)}")
+    write_jsonl(DATA_DIR / "train.jsonl", corpus["train"])
+    write_jsonl(DATA_DIR / "dev.jsonl", corpus["dev"])
+    write_jsonl(DATA_DIR / "test.jsonl", corpus["test"])
+
+    warm_start_samples, warm_start_sources = build_warm_start_samples()
+    if warm_start_samples:
+        write_jsonl(DATA_DIR / "warm_start.jsonl", warm_start_samples)
+
+    source_manifest = {
+        "sources": generated["source_manifest"],
+        "source_summary": {
+            **{
+                split: generated["dataset_manifest"]["splits"][split]["source_breakdown"]
+                for split in ("train", "dev", "test")
+            },
+            "public_mapped": warm_start_sources,
+        },
+    }
+    (DATA_DIR / "source_manifest.json").write_text(json.dumps(source_manifest, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    dataset_manifest = generated["dataset_manifest"]
+    dataset_manifest["warm_start"] = {"samples": len(warm_start_samples), "source_breakdown": warm_start_sources}
+    (DATA_DIR / "dataset_manifest.json").write_text(
+        json.dumps(dataset_manifest, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+    print(json.dumps(dataset_manifest, ensure_ascii=False, indent=2))
 
 
 if __name__ == "__main__":
-    generate_dataset()
+    main()

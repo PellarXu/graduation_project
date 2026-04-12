@@ -1,0 +1,7794 @@
+{
+  "model_version": "albert-bigru-crf-v2",
+  "pretrained_model_name": "uer/albert-base-chinese-cluecorpussmall",
+  "trained_at": "2026-04-11T11:52:23.438509+00:00",
+  "device": "cuda",
+  "paper_ready": true,
+  "dataset_size": {
+    "train": 816,
+    "dev": 96,
+    "test": 288
+  },
+  "dataset_source_breakdown": {
+    "train": {
+      "generated_reviewed": 612,
+      "self_written": 204
+    },
+    "dev": {
+      "generated_reviewed": 72,
+      "self_written": 24
+    },
+    "test": {
+      "generated_reviewed": 216,
+      "self_written": 72
+    },
+    "public_mapped": {
+      "resume_ner": 400
+    }
+  },
+  "dataset_manifest": {
+    "profiles": 150,
+    "templates_per_profile": 8,
+    "splits": {
+      "train": {
+        "samples": 816,
+        "avg_length": 157.51,
+        "max_length": 190,
+        "label_distribution": {
+          "AGE": 816,
+          "COMPANY": 816,
+          "DEGREE": 816,
+          "EMAIL": 816,
+          "EXPERIENCE_YEARS": 816,
+          "GENDER": 816,
+          "HOMETOWN": 816,
+          "MAJOR": 816,
+          "NAME": 816,
+          "PHONE": 816,
+          "PROJECT": 816,
+          "SCHOOL": 816,
+          "SKILL": 3264,
+          "TITLE": 1020
+        },
+        "source_breakdown": {
+          "generated_reviewed": 612,
+          "self_written": 204
+        }
+      },
+      "dev": {
+        "samples": 96,
+        "avg_length": 156.25,
+        "max_length": 182,
+        "label_distribution": {
+          "AGE": 96,
+          "COMPANY": 96,
+          "DEGREE": 96,
+          "EMAIL": 96,
+          "EXPERIENCE_YEARS": 96,
+          "GENDER": 96,
+          "HOMETOWN": 96,
+          "MAJOR": 96,
+          "NAME": 96,
+          "PHONE": 96,
+          "PROJECT": 96,
+          "SCHOOL": 96,
+          "SKILL": 384,
+          "TITLE": 120
+        },
+        "source_breakdown": {
+          "generated_reviewed": 72,
+          "self_written": 24
+        }
+      },
+      "test": {
+        "samples": 288,
+        "avg_length": 156.83,
+        "max_length": 189,
+        "label_distribution": {
+          "AGE": 288,
+          "COMPANY": 288,
+          "DEGREE": 288,
+          "EMAIL": 288,
+          "EXPERIENCE_YEARS": 288,
+          "GENDER": 288,
+          "HOMETOWN": 288,
+          "MAJOR": 288,
+          "NAME": 288,
+          "PHONE": 288,
+          "PROJECT": 288,
+          "SCHOOL": 288,
+          "SKILL": 1152,
+          "TITLE": 360
+        },
+        "source_breakdown": {
+          "generated_reviewed": 216,
+          "self_written": 72
+        }
+      }
+    },
+    "warm_start": {
+      "samples": 400,
+      "source_breakdown": {
+        "resume_ner": 400
+      }
+    }
+  },
+  "core_label_targets": {
+    "NAME": 0.8,
+    "PHONE": 0.8,
+    "EMAIL": 0.8,
+    "DEGREE": 0.8,
+    "MAJOR": 0.8,
+    "SCHOOL": 0.8,
+    "SKILL": 0.8,
+    "EXPERIENCE_YEARS": 0.8
+  },
+  "minimum_label_targets": {
+    "COMPANY": 0.6,
+    "TITLE": 0.6,
+    "PROJECT": 0.6,
+    "GENDER": 0.6,
+    "AGE": 0.6,
+    "HOMETOWN": 0.6
+  },
+  "warm_start_enabled": true,
+  "warm_start_best": {
+    "samples": 40,
+    "precision": 0.8644,
+    "recall": 0.9273,
+    "f1_score": 0.8947,
+    "entity_micro_f1": 0.8947,
+    "entity_macro_f1": 0.9192,
+    "per_label_metrics": {
+      "COMPANY": {
+        "precision": 0.8372,
+        "recall": 0.8571,
+        "f1": 0.8471,
+        "tp": 36,
+        "fp": 7,
+        "fn": 6
+      },
+      "NAME": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "tp": 10,
+        "fp": 0,
+        "fn": 0
+      },
+      "TITLE": {
+        "precision": 0.8615,
+        "recall": 0.9655,
+        "f1": 0.9106,
+        "tp": 56,
+        "fp": 9,
+        "fn": 2
+      }
+    },
+    "entity_distribution": {
+      "COMPANY": 42,
+      "NAME": 10,
+      "TITLE": 58
+    },
+    "confusion_pairs": {
+      "COMPANY->COMPANY": 6,
+      "TITLE->TITLE": 3,
+      "COMPANY->TITLE": 2,
+      "TITLE->COMPANY": 1
+    },
+    "error_cases": [
+      {
+        "text": "现任大股东无锡产业发展集团有限公司董事局董事、无锡威孚高科技集团股份有限公司党委书记。",
+        "gold": [
+          {
+            "start": 2,
+            "end": 17,
+            "label": "COMPANY"
+          },
+          {
+            "start": 17,
+            "end": 22,
+            "label": "TITLE"
+          },
+          {
+            "start": 23,
+            "end": 38,
+            "label": "COMPANY"
+          },
+          {
+            "start": 38,
+            "end": 42,
+            "label": "TITLE"
+          }
+        ],
+        "pred": [
+          {
+            "start": 2,
+            "end": 5,
+            "label": "TITLE"
+          },
+          {
+            "start": 5,
+            "end": 17,
+            "label": "COMPANY"
+          },
+          {
+            "start": 17,
+            "end": 22,
+            "label": "TITLE"
+          },
+          {
+            "start": 23,
+            "end": 38,
+            "label": "COMPANY"
+          },
+          {
+            "start": 38,
+            "end": 42,
+            "label": "TITLE"
+          }
+        ]
+      },
+      {
+        "text": "曾任中国化工进出口总公司财务部会计科职员，中化伯利兹有限公司财务部财务总监，中国化工进出口总公司财会部投资科经理，中化国际实业公司财务部经理，中国化工进出口总公司石油中心财务部副总经理、化肥中心财务部副总经理，中国中化集团公司投资部副总经理、西北办事处主任、风险管理部副总经理、保险部总经理、风险管理部总经理。",
+        "gold": [
+          {
+            "start": 2,
+            "end": 12,
+            "label": "COMPANY"
+          },
+          {
+            "start": 12,
+            "end": 20,
+            "label": "TITLE"
+          },
+          {
+            "start": 21,
+            "end": 30,
+            "label": "COMPANY"
+          },
+          {
+            "start": 30,
+            "end": 37,
+            "label": "TITLE"
+          },
+          {
+            "start": 38,
+            "end": 48,
+            "label": "COMPANY"
+          },
+          {
+            "start": 48,
+            "end": 56,
+            "label": "TITLE"
+          },
+          {
+            "start": 57,
+            "end": 65,
+            "label": "COMPANY"
+          },
+          {
+            "start": 65,
+            "end": 70,
+            "label": "TITLE"
+          },
+          {
+            "start": 71,
+            "end": 85,
+            "label": "COMPANY"
+          },
+          {
+            "start": 85,
+            "end": 92,
+            "label": "TITLE"
+          },
+          {
+            "start": 93,
+            "end": 97,
+            "label": "COMPANY"
+          },
+          {
+            "start": 97,
+            "end": 104,
+            "label": "TITLE"
+          },
+          {
+            "start": 105,
+            "end": 113,
+            "label": "COMPANY"
+          },
+          {
+            "start": 113,
+            "end": 120,
+            "label": "TITLE"
+          },
+          {
+            "start": 121,
+            "end": 126,
+            "label": "COMPANY"
+          },
+          {
+            "start": 126,
+            "end": 128,
+            "label": "TITLE"
+          },
+          {
+            "start": 129,
+            "end": 138,
+            "label": "TITLE"
+          },
+          {
+            "start": 139,
+            "end": 145,
+            "label": "TITLE"
+          },
+          {
+            "start": 146,
+            "end": 154,
+            "label": "TITLE"
+          }
+        ],
+        "pred": [
+          {
+            "start": 2,
+            "end": 12,
+            "label": "COMPANY"
+          },
+          {
+            "start": 12,
+            "end": 20,
+            "label": "TITLE"
+          },
+          {
+            "start": 21,
+            "end": 30,
+            "label": "COMPANY"
+          },
+          {
+            "start": 30,
+            "end": 37,
+            "label": "TITLE"
+          },
+          {
+            "start": 38,
+            "end": 48,
+            "label": "COMPANY"
+          },
+          {
+            "start": 48,
+            "end": 56,
+            "label": "TITLE"
+          },
+          {
+            "start": 57,
+            "end": 65,
+            "label": "COMPANY"
+          },
+          {
+            "start": 65,
+            "end": 70,
+            "label": "TITLE"
+          },
+          {
+            "start": 71,
+            "end": 85,
+            "label": "COMPANY"
+          },
+          {
+            "start": 85,
+            "end": 92,
+            "label": "TITLE"
+          },
+          {
+            "start": 93,
+            "end": 97,
+            "label": "COMPANY"
+          },
+          {
+            "start": 97,
+            "end": 104,
+            "label": "TITLE"
+          },
+          {
+            "start": 105,
+            "end": 113,
+            "label": "COMPANY"
+          },
+          {
+            "start": 113,
+            "end": 120,
+            "label": "TITLE"
+          },
+          {
+            "start": 121,
+            "end": 123,
+            "label": "COMPANY"
+          },
+          {
+            "start": 123,
+            "end": 126,
+            "label": "TITLE"
+          },
+          {
+            "start": 127,
+            "end": 128,
+            "label": "TITLE"
+          },
+          {
+            "start": 129,
+            "end": 138,
+            "label": "TITLE"
+          },
+          {
+            "start": 139,
+            "end": 145,
+            "label": "TITLE"
+          },
+          {
+            "start": 146,
+            "end": 154,
+            "label": "TITLE"
+          }
+        ]
+      },
+      {
+        "text": "1985年毕业于山东经济学院工商管理系，获经济学学士学位，",
+        "gold": [
+          {
+            "start": 8,
+            "end": 19,
+            "label": "COMPANY"
+          }
+        ],
+        "pred": [
+          {
+            "start": 8,
+            "end": 14,
+            "label": "COMPANY"
+          }
+        ]
+      },
+      {
+        "text": "1989年8月北京联合大学经济管理学院财会系工业会计专业本科毕业，获学士学位；",
+        "gold": [
+          {
+            "start": 7,
+            "end": 22,
+            "label": "COMPANY"
+          }
+        ],
+        "pred": [
+          {
+            "start": 7,
+            "end": 22,
+            "label": "COMPANY"
+          },
+          {
+            "start": 22,
+            "end": 23,
+            "label": "TITLE"
+          },
+          {
+            "start": 23,
+            "end": 24,
+            "label": "COMPANY"
+          },
+          {
+            "start": 24,
+            "end": 26,
+            "label": "TITLE"
+          }
+        ]
+      },
+      {
+        "text": "李超，男，成都电力职工大学发电厂及电力系统专业毕业，高级工程师。",
+        "gold": [
+          {
+            "start": 0,
+            "end": 2,
+            "label": "NAME"
+          },
+          {
+            "start": 5,
+            "end": 13,
+            "label": "COMPANY"
+          },
+          {
+            "start": 26,
+            "end": 31,
+            "label": "TITLE"
+          }
+        ],
+        "pred": [
+          {
+            "start": 0,
+            "end": 2,
+            "label": "NAME"
+          },
+          {
+            "start": 5,
+            "end": 16,
+            "label": "COMPANY"
+          },
+          {
+            "start": 17,
+            "end": 20,
+            "label": "TITLE"
+          },
+          {
+            "start": 26,
+            "end": 31,
+            "label": "TITLE"
+          }
+        ]
+      },
+      {
+        "text": "2002年3月至2003年1月在珠海经济特区富华集团股份限公司办公室工作；",
+        "gold": [
+          {
+            "start": 16,
+            "end": 31,
+            "label": "COMPANY"
+          }
+        ],
+        "pred": [
+          {
+            "start": 16,
+            "end": 31,
+            "label": "COMPANY"
+          },
+          {
+            "start": 31,
+            "end": 32,
+            "label": "TITLE"
+          }
+        ]
+      },
+      {
+        "text": "于恩军先生于2000年8月开始服务于本集团。",
+        "gold": [
+          {
+            "start": 0,
+            "end": 3,
+            "label": "NAME"
+          },
+          {
+            "start": 18,
+            "end": 21,
+            "label": "COMPANY"
+          }
+        ],
+        "pred": [
+          {
+            "start": 0,
+            "end": 3,
+            "label": "NAME"
+          },
+          {
+            "start": 17,
+            "end": 21,
+            "label": "COMPANY"
+          }
+        ]
+      },
+      {
+        "text": "曾任中国农业科学院饲料研究所动物营养室副主任、所长助理、副所长、所长。",
+        "gold": [
+          {
+            "start": 2,
+            "end": 14,
+            "label": "COMPANY"
+          },
+          {
+            "start": 14,
+            "end": 22,
+            "label": "TITLE"
+          },
+          {
+            "start": 23,
+            "end": 27,
+            "label": "TITLE"
+          },
+          {
+            "start": 28,
+            "end": 31,
+            "label": "TITLE"
+          },
+          {
+            "start": 32,
+            "end": 34,
+            "label": "TITLE"
+          }
+        ],
+        "pred": [
+          {
+            "start": 2,
+            "end": 17,
+            "label": "COMPANY"
+          },
+          {
+            "start": 17,
+            "end": 19,
+            "label": "TITLE"
+          },
+          {
+            "start": 19,
+            "end": 22,
+            "label": "TITLE"
+          },
+          {
+            "start": 23,
+            "end": 27,
+            "label": "TITLE"
+          },
+          {
+            "start": 28,
+            "end": 31,
+            "label": "TITLE"
+          },
+          {
+            "start": 32,
+            "end": 34,
+            "label": "TITLE"
+          }
+        ]
+      }
+    ],
+    "stage": "warm_start",
+    "epoch": 4,
+    "train_loss": 0.8653,
+    "device": "cuda",
+    "train_batch_size": 2,
+    "eval_batch_size": 4,
+    "gradient_accumulation_steps": 4,
+    "max_length": 512
+  },
+  "dev_best": {
+    "samples": 96,
+    "precision": 0.9807,
+    "recall": 0.9813,
+    "f1_score": 0.981,
+    "entity_micro_f1": 0.981,
+    "entity_macro_f1": 0.9824,
+    "per_label_metrics": {
+      "AGE": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "tp": 96,
+        "fp": 0,
+        "fn": 0
+      },
+      "COMPANY": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "tp": 96,
+        "fp": 0,
+        "fn": 0
+      },
+      "DEGREE": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "tp": 96,
+        "fp": 0,
+        "fn": 0
+      },
+      "EMAIL": {
+        "precision": 0.8958,
+        "recall": 0.8958,
+        "f1": 0.8958,
+        "tp": 86,
+        "fp": 10,
+        "fn": 10
+      },
+      "EXPERIENCE_YEARS": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "tp": 96,
+        "fp": 0,
+        "fn": 0
+      },
+      "GENDER": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "tp": 96,
+        "fp": 0,
+        "fn": 0
+      },
+      "HOMETOWN": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "tp": 96,
+        "fp": 0,
+        "fn": 0
+      },
+      "MAJOR": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "tp": 96,
+        "fp": 0,
+        "fn": 0
+      },
+      "NAME": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "tp": 96,
+        "fp": 0,
+        "fn": 0
+      },
+      "PHONE": {
+        "precision": 0.8854,
+        "recall": 0.8854,
+        "f1": 0.8854,
+        "tp": 85,
+        "fp": 11,
+        "fn": 11
+      },
+      "PROJECT": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "tp": 96,
+        "fp": 0,
+        "fn": 0
+      },
+      "SCHOOL": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "tp": 96,
+        "fp": 0,
+        "fn": 0
+      },
+      "SKILL": {
+        "precision": 0.9714,
+        "recall": 0.974,
+        "f1": 0.9727,
+        "tp": 374,
+        "fp": 11,
+        "fn": 10
+      },
+      "TITLE": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "tp": 120,
+        "fp": 0,
+        "fn": 0
+      }
+    },
+    "entity_distribution": {
+      "AGE": 96,
+      "COMPANY": 96,
+      "DEGREE": 96,
+      "EMAIL": 96,
+      "EXPERIENCE_YEARS": 96,
+      "GENDER": 96,
+      "HOMETOWN": 96,
+      "MAJOR": 96,
+      "NAME": 96,
+      "PHONE": 96,
+      "PROJECT": 96,
+      "SCHOOL": 96,
+      "SKILL": 384,
+      "TITLE": 120
+    },
+    "confusion_pairs": {
+      "PHONE->PHONE": 11,
+      "SKILL->SKILL": 11,
+      "EMAIL->EMAIL": 10
+    },
+    "error_cases": [
+      {
+        "text": "职业标签：前端开发工程师\n候选人赵子昕，女，26岁，河北石家庄。\n毕业于重庆邮电大学本科，专业数字媒体技术。\n历任单位：极光互动。\n项目亮点：招聘小程序。\n经验沉淀：3年前端经验。\n技能结构：React、Vite、ECharts、CSS。\n联系方式：13800000012；e8b5b5e5012@example.com",
+        "gold": [
+          {
+            "start": 5,
+            "end": 12,
+            "label": "TITLE"
+          },
+          {
+            "start": 16,
+            "end": 19,
+            "label": "NAME"
+          },
+          {
+            "start": 20,
+            "end": 21,
+            "label": "GENDER"
+          },
+          {
+            "start": 22,
+            "end": 24,
+            "label": "AGE"
+          },
+          {
+            "start": 26,
+            "end": 31,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 36,
+            "end": 42,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 42,
+            "end": 44,
+            "label": "DEGREE"
+          },
+          {
+            "start": 47,
+            "end": 53,
+            "label": "MAJOR"
+          },
+          {
+            "start": 60,
+            "end": 64,
+            "label": "COMPANY"
+          },
+          {
+            "start": 71,
+            "end": 76,
+            "label": "PROJECT"
+          },
+          {
+            "start": 83,
+            "end": 89,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 96,
+            "end": 101,
+            "label": "SKILL"
+          },
+          {
+            "start": 102,
+            "end": 106,
+            "label": "SKILL"
+          },
+          {
+            "start": 107,
+            "end": 114,
+            "label": "SKILL"
+          },
+          {
+            "start": 115,
+            "end": 118,
+            "label": "SKILL"
+          },
+          {
+            "start": 125,
+            "end": 136,
+            "label": "PHONE"
+          },
+          {
+            "start": 137,
+            "end": 153,
+            "label": "EMAIL"
+          }
+        ],
+        "pred": [
+          {
+            "start": 5,
+            "end": 12,
+            "label": "TITLE"
+          },
+          {
+            "start": 16,
+            "end": 19,
+            "label": "NAME"
+          },
+          {
+            "start": 20,
+            "end": 21,
+            "label": "GENDER"
+          },
+          {
+            "start": 22,
+            "end": 24,
+            "label": "AGE"
+          },
+          {
+            "start": 26,
+            "end": 31,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 36,
+            "end": 42,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 42,
+            "end": 44,
+            "label": "DEGREE"
+          },
+          {
+            "start": 47,
+            "end": 53,
+            "label": "MAJOR"
+          },
+          {
+            "start": 60,
+            "end": 64,
+            "label": "COMPANY"
+          },
+          {
+            "start": 71,
+            "end": 76,
+            "label": "PROJECT"
+          },
+          {
+            "start": 83,
+            "end": 89,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 96,
+            "end": 101,
+            "label": "SKILL"
+          },
+          {
+            "start": 102,
+            "end": 106,
+            "label": "SKILL"
+          },
+          {
+            "start": 107,
+            "end": 114,
+            "label": "SKILL"
+          },
+          {
+            "start": 115,
+            "end": 118,
+            "label": "SKILL"
+          },
+          {
+            "start": 126,
+            "end": 136,
+            "label": "PHONE"
+          },
+          {
+            "start": 137,
+            "end": 153,
+            "label": "EMAIL"
+          }
+        ]
+      },
+      {
+        "text": "简历摘要\n姓名：赵文辰\n性别：女\n年龄：22\n籍贯：福建厦门\n毕业院校：南昌大学\n学历：本科\n专业：信息管理与信息系统\n目标岗位：测试开发工程师\n工作经历：在恒准软件完成接口自动化平台，具备1年测试经验\n技能标签：Java、Selenium、SQL、Linux\n电话：13800000034\n邮箱：e8b5b5e6034@resume.cn",
+        "gold": [
+          {
+            "start": 8,
+            "end": 11,
+            "label": "NAME"
+          },
+          {
+            "start": 15,
+            "end": 16,
+            "label": "GENDER"
+          },
+          {
+            "start": 20,
+            "end": 22,
+            "label": "AGE"
+          },
+          {
+            "start": 26,
+            "end": 30,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 36,
+            "end": 40,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 44,
+            "end": 46,
+            "label": "DEGREE"
+          },
+          {
+            "start": 50,
+            "end": 59,
+            "label": "MAJOR"
+          },
+          {
+            "start": 65,
+            "end": 72,
+            "label": "TITLE"
+          },
+          {
+            "start": 79,
+            "end": 83,
+            "label": "COMPANY"
+          },
+          {
+            "start": 85,
+            "end": 92,
+            "label": "PROJECT"
+          },
+          {
+            "start": 95,
+            "end": 101,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 107,
+            "end": 111,
+            "label": "SKILL"
+          },
+          {
+            "start": 112,
+            "end": 120,
+            "label": "SKILL"
+          },
+          {
+            "start": 121,
+            "end": 124,
+            "label": "SKILL"
+          },
+          {
+            "start": 125,
+            "end": 130,
+            "label": "SKILL"
+          },
+          {
+            "start": 134,
+            "end": 145,
+            "label": "PHONE"
+          },
+          {
+            "start": 149,
+            "end": 158,
+            "label": "EMAIL"
+          }
+        ],
+        "pred": [
+          {
+            "start": 8,
+            "end": 11,
+            "label": "NAME"
+          },
+          {
+            "start": 15,
+            "end": 16,
+            "label": "GENDER"
+          },
+          {
+            "start": 20,
+            "end": 22,
+            "label": "AGE"
+          },
+          {
+            "start": 26,
+            "end": 30,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 36,
+            "end": 40,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 44,
+            "end": 46,
+            "label": "DEGREE"
+          },
+          {
+            "start": 50,
+            "end": 59,
+            "label": "MAJOR"
+          },
+          {
+            "start": 65,
+            "end": 72,
+            "label": "TITLE"
+          },
+          {
+            "start": 79,
+            "end": 83,
+            "label": "COMPANY"
+          },
+          {
+            "start": 85,
+            "end": 92,
+            "label": "PROJECT"
+          },
+          {
+            "start": 95,
+            "end": 101,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 107,
+            "end": 111,
+            "label": "SKILL"
+          },
+          {
+            "start": 112,
+            "end": 120,
+            "label": "SKILL"
+          },
+          {
+            "start": 121,
+            "end": 124,
+            "label": "SKILL"
+          },
+          {
+            "start": 126,
+            "end": 130,
+            "label": "SKILL"
+          },
+          {
+            "start": 134,
+            "end": 145,
+            "label": "PHONE"
+          },
+          {
+            "start": 149,
+            "end": 158,
+            "label": "EMAIL"
+          }
+        ]
+      },
+      {
+        "text": "求职意向：数据分析师\n基本信息：赵明涵，男，24岁，山东济南。\n教育背景：东北财经大学本科，统计学。\n工作经历：曾在观澜科技从事数据分析师相关工作，拥有2年分析经验。\n项目经历：参与经营分析看板。\n核心技能：SQL、Python、Power BI、Pandas。\n联系方式：13800000083 / e8b5b5e6083@jobmail.cn",
+        "gold": [
+          {
+            "start": 5,
+            "end": 10,
+            "label": "TITLE"
+          },
+          {
+            "start": 16,
+            "end": 19,
+            "label": "NAME"
+          },
+          {
+            "start": 20,
+            "end": 21,
+            "label": "GENDER"
+          },
+          {
+            "start": 22,
+            "end": 24,
+            "label": "AGE"
+          },
+          {
+            "start": 26,
+            "end": 30,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 37,
+            "end": 43,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 43,
+            "end": 45,
+            "label": "DEGREE"
+          },
+          {
+            "start": 46,
+            "end": 49,
+            "label": "MAJOR"
+          },
+          {
+            "start": 58,
+            "end": 62,
+            "label": "COMPANY"
+          },
+          {
+            "start": 64,
+            "end": 69,
+            "label": "TITLE"
+          },
+          {
+            "start": 76,
+            "end": 82,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 91,
+            "end": 97,
+            "label": "PROJECT"
+          },
+          {
+            "start": 104,
+            "end": 107,
+            "label": "SKILL"
+          },
+          {
+            "start": 108,
+            "end": 114,
+            "label": "SKILL"
+          },
+          {
+            "start": 115,
+            "end": 123,
+            "label": "SKILL"
+          },
+          {
+            "start": 124,
+            "end": 130,
+            "label": "SKILL"
+          },
+          {
+            "start": 137,
+            "end": 148,
+            "label": "PHONE"
+          },
+          {
+            "start": 151,
+            "end": 164,
+            "label": "EMAIL"
+          }
+        ],
+        "pred": [
+          {
+            "start": 5,
+            "end": 10,
+            "label": "TITLE"
+          },
+          {
+            "start": 16,
+            "end": 19,
+            "label": "NAME"
+          },
+          {
+            "start": 20,
+            "end": 21,
+            "label": "GENDER"
+          },
+          {
+            "start": 22,
+            "end": 24,
+            "label": "AGE"
+          },
+          {
+            "start": 26,
+            "end": 30,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 37,
+            "end": 43,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 43,
+            "end": 45,
+            "label": "DEGREE"
+          },
+          {
+            "start": 46,
+            "end": 49,
+            "label": "MAJOR"
+          },
+          {
+            "start": 58,
+            "end": 62,
+            "label": "COMPANY"
+          },
+          {
+            "start": 64,
+            "end": 69,
+            "label": "TITLE"
+          },
+          {
+            "start": 76,
+            "end": 82,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 91,
+            "end": 97,
+            "label": "PROJECT"
+          },
+          {
+            "start": 104,
+            "end": 107,
+            "label": "SKILL"
+          },
+          {
+            "start": 108,
+            "end": 114,
+            "label": "SKILL"
+          },
+          {
+            "start": 115,
+            "end": 123,
+            "label": "SKILL"
+          },
+          {
+            "start": 124,
+            "end": 130,
+            "label": "SKILL"
+          },
+          {
+            "start": 137,
+            "end": 148,
+            "label": "PHONE"
+          },
+          {
+            "start": 150,
+            "end": 164,
+            "label": "EMAIL"
+          }
+        ]
+      },
+      {
+        "text": "赵明涵希望应聘数据分析师岗位。男，24岁，籍贯山东济南。东北财经大学本科毕业，专业方向为统计学。此前在观澜科技担任数据分析师，沉淀了2年分析经验。代表项目是经营分析看板，日常使用SQL、Python、Power BI与Pandas。可通过13800000083或e8b5b5e6083@jobmail.cn联系。",
+        "gold": [
+          {
+            "start": 0,
+            "end": 3,
+            "label": "NAME"
+          },
+          {
+            "start": 7,
+            "end": 12,
+            "label": "TITLE"
+          },
+          {
+            "start": 15,
+            "end": 16,
+            "label": "GENDER"
+          },
+          {
+            "start": 17,
+            "end": 19,
+            "label": "AGE"
+          },
+          {
+            "start": 23,
+            "end": 27,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 28,
+            "end": 34,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 34,
+            "end": 36,
+            "label": "DEGREE"
+          },
+          {
+            "start": 44,
+            "end": 47,
+            "label": "MAJOR"
+          },
+          {
+            "start": 51,
+            "end": 55,
+            "label": "COMPANY"
+          },
+          {
+            "start": 57,
+            "end": 62,
+            "label": "TITLE"
+          },
+          {
+            "start": 66,
+            "end": 72,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 78,
+            "end": 84,
+            "label": "PROJECT"
+          },
+          {
+            "start": 89,
+            "end": 92,
+            "label": "SKILL"
+          },
+          {
+            "start": 93,
+            "end": 99,
+            "label": "SKILL"
+          },
+          {
+            "start": 100,
+            "end": 108,
+            "label": "SKILL"
+          },
+          {
+            "start": 109,
+            "end": 115,
+            "label": "SKILL"
+          },
+          {
+            "start": 119,
+            "end": 130,
+            "label": "PHONE"
+          },
+          {
+            "start": 131,
+            "end": 153,
+            "label": "EMAIL"
+          }
+        ],
+        "pred": [
+          {
+            "start": 0,
+            "end": 3,
+            "label": "NAME"
+          },
+          {
+            "start": 7,
+            "end": 12,
+            "label": "TITLE"
+          },
+          {
+            "start": 15,
+            "end": 16,
+            "label": "GENDER"
+          },
+          {
+            "start": 17,
+            "end": 19,
+            "label": "AGE"
+          },
+          {
+            "start": 23,
+            "end": 27,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 28,
+            "end": 34,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 34,
+            "end": 36,
+            "label": "DEGREE"
+          },
+          {
+            "start": 44,
+            "end": 47,
+            "label": "MAJOR"
+          },
+          {
+            "start": 51,
+            "end": 55,
+            "label": "COMPANY"
+          },
+          {
+            "start": 57,
+            "end": 62,
+            "label": "TITLE"
+          },
+          {
+            "start": 66,
+            "end": 72,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 78,
+            "end": 84,
+            "label": "PROJECT"
+          },
+          {
+            "start": 89,
+            "end": 92,
+            "label": "SKILL"
+          },
+          {
+            "start": 93,
+            "end": 99,
+            "label": "SKILL"
+          },
+          {
+            "start": 100,
+            "end": 108,
+            "label": "SKILL"
+          },
+          {
+            "start": 109,
+            "end": 114,
+            "label": "SKILL"
+          },
+          {
+            "start": 119,
+            "end": 129,
+            "label": "PHONE"
+          },
+          {
+            "start": 131,
+            "end": 152,
+            "label": "EMAIL"
+          }
+        ]
+      },
+      {
+        "text": "简历摘要\n姓名：赵明涵\n性别：男\n年龄：24\n籍贯：山东济南\n毕业院校：东北财经大学\n学历：本科\n专业：统计学\n目标岗位：数据分析师\n工作经历：在观澜科技完成经营分析看板，具备2年分析经验\n技能标签：SQL、Python、Power BI、Pandas\n电话：13800000083\n邮箱：e8b5b5e6083@jobmail.cn",
+        "gold": [
+          {
+            "start": 8,
+            "end": 11,
+            "label": "NAME"
+          },
+          {
+            "start": 15,
+            "end": 16,
+            "label": "GENDER"
+          },
+          {
+            "start": 20,
+            "end": 22,
+            "label": "AGE"
+          },
+          {
+            "start": 26,
+            "end": 30,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 36,
+            "end": 42,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 46,
+            "end": 48,
+            "label": "DEGREE"
+          },
+          {
+            "start": 52,
+            "end": 55,
+            "label": "MAJOR"
+          },
+          {
+            "start": 61,
+            "end": 66,
+            "label": "TITLE"
+          },
+          {
+            "start": 73,
+            "end": 77,
+            "label": "COMPANY"
+          },
+          {
+            "start": 79,
+            "end": 85,
+            "label": "PROJECT"
+          },
+          {
+            "start": 88,
+            "end": 94,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 100,
+            "end": 103,
+            "label": "SKILL"
+          },
+          {
+            "start": 104,
+            "end": 110,
+            "label": "SKILL"
+          },
+          {
+            "start": 111,
+            "end": 119,
+            "label": "SKILL"
+          },
+          {
+            "start": 120,
+            "end": 126,
+            "label": "SKILL"
+          },
+          {
+            "start": 130,
+            "end": 141,
+            "label": "PHONE"
+          },
+          {
+            "start": 145,
+            "end": 154,
+            "label": "EMAIL"
+          }
+        ],
+        "pred": [
+          {
+            "start": 8,
+            "end": 11,
+            "label": "NAME"
+          },
+          {
+            "start": 15,
+            "end": 16,
+            "label": "GENDER"
+          },
+          {
+            "start": 20,
+            "end": 22,
+            "label": "AGE"
+          },
+          {
+            "start": 26,
+            "end": 30,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 36,
+            "end": 42,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 46,
+            "end": 48,
+            "label": "DEGREE"
+          },
+          {
+            "start": 52,
+            "end": 55,
+            "label": "MAJOR"
+          },
+          {
+            "start": 61,
+            "end": 66,
+            "label": "TITLE"
+          },
+          {
+            "start": 73,
+            "end": 77,
+            "label": "COMPANY"
+          },
+          {
+            "start": 79,
+            "end": 85,
+            "label": "PROJECT"
+          },
+          {
+            "start": 88,
+            "end": 94,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 100,
+            "end": 103,
+            "label": "SKILL"
+          },
+          {
+            "start": 104,
+            "end": 110,
+            "label": "SKILL"
+          },
+          {
+            "start": 111,
+            "end": 119,
+            "label": "SKILL"
+          },
+          {
+            "start": 120,
+            "end": 125,
+            "label": "SKILL"
+          },
+          {
+            "start": 129,
+            "end": 140,
+            "label": "PHONE"
+          },
+          {
+            "start": 144,
+            "end": 154,
+            "label": "EMAIL"
+          }
+        ]
+      },
+      {
+        "text": "赵明涵的教育背景为东北财经大学本科，专业统计学。她/他来自山东济南，目前年龄24岁，性别男。在观澜科技任职期间承担数据分析师职责，累计2年分析经验，代表成果为经营分析看板。擅长SQL、Python、Power BI和Pandas。电话13800000083，邮箱e8b5b5e6083@jobmail.cn。",
+        "gold": [
+          {
+            "start": 0,
+            "end": 3,
+            "label": "NAME"
+          },
+          {
+            "start": 9,
+            "end": 15,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 15,
+            "end": 17,
+            "label": "DEGREE"
+          },
+          {
+            "start": 20,
+            "end": 23,
+            "label": "MAJOR"
+          },
+          {
+            "start": 29,
+            "end": 33,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 38,
+            "end": 40,
+            "label": "AGE"
+          },
+          {
+            "start": 44,
+            "end": 45,
+            "label": "GENDER"
+          },
+          {
+            "start": 47,
+            "end": 51,
+            "label": "COMPANY"
+          },
+          {
+            "start": 57,
+            "end": 62,
+            "label": "TITLE"
+          },
+          {
+            "start": 67,
+            "end": 73,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 79,
+            "end": 85,
+            "label": "PROJECT"
+          },
+          {
+            "start": 88,
+            "end": 91,
+            "label": "SKILL"
+          },
+          {
+            "start": 92,
+            "end": 98,
+            "label": "SKILL"
+          },
+          {
+            "start": 99,
+            "end": 107,
+            "label": "SKILL"
+          },
+          {
+            "start": 108,
+            "end": 114,
+            "label": "SKILL"
+          },
+          {
+            "start": 117,
+            "end": 128,
+            "label": "PHONE"
+          },
+          {
+            "start": 131,
+            "end": 153,
+            "label": "EMAIL"
+          }
+        ],
+        "pred": [
+          {
+            "start": 0,
+            "end": 3,
+            "label": "NAME"
+          },
+          {
+            "start": 9,
+            "end": 15,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 15,
+            "end": 17,
+            "label": "DEGREE"
+          },
+          {
+            "start": 20,
+            "end": 23,
+            "label": "MAJOR"
+          },
+          {
+            "start": 29,
+            "end": 33,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 38,
+            "end": 40,
+            "label": "AGE"
+          },
+          {
+            "start": 44,
+            "end": 45,
+            "label": "GENDER"
+          },
+          {
+            "start": 47,
+            "end": 51,
+            "label": "COMPANY"
+          },
+          {
+            "start": 57,
+            "end": 62,
+            "label": "TITLE"
+          },
+          {
+            "start": 67,
+            "end": 73,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 79,
+            "end": 85,
+            "label": "PROJECT"
+          },
+          {
+            "start": 88,
+            "end": 91,
+            "label": "SKILL"
+          },
+          {
+            "start": 92,
+            "end": 98,
+            "label": "SKILL"
+          },
+          {
+            "start": 99,
+            "end": 107,
+            "label": "SKILL"
+          },
+          {
+            "start": 108,
+            "end": 114,
+            "label": "SKILL"
+          },
+          {
+            "start": 117,
+            "end": 127,
+            "label": "PHONE"
+          },
+          {
+            "start": 131,
+            "end": 153,
+            "label": "EMAIL"
+          }
+        ]
+      },
+      {
+        "text": "职业标签：数据分析师\n候选人赵明涵，男，24岁，山东济南。\n毕业于东北财经大学本科，专业统计学。\n历任单位：观澜科技。\n项目亮点：经营分析看板。\n经验沉淀：2年分析经验。\n技能结构：SQL、Python、Power BI、Pandas。\n联系方式：13800000083；e8b5b5e6083@jobmail.cn",
+        "gold": [
+          {
+            "start": 5,
+            "end": 10,
+            "label": "TITLE"
+          },
+          {
+            "start": 14,
+            "end": 17,
+            "label": "NAME"
+          },
+          {
+            "start": 18,
+            "end": 19,
+            "label": "GENDER"
+          },
+          {
+            "start": 20,
+            "end": 22,
+            "label": "AGE"
+          },
+          {
+            "start": 24,
+            "end": 28,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 33,
+            "end": 39,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 39,
+            "end": 41,
+            "label": "DEGREE"
+          },
+          {
+            "start": 44,
+            "end": 47,
+            "label": "MAJOR"
+          },
+          {
+            "start": 54,
+            "end": 58,
+            "label": "COMPANY"
+          },
+          {
+            "start": 65,
+            "end": 71,
+            "label": "PROJECT"
+          },
+          {
+            "start": 78,
+            "end": 84,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 91,
+            "end": 94,
+            "label": "SKILL"
+          },
+          {
+            "start": 95,
+            "end": 101,
+            "label": "SKILL"
+          },
+          {
+            "start": 102,
+            "end": 110,
+            "label": "SKILL"
+          },
+          {
+            "start": 111,
+            "end": 117,
+            "label": "SKILL"
+          },
+          {
+            "start": 124,
+            "end": 135,
+            "label": "PHONE"
+          },
+          {
+            "start": 136,
+            "end": 150,
+            "label": "EMAIL"
+          }
+        ],
+        "pred": [
+          {
+            "start": 5,
+            "end": 10,
+            "label": "TITLE"
+          },
+          {
+            "start": 14,
+            "end": 17,
+            "label": "NAME"
+          },
+          {
+            "start": 18,
+            "end": 19,
+            "label": "GENDER"
+          },
+          {
+            "start": 20,
+            "end": 22,
+            "label": "AGE"
+          },
+          {
+            "start": 24,
+            "end": 28,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 33,
+            "end": 39,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 39,
+            "end": 41,
+            "label": "DEGREE"
+          },
+          {
+            "start": 44,
+            "end": 47,
+            "label": "MAJOR"
+          },
+          {
+            "start": 54,
+            "end": 58,
+            "label": "COMPANY"
+          },
+          {
+            "start": 65,
+            "end": 71,
+            "label": "PROJECT"
+          },
+          {
+            "start": 78,
+            "end": 84,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 91,
+            "end": 94,
+            "label": "SKILL"
+          },
+          {
+            "start": 95,
+            "end": 101,
+            "label": "SKILL"
+          },
+          {
+            "start": 102,
+            "end": 110,
+            "label": "SKILL"
+          },
+          {
+            "start": 111,
+            "end": 117,
+            "label": "SKILL"
+          },
+          {
+            "start": 123,
+            "end": 134,
+            "label": "PHONE"
+          },
+          {
+            "start": 135,
+            "end": 150,
+            "label": "EMAIL"
+          }
+        ]
+      },
+      {
+        "text": "如果岗位需要数据分析师候选人，可以优先关注赵明涵。其毕业于东北财经大学本科，专业是统计学；男，24岁，籍贯山东济南。在观澜科技期间围绕经营分析看板展开工作，累计拥有2年分析经验。技术或工具栈包括SQL、Python、Power BI以及Pandas。联系电话13800000083，电子邮箱e8b5b5e6083@jobmail.cn。",
+        "gold": [
+          {
+            "start": 6,
+            "end": 11,
+            "label": "TITLE"
+          },
+          {
+            "start": 21,
+            "end": 24,
+            "label": "NAME"
+          },
+          {
+            "start": 29,
+            "end": 35,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 35,
+            "end": 37,
+            "label": "DEGREE"
+          },
+          {
+            "start": 41,
+            "end": 44,
+            "label": "MAJOR"
+          },
+          {
+            "start": 45,
+            "end": 46,
+            "label": "GENDER"
+          },
+          {
+            "start": 47,
+            "end": 49,
+            "label": "AGE"
+          },
+          {
+            "start": 53,
+            "end": 57,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 59,
+            "end": 63,
+            "label": "COMPANY"
+          },
+          {
+            "start": 67,
+            "end": 73,
+            "label": "PROJECT"
+          },
+          {
+            "start": 82,
+            "end": 88,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 97,
+            "end": 100,
+            "label": "SKILL"
+          },
+          {
+            "start": 101,
+            "end": 107,
+            "label": "SKILL"
+          },
+          {
+            "start": 108,
+            "end": 116,
+            "label": "SKILL"
+          },
+          {
+            "start": 118,
+            "end": 124,
+            "label": "SKILL"
+          },
+          {
+            "start": 129,
+            "end": 140,
+            "label": "PHONE"
+          },
+          {
+            "start": 145,
+            "end": 167,
+            "label": "EMAIL"
+          }
+        ],
+        "pred": [
+          {
+            "start": 6,
+            "end": 11,
+            "label": "TITLE"
+          },
+          {
+            "start": 21,
+            "end": 24,
+            "label": "NAME"
+          },
+          {
+            "start": 29,
+            "end": 35,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 35,
+            "end": 37,
+            "label": "DEGREE"
+          },
+          {
+            "start": 41,
+            "end": 44,
+            "label": "MAJOR"
+          },
+          {
+            "start": 45,
+            "end": 46,
+            "label": "GENDER"
+          },
+          {
+            "start": 47,
+            "end": 49,
+            "label": "AGE"
+          },
+          {
+            "start": 53,
+            "end": 57,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 59,
+            "end": 63,
+            "label": "COMPANY"
+          },
+          {
+            "start": 67,
+            "end": 73,
+            "label": "PROJECT"
+          },
+          {
+            "start": 82,
+            "end": 88,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 97,
+            "end": 100,
+            "label": "SKILL"
+          },
+          {
+            "start": 101,
+            "end": 107,
+            "label": "SKILL"
+          },
+          {
+            "start": 108,
+            "end": 116,
+            "label": "SKILL"
+          },
+          {
+            "start": 117,
+            "end": 124,
+            "label": "SKILL"
+          },
+          {
+            "start": 129,
+            "end": 139,
+            "label": "PHONE"
+          },
+          {
+            "start": 144,
+            "end": 166,
+            "label": "EMAIL"
+          }
+        ]
+      },
+      {
+        "text": "候选人赵子磊，女，25岁，来自福建厦门。毕业于华中科技大学硕士，专业为软件工程。曾在云帆软件担任后端开发工程师，累计2年开发经验。主导企业审批平台，熟练掌握Java、Spring Boot、Redis和MySQL。联系电话13800000022，邮箱e8b5b5e5022@resume.cn。",
+        "gold": [
+          {
+            "start": 3,
+            "end": 6,
+            "label": "NAME"
+          },
+          {
+            "start": 7,
+            "end": 8,
+            "label": "GENDER"
+          },
+          {
+            "start": 9,
+            "end": 11,
+            "label": "AGE"
+          },
+          {
+            "start": 15,
+            "end": 19,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 23,
+            "end": 29,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 29,
+            "end": 31,
+            "label": "DEGREE"
+          },
+          {
+            "start": 35,
+            "end": 39,
+            "label": "MAJOR"
+          },
+          {
+            "start": 42,
+            "end": 46,
+            "label": "COMPANY"
+          },
+          {
+            "start": 48,
+            "end": 55,
+            "label": "TITLE"
+          },
+          {
+            "start": 58,
+            "end": 64,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 67,
+            "end": 73,
+            "label": "PROJECT"
+          },
+          {
+            "start": 78,
+            "end": 82,
+            "label": "SKILL"
+          },
+          {
+            "start": 83,
+            "end": 94,
+            "label": "SKILL"
+          },
+          {
+            "start": 95,
+            "end": 100,
+            "label": "SKILL"
+          },
+          {
+            "start": 101,
+            "end": 106,
+            "label": "SKILL"
+          },
+          {
+            "start": 111,
+            "end": 122,
+            "label": "PHONE"
+          },
+          {
+            "start": 125,
+            "end": 146,
+            "label": "EMAIL"
+          }
+        ],
+        "pred": [
+          {
+            "start": 3,
+            "end": 6,
+            "label": "NAME"
+          },
+          {
+            "start": 7,
+            "end": 8,
+            "label": "GENDER"
+          },
+          {
+            "start": 9,
+            "end": 11,
+            "label": "AGE"
+          },
+          {
+            "start": 15,
+            "end": 19,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 23,
+            "end": 29,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 29,
+            "end": 31,
+            "label": "DEGREE"
+          },
+          {
+            "start": 35,
+            "end": 39,
+            "label": "MAJOR"
+          },
+          {
+            "start": 42,
+            "end": 46,
+            "label": "COMPANY"
+          },
+          {
+            "start": 48,
+            "end": 55,
+            "label": "TITLE"
+          },
+          {
+            "start": 58,
+            "end": 64,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 67,
+            "end": 73,
+            "label": "PROJECT"
+          },
+          {
+            "start": 78,
+            "end": 82,
+            "label": "SKILL"
+          },
+          {
+            "start": 83,
+            "end": 94,
+            "label": "SKILL"
+          },
+          {
+            "start": 95,
+            "end": 100,
+            "label": "SKILL"
+          },
+          {
+            "start": 101,
+            "end": 106,
+            "label": "SKILL"
+          },
+          {
+            "start": 111,
+            "end": 121,
+            "label": "PHONE"
+          },
+          {
+            "start": 125,
+            "end": 145,
+            "label": "EMAIL"
+          }
+        ]
+      },
+      {
+        "text": "求职意向：后端开发工程师\n基本信息：赵子磊，女，25岁，福建厦门。\n教育背景：华中科技大学硕士，软件工程。\n工作经历：曾在云帆软件从事后端开发工程师相关工作，拥有2年开发经验。\n项目经历：参与企业审批平台。\n核心技能：Java、Spring Boot、Redis、MySQL。\n联系方式：13800000022 / e8b5b5e5022@resume.cn",
+        "gold": [
+          {
+            "start": 5,
+            "end": 12,
+            "label": "TITLE"
+          },
+          {
+            "start": 18,
+            "end": 21,
+            "label": "NAME"
+          },
+          {
+            "start": 22,
+            "end": 23,
+            "label": "GENDER"
+          },
+          {
+            "start": 24,
+            "end": 26,
+            "label": "AGE"
+          },
+          {
+            "start": 28,
+            "end": 32,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 39,
+            "end": 45,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 45,
+            "end": 47,
+            "label": "DEGREE"
+          },
+          {
+            "start": 48,
+            "end": 52,
+            "label": "MAJOR"
+          },
+          {
+            "start": 61,
+            "end": 65,
+            "label": "COMPANY"
+          },
+          {
+            "start": 67,
+            "end": 74,
+            "label": "TITLE"
+          },
+          {
+            "start": 81,
+            "end": 87,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 96,
+            "end": 102,
+            "label": "PROJECT"
+          },
+          {
+            "start": 109,
+            "end": 113,
+            "label": "SKILL"
+          },
+          {
+            "start": 114,
+            "end": 125,
+            "label": "SKILL"
+          },
+          {
+            "start": 126,
+            "end": 131,
+            "label": "SKILL"
+          },
+          {
+            "start": 132,
+            "end": 137,
+            "label": "SKILL"
+          },
+          {
+            "start": 144,
+            "end": 155,
+            "label": "PHONE"
+          },
+          {
+            "start": 158,
+            "end": 170,
+            "label": "EMAIL"
+          }
+        ],
+        "pred": [
+          {
+            "start": 5,
+            "end": 12,
+            "label": "TITLE"
+          },
+          {
+            "start": 18,
+            "end": 21,
+            "label": "NAME"
+          },
+          {
+            "start": 22,
+            "end": 23,
+            "label": "GENDER"
+          },
+          {
+            "start": 24,
+            "end": 26,
+            "label": "AGE"
+          },
+          {
+            "start": 28,
+            "end": 32,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 39,
+            "end": 45,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 45,
+            "end": 47,
+            "label": "DEGREE"
+          },
+          {
+            "start": 48,
+            "end": 52,
+            "label": "MAJOR"
+          },
+          {
+            "start": 61,
+            "end": 65,
+            "label": "COMPANY"
+          },
+          {
+            "start": 67,
+            "end": 74,
+            "label": "TITLE"
+          },
+          {
+            "start": 81,
+            "end": 87,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 96,
+            "end": 102,
+            "label": "PROJECT"
+          },
+          {
+            "start": 109,
+            "end": 113,
+            "label": "SKILL"
+          },
+          {
+            "start": 114,
+            "end": 125,
+            "label": "SKILL"
+          },
+          {
+            "start": 126,
+            "end": 131,
+            "label": "SKILL"
+          },
+          {
+            "start": 132,
+            "end": 137,
+            "label": "SKILL"
+          },
+          {
+            "start": 144,
+            "end": 155,
+            "label": "PHONE"
+          },
+          {
+            "start": 157,
+            "end": 170,
+            "label": "EMAIL"
+          }
+        ]
+      },
+      {
+        "text": "赵子磊希望应聘后端开发工程师岗位。女，25岁，籍贯福建厦门。华中科技大学硕士毕业，专业方向为软件工程。此前在云帆软件担任后端开发工程师，沉淀了2年开发经验。代表项目是企业审批平台，日常使用Java、Spring Boot、Redis与MySQL。可通过13800000022或e8b5b5e5022@resume.cn联系。",
+        "gold": [
+          {
+            "start": 0,
+            "end": 3,
+            "label": "NAME"
+          },
+          {
+            "start": 7,
+            "end": 14,
+            "label": "TITLE"
+          },
+          {
+            "start": 17,
+            "end": 18,
+            "label": "GENDER"
+          },
+          {
+            "start": 19,
+            "end": 21,
+            "label": "AGE"
+          },
+          {
+            "start": 25,
+            "end": 29,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 30,
+            "end": 36,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 36,
+            "end": 38,
+            "label": "DEGREE"
+          },
+          {
+            "start": 46,
+            "end": 50,
+            "label": "MAJOR"
+          },
+          {
+            "start": 54,
+            "end": 58,
+            "label": "COMPANY"
+          },
+          {
+            "start": 60,
+            "end": 67,
+            "label": "TITLE"
+          },
+          {
+            "start": 71,
+            "end": 77,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 83,
+            "end": 89,
+            "label": "PROJECT"
+          },
+          {
+            "start": 94,
+            "end": 98,
+            "label": "SKILL"
+          },
+          {
+            "start": 99,
+            "end": 110,
+            "label": "SKILL"
+          },
+          {
+            "start": 111,
+            "end": 116,
+            "label": "SKILL"
+          },
+          {
+            "start": 117,
+            "end": 122,
+            "label": "SKILL"
+          },
+          {
+            "start": 126,
+            "end": 137,
+            "label": "PHONE"
+          },
+          {
+            "start": 138,
+            "end": 159,
+            "label": "EMAIL"
+          }
+        ],
+        "pred": [
+          {
+            "start": 0,
+            "end": 3,
+            "label": "NAME"
+          },
+          {
+            "start": 7,
+            "end": 14,
+            "label": "TITLE"
+          },
+          {
+            "start": 17,
+            "end": 18,
+            "label": "GENDER"
+          },
+          {
+            "start": 19,
+            "end": 21,
+            "label": "AGE"
+          },
+          {
+            "start": 25,
+            "end": 29,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 30,
+            "end": 36,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 36,
+            "end": 38,
+            "label": "DEGREE"
+          },
+          {
+            "start": 46,
+            "end": 50,
+            "label": "MAJOR"
+          },
+          {
+            "start": 54,
+            "end": 58,
+            "label": "COMPANY"
+          },
+          {
+            "start": 60,
+            "end": 67,
+            "label": "TITLE"
+          },
+          {
+            "start": 71,
+            "end": 77,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 83,
+            "end": 89,
+            "label": "PROJECT"
+          },
+          {
+            "start": 94,
+            "end": 98,
+            "label": "SKILL"
+          },
+          {
+            "start": 99,
+            "end": 110,
+            "label": "SKILL"
+          },
+          {
+            "start": 111,
+            "end": 116,
+            "label": "SKILL"
+          },
+          {
+            "start": 117,
+            "end": 122,
+            "label": "SKILL"
+          },
+          {
+            "start": 126,
+            "end": 136,
+            "label": "PHONE"
+          },
+          {
+            "start": 138,
+            "end": 158,
+            "label": "EMAIL"
+          }
+        ]
+      },
+      {
+        "text": "简历摘要\n姓名：赵子磊\n性别：女\n年龄：25\n籍贯：福建厦门\n毕业院校：华中科技大学\n学历：硕士\n专业：软件工程\n目标岗位：后端开发工程师\n工作经历：在云帆软件完成企业审批平台，具备2年开发经验\n技能标签：Java、Spring Boot、Redis、MySQL\n电话：13800000022\n邮箱：e8b5b5e5022@resume.cn",
+        "gold": [
+          {
+            "start": 8,
+            "end": 11,
+            "label": "NAME"
+          },
+          {
+            "start": 15,
+            "end": 16,
+            "label": "GENDER"
+          },
+          {
+            "start": 20,
+            "end": 22,
+            "label": "AGE"
+          },
+          {
+            "start": 26,
+            "end": 30,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 36,
+            "end": 42,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 46,
+            "end": 48,
+            "label": "DEGREE"
+          },
+          {
+            "start": 52,
+            "end": 56,
+            "label": "MAJOR"
+          },
+          {
+            "start": 62,
+            "end": 69,
+            "label": "TITLE"
+          },
+          {
+            "start": 76,
+            "end": 80,
+            "label": "COMPANY"
+          },
+          {
+            "start": 82,
+            "end": 88,
+            "label": "PROJECT"
+          },
+          {
+            "start": 91,
+            "end": 97,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 103,
+            "end": 107,
+            "label": "SKILL"
+          },
+          {
+            "start": 108,
+            "end": 119,
+            "label": "SKILL"
+          },
+          {
+            "start": 120,
+            "end": 125,
+            "label": "SKILL"
+          },
+          {
+            "start": 126,
+            "end": 131,
+            "label": "SKILL"
+          },
+          {
+            "start": 135,
+            "end": 146,
+            "label": "PHONE"
+          },
+          {
+            "start": 150,
+            "end": 158,
+            "label": "EMAIL"
+          }
+        ],
+        "pred": [
+          {
+            "start": 8,
+            "end": 11,
+            "label": "NAME"
+          },
+          {
+            "start": 15,
+            "end": 16,
+            "label": "GENDER"
+          },
+          {
+            "start": 20,
+            "end": 22,
+            "label": "AGE"
+          },
+          {
+            "start": 26,
+            "end": 30,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 36,
+            "end": 42,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 46,
+            "end": 48,
+            "label": "DEGREE"
+          },
+          {
+            "start": 52,
+            "end": 56,
+            "label": "MAJOR"
+          },
+          {
+            "start": 62,
+            "end": 69,
+            "label": "TITLE"
+          },
+          {
+            "start": 76,
+            "end": 80,
+            "label": "COMPANY"
+          },
+          {
+            "start": 82,
+            "end": 88,
+            "label": "PROJECT"
+          },
+          {
+            "start": 91,
+            "end": 97,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 103,
+            "end": 107,
+            "label": "SKILL"
+          },
+          {
+            "start": 108,
+            "end": 119,
+            "label": "SKILL"
+          },
+          {
+            "start": 120,
+            "end": 125,
+            "label": "SKILL"
+          },
+          {
+            "start": 125,
+            "end": 131,
+            "label": "SKILL"
+          },
+          {
+            "start": 134,
+            "end": 145,
+            "label": "PHONE"
+          },
+          {
+            "start": 150,
+            "end": 158,
+            "label": "EMAIL"
+          }
+        ]
+      },
+      {
+        "text": "赵子磊的教育背景为华中科技大学硕士，专业软件工程。她/他来自福建厦门，目前年龄25岁，性别女。在云帆软件任职期间承担后端开发工程师职责，累计2年开发经验，代表成果为企业审批平台。擅长Java、Spring Boot、Redis和MySQL。电话13800000022，邮箱e8b5b5e5022@resume.cn。",
+        "gold": [
+          {
+            "start": 0,
+            "end": 3,
+            "label": "NAME"
+          },
+          {
+            "start": 9,
+            "end": 15,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 15,
+            "end": 17,
+            "label": "DEGREE"
+          },
+          {
+            "start": 20,
+            "end": 24,
+            "label": "MAJOR"
+          },
+          {
+            "start": 30,
+            "end": 34,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 39,
+            "end": 41,
+            "label": "AGE"
+          },
+          {
+            "start": 45,
+            "end": 46,
+            "label": "GENDER"
+          },
+          {
+            "start": 48,
+            "end": 52,
+            "label": "COMPANY"
+          },
+          {
+            "start": 58,
+            "end": 65,
+            "label": "TITLE"
+          },
+          {
+            "start": 70,
+            "end": 76,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 82,
+            "end": 88,
+            "label": "PROJECT"
+          },
+          {
+            "start": 91,
+            "end": 95,
+            "label": "SKILL"
+          },
+          {
+            "start": 96,
+            "end": 107,
+            "label": "SKILL"
+          },
+          {
+            "start": 108,
+            "end": 113,
+            "label": "SKILL"
+          },
+          {
+            "start": 114,
+            "end": 119,
+            "label": "SKILL"
+          },
+          {
+            "start": 122,
+            "end": 133,
+            "label": "PHONE"
+          },
+          {
+            "start": 136,
+            "end": 157,
+            "label": "EMAIL"
+          }
+        ],
+        "pred": [
+          {
+            "start": 0,
+            "end": 3,
+            "label": "NAME"
+          },
+          {
+            "start": 9,
+            "end": 15,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 15,
+            "end": 17,
+            "label": "DEGREE"
+          },
+          {
+            "start": 20,
+            "end": 24,
+            "label": "MAJOR"
+          },
+          {
+            "start": 30,
+            "end": 34,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 39,
+            "end": 41,
+            "label": "AGE"
+          },
+          {
+            "start": 45,
+            "end": 46,
+            "label": "GENDER"
+          },
+          {
+            "start": 48,
+            "end": 52,
+            "label": "COMPANY"
+          },
+          {
+            "start": 58,
+            "end": 65,
+            "label": "TITLE"
+          },
+          {
+            "start": 70,
+            "end": 76,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 82,
+            "end": 88,
+            "label": "PROJECT"
+          },
+          {
+            "start": 91,
+            "end": 95,
+            "label": "SKILL"
+          },
+          {
+            "start": 96,
+            "end": 107,
+            "label": "SKILL"
+          },
+          {
+            "start": 108,
+            "end": 113,
+            "label": "SKILL"
+          },
+          {
+            "start": 114,
+            "end": 119,
+            "label": "SKILL"
+          },
+          {
+            "start": 121,
+            "end": 132,
+            "label": "PHONE"
+          },
+          {
+            "start": 136,
+            "end": 156,
+            "label": "EMAIL"
+          }
+        ]
+      },
+      {
+        "text": "候选人赵书航，男，22岁，来自湖北武汉。毕业于湖北美术学院本科，专业为视觉传达设计。曾在象限设计担任UI设计师，累计1年设计经验。主导招聘官网视觉升级，熟练掌握Figma、Photoshop、Illustrator和原型设计。联系电话13800000073，邮箱e8b5b5e4073@mail.com。",
+        "gold": [
+          {
+            "start": 3,
+            "end": 6,
+            "label": "NAME"
+          },
+          {
+            "start": 7,
+            "end": 8,
+            "label": "GENDER"
+          },
+          {
+            "start": 9,
+            "end": 11,
+            "label": "AGE"
+          },
+          {
+            "start": 15,
+            "end": 19,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 23,
+            "end": 29,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 29,
+            "end": 31,
+            "label": "DEGREE"
+          },
+          {
+            "start": 35,
+            "end": 41,
+            "label": "MAJOR"
+          },
+          {
+            "start": 44,
+            "end": 48,
+            "label": "COMPANY"
+          },
+          {
+            "start": 50,
+            "end": 55,
+            "label": "TITLE"
+          },
+          {
+            "start": 58,
+            "end": 64,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 67,
+            "end": 75,
+            "label": "PROJECT"
+          },
+          {
+            "start": 80,
+            "end": 85,
+            "label": "SKILL"
+          },
+          {
+            "start": 86,
+            "end": 95,
+            "label": "SKILL"
+          },
+          {
+            "start": 96,
+            "end": 107,
+            "label": "SKILL"
+          },
+          {
+            "start": 108,
+            "end": 112,
+            "label": "SKILL"
+          },
+          {
+            "start": 117,
+            "end": 128,
+            "label": "PHONE"
+          },
+          {
+            "start": 131,
+            "end": 151,
+            "label": "EMAIL"
+          }
+        ],
+        "pred": [
+          {
+            "start": 3,
+            "end": 6,
+            "label": "NAME"
+          },
+          {
+            "start": 7,
+            "end": 8,
+            "label": "GENDER"
+          },
+          {
+            "start": 9,
+            "end": 11,
+            "label": "AGE"
+          },
+          {
+            "start": 15,
+            "end": 19,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 23,
+            "end": 29,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 29,
+            "end": 31,
+            "label": "DEGREE"
+          },
+          {
+            "start": 35,
+            "end": 41,
+            "label": "MAJOR"
+          },
+          {
+            "start": 44,
+            "end": 48,
+            "label": "COMPANY"
+          },
+          {
+            "start": 50,
+            "end": 55,
+            "label": "TITLE"
+          },
+          {
+            "start": 58,
+            "end": 64,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 67,
+            "end": 75,
+            "label": "PROJECT"
+          },
+          {
+            "start": 80,
+            "end": 85,
+            "label": "SKILL"
+          },
+          {
+            "start": 86,
+            "end": 95,
+            "label": "SKILL"
+          },
+          {
+            "start": 96,
+            "end": 107,
+            "label": "SKILL"
+          },
+          {
+            "start": 108,
+            "end": 112,
+            "label": "SKILL"
+          },
+          {
+            "start": 117,
+            "end": 129,
+            "label": "PHONE"
+          },
+          {
+            "start": 131,
+            "end": 152,
+            "label": "EMAIL"
+          }
+        ]
+      },
+      {
+        "text": "赵书航希望应聘UI设计师岗位。男，22岁，籍贯湖北武汉。湖北美术学院本科毕业，专业方向为视觉传达设计。此前在象限设计担任UI设计师，沉淀了1年设计经验。代表项目是招聘官网视觉升级，日常使用Figma、Photoshop、Illustrator与原型设计。可通过13800000073或e8b5b5e4073@mail.com联系。",
+        "gold": [
+          {
+            "start": 0,
+            "end": 3,
+            "label": "NAME"
+          },
+          {
+            "start": 7,
+            "end": 12,
+            "label": "TITLE"
+          },
+          {
+            "start": 15,
+            "end": 16,
+            "label": "GENDER"
+          },
+          {
+            "start": 17,
+            "end": 19,
+            "label": "AGE"
+          },
+          {
+            "start": 23,
+            "end": 27,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 28,
+            "end": 34,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 34,
+            "end": 36,
+            "label": "DEGREE"
+          },
+          {
+            "start": 44,
+            "end": 50,
+            "label": "MAJOR"
+          },
+          {
+            "start": 54,
+            "end": 58,
+            "label": "COMPANY"
+          },
+          {
+            "start": 60,
+            "end": 65,
+            "label": "TITLE"
+          },
+          {
+            "start": 69,
+            "end": 75,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 81,
+            "end": 89,
+            "label": "PROJECT"
+          },
+          {
+            "start": 94,
+            "end": 99,
+            "label": "SKILL"
+          },
+          {
+            "start": 100,
+            "end": 109,
+            "label": "SKILL"
+          },
+          {
+            "start": 110,
+            "end": 121,
+            "label": "SKILL"
+          },
+          {
+            "start": 122,
+            "end": 126,
+            "label": "SKILL"
+          },
+          {
+            "start": 130,
+            "end": 141,
+            "label": "PHONE"
+          },
+          {
+            "start": 142,
+            "end": 162,
+            "label": "EMAIL"
+          }
+        ],
+        "pred": [
+          {
+            "start": 0,
+            "end": 3,
+            "label": "NAME"
+          },
+          {
+            "start": 7,
+            "end": 12,
+            "label": "TITLE"
+          },
+          {
+            "start": 15,
+            "end": 16,
+            "label": "GENDER"
+          },
+          {
+            "start": 17,
+            "end": 19,
+            "label": "AGE"
+          },
+          {
+            "start": 23,
+            "end": 27,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 28,
+            "end": 34,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 34,
+            "end": 36,
+            "label": "DEGREE"
+          },
+          {
+            "start": 44,
+            "end": 50,
+            "label": "MAJOR"
+          },
+          {
+            "start": 54,
+            "end": 58,
+            "label": "COMPANY"
+          },
+          {
+            "start": 60,
+            "end": 65,
+            "label": "TITLE"
+          },
+          {
+            "start": 69,
+            "end": 75,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 81,
+            "end": 89,
+            "label": "PROJECT"
+          },
+          {
+            "start": 94,
+            "end": 99,
+            "label": "SKILL"
+          },
+          {
+            "start": 100,
+            "end": 109,
+            "label": "SKILL"
+          },
+          {
+            "start": 110,
+            "end": 121,
+            "label": "SKILL"
+          },
+          {
+            "start": 122,
+            "end": 127,
+            "label": "SKILL"
+          },
+          {
+            "start": 130,
+            "end": 141,
+            "label": "PHONE"
+          },
+          {
+            "start": 142,
+            "end": 162,
+            "label": "EMAIL"
+          }
+        ]
+      },
+      {
+        "text": "简历摘要\n姓名：赵书航\n性别：男\n年龄：22\n籍贯：湖北武汉\n毕业院校：湖北美术学院\n学历：本科\n专业：视觉传达设计\n目标岗位：UI设计师\n工作经历：在象限设计完成招聘官网视觉升级，具备1年设计经验\n技能标签：Figma、Photoshop、Illustrator、原型设计\n电话：13800000073\n邮箱：e8b5b5e4073@mail.com",
+        "gold": [
+          {
+            "start": 8,
+            "end": 11,
+            "label": "NAME"
+          },
+          {
+            "start": 15,
+            "end": 16,
+            "label": "GENDER"
+          },
+          {
+            "start": 20,
+            "end": 22,
+            "label": "AGE"
+          },
+          {
+            "start": 26,
+            "end": 30,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 36,
+            "end": 42,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 46,
+            "end": 48,
+            "label": "DEGREE"
+          },
+          {
+            "start": 52,
+            "end": 58,
+            "label": "MAJOR"
+          },
+          {
+            "start": 64,
+            "end": 69,
+            "label": "TITLE"
+          },
+          {
+            "start": 76,
+            "end": 80,
+            "label": "COMPANY"
+          },
+          {
+            "start": 82,
+            "end": 90,
+            "label": "PROJECT"
+          },
+          {
+            "start": 93,
+            "end": 99,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 105,
+            "end": 110,
+            "label": "SKILL"
+          },
+          {
+            "start": 111,
+            "end": 120,
+            "label": "SKILL"
+          },
+          {
+            "start": 121,
+            "end": 132,
+            "label": "SKILL"
+          },
+          {
+            "start": 133,
+            "end": 137,
+            "label": "SKILL"
+          },
+          {
+            "start": 141,
+            "end": 152,
+            "label": "PHONE"
+          },
+          {
+            "start": 156,
+            "end": 164,
+            "label": "EMAIL"
+          }
+        ],
+        "pred": [
+          {
+            "start": 8,
+            "end": 11,
+            "label": "NAME"
+          },
+          {
+            "start": 15,
+            "end": 16,
+            "label": "GENDER"
+          },
+          {
+            "start": 20,
+            "end": 22,
+            "label": "AGE"
+          },
+          {
+            "start": 26,
+            "end": 30,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 36,
+            "end": 42,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 46,
+            "end": 48,
+            "label": "DEGREE"
+          },
+          {
+            "start": 52,
+            "end": 58,
+            "label": "MAJOR"
+          },
+          {
+            "start": 64,
+            "end": 69,
+            "label": "TITLE"
+          },
+          {
+            "start": 76,
+            "end": 80,
+            "label": "COMPANY"
+          },
+          {
+            "start": 82,
+            "end": 90,
+            "label": "PROJECT"
+          },
+          {
+            "start": 93,
+            "end": 99,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 105,
+            "end": 111,
+            "label": "SKILL"
+          },
+          {
+            "start": 111,
+            "end": 120,
+            "label": "SKILL"
+          },
+          {
+            "start": 121,
+            "end": 127,
+            "label": "SKILL"
+          },
+          {
+            "start": 127,
+            "end": 132,
+            "label": "SKILL"
+          },
+          {
+            "start": 133,
+            "end": 137,
+            "label": "SKILL"
+          },
+          {
+            "start": 141,
+            "end": 152,
+            "label": "PHONE"
+          },
+          {
+            "start": 156,
+            "end": 164,
+            "label": "EMAIL"
+          }
+        ]
+      },
+      {
+        "text": "职业标签：UI设计师\n候选人赵书航，男，22岁，湖北武汉。\n毕业于湖北美术学院本科，专业视觉传达设计。\n历任单位：象限设计。\n项目亮点：招聘官网视觉升级。\n经验沉淀：1年设计经验。\n技能结构：Figma、Photoshop、Illustrator、原型设计。\n联系方式：13800000073；e8b5b5e4073@mail.com",
+        "gold": [
+          {
+            "start": 5,
+            "end": 10,
+            "label": "TITLE"
+          },
+          {
+            "start": 14,
+            "end": 17,
+            "label": "NAME"
+          },
+          {
+            "start": 18,
+            "end": 19,
+            "label": "GENDER"
+          },
+          {
+            "start": 20,
+            "end": 22,
+            "label": "AGE"
+          },
+          {
+            "start": 24,
+            "end": 28,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 33,
+            "end": 39,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 39,
+            "end": 41,
+            "label": "DEGREE"
+          },
+          {
+            "start": 44,
+            "end": 50,
+            "label": "MAJOR"
+          },
+          {
+            "start": 57,
+            "end": 61,
+            "label": "COMPANY"
+          },
+          {
+            "start": 68,
+            "end": 76,
+            "label": "PROJECT"
+          },
+          {
+            "start": 83,
+            "end": 89,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 96,
+            "end": 101,
+            "label": "SKILL"
+          },
+          {
+            "start": 102,
+            "end": 111,
+            "label": "SKILL"
+          },
+          {
+            "start": 112,
+            "end": 123,
+            "label": "SKILL"
+          },
+          {
+            "start": 124,
+            "end": 128,
+            "label": "SKILL"
+          },
+          {
+            "start": 135,
+            "end": 146,
+            "label": "PHONE"
+          },
+          {
+            "start": 147,
+            "end": 160,
+            "label": "EMAIL"
+          }
+        ],
+        "pred": [
+          {
+            "start": 5,
+            "end": 10,
+            "label": "TITLE"
+          },
+          {
+            "start": 14,
+            "end": 17,
+            "label": "NAME"
+          },
+          {
+            "start": 18,
+            "end": 19,
+            "label": "GENDER"
+          },
+          {
+            "start": 20,
+            "end": 22,
+            "label": "AGE"
+          },
+          {
+            "start": 24,
+            "end": 28,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 33,
+            "end": 39,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 39,
+            "end": 41,
+            "label": "DEGREE"
+          },
+          {
+            "start": 44,
+            "end": 50,
+            "label": "MAJOR"
+          },
+          {
+            "start": 57,
+            "end": 61,
+            "label": "COMPANY"
+          },
+          {
+            "start": 68,
+            "end": 76,
+            "label": "PROJECT"
+          },
+          {
+            "start": 83,
+            "end": 89,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 96,
+            "end": 101,
+            "label": "SKILL"
+          },
+          {
+            "start": 102,
+            "end": 111,
+            "label": "SKILL"
+          },
+          {
+            "start": 112,
+            "end": 123,
+            "label": "SKILL"
+          },
+          {
+            "start": 123,
+            "end": 127,
+            "label": "SKILL"
+          },
+          {
+            "start": 135,
+            "end": 146,
+            "label": "PHONE"
+          },
+          {
+            "start": 147,
+            "end": 160,
+            "label": "EMAIL"
+          }
+        ]
+      },
+      {
+        "text": "简历摘要\n姓名：赵文言\n性别：男\n年龄：27\n籍贯：四川成都\n毕业院校：武汉科技大学\n学历：本科\n专业：项目管理\n目标岗位：项目经理\n工作经历：在恒川系统完成数字化转型项目，具备4年项目经验\n技能标签：项目排期、需求沟通、风险控制、PPT汇报\n电话：13800000033\n邮箱：e8b5b5e6033@mail.com",
+        "gold": [
+          {
+            "start": 8,
+            "end": 11,
+            "label": "NAME"
+          },
+          {
+            "start": 15,
+            "end": 16,
+            "label": "GENDER"
+          },
+          {
+            "start": 20,
+            "end": 22,
+            "label": "AGE"
+          },
+          {
+            "start": 26,
+            "end": 30,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 36,
+            "end": 42,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 46,
+            "end": 48,
+            "label": "DEGREE"
+          },
+          {
+            "start": 52,
+            "end": 56,
+            "label": "MAJOR"
+          },
+          {
+            "start": 62,
+            "end": 66,
+            "label": "TITLE"
+          },
+          {
+            "start": 73,
+            "end": 77,
+            "label": "COMPANY"
+          },
+          {
+            "start": 79,
+            "end": 86,
+            "label": "PROJECT"
+          },
+          {
+            "start": 89,
+            "end": 95,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 101,
+            "end": 105,
+            "label": "SKILL"
+          },
+          {
+            "start": 106,
+            "end": 110,
+            "label": "SKILL"
+          },
+          {
+            "start": 111,
+            "end": 115,
+            "label": "SKILL"
+          },
+          {
+            "start": 116,
+            "end": 121,
+            "label": "SKILL"
+          },
+          {
+            "start": 125,
+            "end": 136,
+            "label": "PHONE"
+          },
+          {
+            "start": 140,
+            "end": 148,
+            "label": "EMAIL"
+          }
+        ],
+        "pred": [
+          {
+            "start": 8,
+            "end": 11,
+            "label": "NAME"
+          },
+          {
+            "start": 15,
+            "end": 16,
+            "label": "GENDER"
+          },
+          {
+            "start": 20,
+            "end": 22,
+            "label": "AGE"
+          },
+          {
+            "start": 26,
+            "end": 30,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 36,
+            "end": 42,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 46,
+            "end": 48,
+            "label": "DEGREE"
+          },
+          {
+            "start": 52,
+            "end": 56,
+            "label": "MAJOR"
+          },
+          {
+            "start": 62,
+            "end": 66,
+            "label": "TITLE"
+          },
+          {
+            "start": 73,
+            "end": 77,
+            "label": "COMPANY"
+          },
+          {
+            "start": 79,
+            "end": 86,
+            "label": "PROJECT"
+          },
+          {
+            "start": 89,
+            "end": 95,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 101,
+            "end": 105,
+            "label": "SKILL"
+          },
+          {
+            "start": 106,
+            "end": 110,
+            "label": "SKILL"
+          },
+          {
+            "start": 111,
+            "end": 115,
+            "label": "SKILL"
+          },
+          {
+            "start": 117,
+            "end": 121,
+            "label": "SKILL"
+          },
+          {
+            "start": 125,
+            "end": 136,
+            "label": "PHONE"
+          },
+          {
+            "start": 140,
+            "end": 148,
+            "label": "EMAIL"
+          }
+        ]
+      }
+    ],
+    "stage": "fine_tune",
+    "epoch": 12,
+    "train_loss": 0.1061,
+    "device": "cuda",
+    "train_batch_size": 2,
+    "eval_batch_size": 4,
+    "gradient_accumulation_steps": 4,
+    "max_length": 512
+  },
+  "test_report": {
+    "samples": 288,
+    "precision": 0.9885,
+    "recall": 0.9881,
+    "f1_score": 0.9883,
+    "entity_micro_f1": 0.9883,
+    "entity_macro_f1": 0.9898,
+    "per_label_metrics": {
+      "AGE": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "tp": 288,
+        "fp": 0,
+        "fn": 0
+      },
+      "COMPANY": {
+        "precision": 0.9965,
+        "recall": 0.9965,
+        "f1": 0.9965,
+        "tp": 287,
+        "fp": 1,
+        "fn": 1
+      },
+      "DEGREE": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "tp": 288,
+        "fp": 0,
+        "fn": 0
+      },
+      "EMAIL": {
+        "precision": 0.9549,
+        "recall": 0.9549,
+        "f1": 0.9549,
+        "tp": 275,
+        "fp": 13,
+        "fn": 13
+      },
+      "EXPERIENCE_YEARS": {
+        "precision": 0.9896,
+        "recall": 0.9931,
+        "f1": 0.9913,
+        "tp": 286,
+        "fp": 3,
+        "fn": 2
+      },
+      "GENDER": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "tp": 288,
+        "fp": 0,
+        "fn": 0
+      },
+      "HOMETOWN": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "tp": 288,
+        "fp": 0,
+        "fn": 0
+      },
+      "MAJOR": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "tp": 288,
+        "fp": 0,
+        "fn": 0
+      },
+      "NAME": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "tp": 288,
+        "fp": 0,
+        "fn": 0
+      },
+      "PHONE": {
+        "precision": 0.941,
+        "recall": 0.941,
+        "f1": 0.941,
+        "tp": 271,
+        "fp": 17,
+        "fn": 17
+      },
+      "PROJECT": {
+        "precision": 0.9931,
+        "recall": 0.9931,
+        "f1": 0.9931,
+        "tp": 286,
+        "fp": 2,
+        "fn": 2
+      },
+      "SCHOOL": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "tp": 288,
+        "fp": 0,
+        "fn": 0
+      },
+      "SKILL": {
+        "precision": 0.9817,
+        "recall": 0.9792,
+        "f1": 0.9804,
+        "tp": 1128,
+        "fp": 21,
+        "fn": 24
+      },
+      "TITLE": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "tp": 360,
+        "fp": 0,
+        "fn": 0
+      }
+    },
+    "entity_distribution": {
+      "AGE": 288,
+      "COMPANY": 288,
+      "DEGREE": 288,
+      "EMAIL": 288,
+      "EXPERIENCE_YEARS": 288,
+      "GENDER": 288,
+      "HOMETOWN": 288,
+      "MAJOR": 288,
+      "NAME": 288,
+      "PHONE": 288,
+      "PROJECT": 288,
+      "SCHOOL": 288,
+      "SKILL": 1152,
+      "TITLE": 360
+    },
+    "confusion_pairs": {
+      "SKILL->SKILL": 25,
+      "PHONE->PHONE": 17,
+      "EMAIL->EMAIL": 13,
+      "EXPERIENCE_YEARS->EXPERIENCE_YEARS": 3,
+      "PROJECT->PROJECT": 2,
+      "COMPANY->COMPANY": 1
+    },
+    "error_cases": [
+      {
+        "text": "求职意向：算法工程师\n基本信息：赵子轩，男，24岁，湖北武汉。\n教育背景：北京邮电大学硕士，人工智能。\n工作经历：曾在深蓝智能从事算法工程师相关工作，拥有1年算法实习经验。\n项目经历：参与简历实体识别系统。\n核心技能：PyTorch、BERT、CRF、NLP。\n联系方式：13800000001 / e8b5b5e5001@mail.com",
+        "gold": [
+          {
+            "start": 5,
+            "end": 10,
+            "label": "TITLE"
+          },
+          {
+            "start": 16,
+            "end": 19,
+            "label": "NAME"
+          },
+          {
+            "start": 20,
+            "end": 21,
+            "label": "GENDER"
+          },
+          {
+            "start": 22,
+            "end": 24,
+            "label": "AGE"
+          },
+          {
+            "start": 26,
+            "end": 30,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 37,
+            "end": 43,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 43,
+            "end": 45,
+            "label": "DEGREE"
+          },
+          {
+            "start": 46,
+            "end": 50,
+            "label": "MAJOR"
+          },
+          {
+            "start": 59,
+            "end": 63,
+            "label": "COMPANY"
+          },
+          {
+            "start": 65,
+            "end": 70,
+            "label": "TITLE"
+          },
+          {
+            "start": 77,
+            "end": 85,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 94,
+            "end": 102,
+            "label": "PROJECT"
+          },
+          {
+            "start": 109,
+            "end": 116,
+            "label": "SKILL"
+          },
+          {
+            "start": 117,
+            "end": 121,
+            "label": "SKILL"
+          },
+          {
+            "start": 122,
+            "end": 125,
+            "label": "SKILL"
+          },
+          {
+            "start": 126,
+            "end": 129,
+            "label": "SKILL"
+          },
+          {
+            "start": 136,
+            "end": 147,
+            "label": "PHONE"
+          },
+          {
+            "start": 150,
+            "end": 162,
+            "label": "EMAIL"
+          }
+        ],
+        "pred": [
+          {
+            "start": 5,
+            "end": 10,
+            "label": "TITLE"
+          },
+          {
+            "start": 16,
+            "end": 19,
+            "label": "NAME"
+          },
+          {
+            "start": 20,
+            "end": 21,
+            "label": "GENDER"
+          },
+          {
+            "start": 22,
+            "end": 24,
+            "label": "AGE"
+          },
+          {
+            "start": 26,
+            "end": 30,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 37,
+            "end": 43,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 43,
+            "end": 45,
+            "label": "DEGREE"
+          },
+          {
+            "start": 46,
+            "end": 50,
+            "label": "MAJOR"
+          },
+          {
+            "start": 59,
+            "end": 63,
+            "label": "COMPANY"
+          },
+          {
+            "start": 65,
+            "end": 70,
+            "label": "TITLE"
+          },
+          {
+            "start": 77,
+            "end": 85,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 94,
+            "end": 102,
+            "label": "PROJECT"
+          },
+          {
+            "start": 109,
+            "end": 116,
+            "label": "SKILL"
+          },
+          {
+            "start": 117,
+            "end": 121,
+            "label": "SKILL"
+          },
+          {
+            "start": 122,
+            "end": 125,
+            "label": "SKILL"
+          },
+          {
+            "start": 126,
+            "end": 129,
+            "label": "SKILL"
+          },
+          {
+            "start": 137,
+            "end": 147,
+            "label": "PHONE"
+          },
+          {
+            "start": 151,
+            "end": 162,
+            "label": "EMAIL"
+          }
+        ]
+      },
+      {
+        "text": "简历摘要\n姓名：赵子轩\n性别：男\n年龄：24\n籍贯：湖北武汉\n毕业院校：北京邮电大学\n学历：硕士\n专业：人工智能\n目标岗位：算法工程师\n工作经历：在深蓝智能完成简历实体识别系统，具备1年算法实习经验\n技能标签：PyTorch、BERT、CRF、NLP\n电话：13800000001\n邮箱：e8b5b5e5001@mail.com",
+        "gold": [
+          {
+            "start": 8,
+            "end": 11,
+            "label": "NAME"
+          },
+          {
+            "start": 15,
+            "end": 16,
+            "label": "GENDER"
+          },
+          {
+            "start": 20,
+            "end": 22,
+            "label": "AGE"
+          },
+          {
+            "start": 26,
+            "end": 30,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 36,
+            "end": 42,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 46,
+            "end": 48,
+            "label": "DEGREE"
+          },
+          {
+            "start": 52,
+            "end": 56,
+            "label": "MAJOR"
+          },
+          {
+            "start": 62,
+            "end": 67,
+            "label": "TITLE"
+          },
+          {
+            "start": 74,
+            "end": 78,
+            "label": "COMPANY"
+          },
+          {
+            "start": 80,
+            "end": 88,
+            "label": "PROJECT"
+          },
+          {
+            "start": 91,
+            "end": 99,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 105,
+            "end": 112,
+            "label": "SKILL"
+          },
+          {
+            "start": 113,
+            "end": 117,
+            "label": "SKILL"
+          },
+          {
+            "start": 118,
+            "end": 121,
+            "label": "SKILL"
+          },
+          {
+            "start": 122,
+            "end": 125,
+            "label": "SKILL"
+          },
+          {
+            "start": 129,
+            "end": 140,
+            "label": "PHONE"
+          },
+          {
+            "start": 144,
+            "end": 152,
+            "label": "EMAIL"
+          }
+        ],
+        "pred": [
+          {
+            "start": 8,
+            "end": 11,
+            "label": "NAME"
+          },
+          {
+            "start": 15,
+            "end": 16,
+            "label": "GENDER"
+          },
+          {
+            "start": 20,
+            "end": 22,
+            "label": "AGE"
+          },
+          {
+            "start": 26,
+            "end": 30,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 36,
+            "end": 42,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 46,
+            "end": 48,
+            "label": "DEGREE"
+          },
+          {
+            "start": 52,
+            "end": 56,
+            "label": "MAJOR"
+          },
+          {
+            "start": 62,
+            "end": 67,
+            "label": "TITLE"
+          },
+          {
+            "start": 74,
+            "end": 78,
+            "label": "COMPANY"
+          },
+          {
+            "start": 80,
+            "end": 88,
+            "label": "PROJECT"
+          },
+          {
+            "start": 91,
+            "end": 93,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 93,
+            "end": 99,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 105,
+            "end": 112,
+            "label": "SKILL"
+          },
+          {
+            "start": 113,
+            "end": 117,
+            "label": "SKILL"
+          },
+          {
+            "start": 118,
+            "end": 121,
+            "label": "SKILL"
+          },
+          {
+            "start": 122,
+            "end": 126,
+            "label": "SKILL"
+          },
+          {
+            "start": 129,
+            "end": 140,
+            "label": "PHONE"
+          },
+          {
+            "start": 144,
+            "end": 152,
+            "label": "EMAIL"
+          }
+        ]
+      },
+      {
+        "text": "职业标签：算法工程师\n候选人赵子轩，男，24岁，湖北武汉。\n毕业于北京邮电大学硕士，专业人工智能。\n历任单位：深蓝智能。\n项目亮点：简历实体识别系统。\n经验沉淀：1年算法实习经验。\n技能结构：PyTorch、BERT、CRF、NLP。\n联系方式：13800000001；e8b5b5e5001@mail.com",
+        "gold": [
+          {
+            "start": 5,
+            "end": 10,
+            "label": "TITLE"
+          },
+          {
+            "start": 14,
+            "end": 17,
+            "label": "NAME"
+          },
+          {
+            "start": 18,
+            "end": 19,
+            "label": "GENDER"
+          },
+          {
+            "start": 20,
+            "end": 22,
+            "label": "AGE"
+          },
+          {
+            "start": 24,
+            "end": 28,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 33,
+            "end": 39,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 39,
+            "end": 41,
+            "label": "DEGREE"
+          },
+          {
+            "start": 44,
+            "end": 48,
+            "label": "MAJOR"
+          },
+          {
+            "start": 55,
+            "end": 59,
+            "label": "COMPANY"
+          },
+          {
+            "start": 66,
+            "end": 74,
+            "label": "PROJECT"
+          },
+          {
+            "start": 81,
+            "end": 89,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 96,
+            "end": 103,
+            "label": "SKILL"
+          },
+          {
+            "start": 104,
+            "end": 108,
+            "label": "SKILL"
+          },
+          {
+            "start": 109,
+            "end": 112,
+            "label": "SKILL"
+          },
+          {
+            "start": 113,
+            "end": 116,
+            "label": "SKILL"
+          },
+          {
+            "start": 123,
+            "end": 134,
+            "label": "PHONE"
+          },
+          {
+            "start": 135,
+            "end": 148,
+            "label": "EMAIL"
+          }
+        ],
+        "pred": [
+          {
+            "start": 5,
+            "end": 10,
+            "label": "TITLE"
+          },
+          {
+            "start": 14,
+            "end": 17,
+            "label": "NAME"
+          },
+          {
+            "start": 18,
+            "end": 19,
+            "label": "GENDER"
+          },
+          {
+            "start": 20,
+            "end": 22,
+            "label": "AGE"
+          },
+          {
+            "start": 24,
+            "end": 28,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 33,
+            "end": 39,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 39,
+            "end": 41,
+            "label": "DEGREE"
+          },
+          {
+            "start": 44,
+            "end": 48,
+            "label": "MAJOR"
+          },
+          {
+            "start": 55,
+            "end": 59,
+            "label": "COMPANY"
+          },
+          {
+            "start": 66,
+            "end": 74,
+            "label": "PROJECT"
+          },
+          {
+            "start": 81,
+            "end": 89,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 96,
+            "end": 103,
+            "label": "SKILL"
+          },
+          {
+            "start": 104,
+            "end": 108,
+            "label": "SKILL"
+          },
+          {
+            "start": 109,
+            "end": 112,
+            "label": "SKILL"
+          },
+          {
+            "start": 113,
+            "end": 116,
+            "label": "SKILL"
+          },
+          {
+            "start": 124,
+            "end": 134,
+            "label": "PHONE"
+          },
+          {
+            "start": 136,
+            "end": 148,
+            "label": "EMAIL"
+          }
+        ]
+      },
+      {
+        "text": "简历摘要\n姓名：赵子玥\n性别：男\n年龄：26\n籍贯：安徽合肥\n毕业院校：哈尔滨工业大学\n学历：硕士\n专业：人工智能\n目标岗位：算法工程师\n工作经历：在矩阵算法完成文本分类平台，具备2年算法经验\n技能标签：PyTorch、BERT、CRF、NLP\n电话：13800000005\n邮箱：e8b5b5e5005@mail.com",
+        "gold": [
+          {
+            "start": 8,
+            "end": 11,
+            "label": "NAME"
+          },
+          {
+            "start": 15,
+            "end": 16,
+            "label": "GENDER"
+          },
+          {
+            "start": 20,
+            "end": 22,
+            "label": "AGE"
+          },
+          {
+            "start": 26,
+            "end": 30,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 36,
+            "end": 43,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 47,
+            "end": 49,
+            "label": "DEGREE"
+          },
+          {
+            "start": 53,
+            "end": 57,
+            "label": "MAJOR"
+          },
+          {
+            "start": 63,
+            "end": 68,
+            "label": "TITLE"
+          },
+          {
+            "start": 75,
+            "end": 79,
+            "label": "COMPANY"
+          },
+          {
+            "start": 81,
+            "end": 87,
+            "label": "PROJECT"
+          },
+          {
+            "start": 90,
+            "end": 96,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 102,
+            "end": 109,
+            "label": "SKILL"
+          },
+          {
+            "start": 110,
+            "end": 114,
+            "label": "SKILL"
+          },
+          {
+            "start": 115,
+            "end": 118,
+            "label": "SKILL"
+          },
+          {
+            "start": 119,
+            "end": 122,
+            "label": "SKILL"
+          },
+          {
+            "start": 126,
+            "end": 137,
+            "label": "PHONE"
+          },
+          {
+            "start": 141,
+            "end": 149,
+            "label": "EMAIL"
+          }
+        ],
+        "pred": [
+          {
+            "start": 8,
+            "end": 11,
+            "label": "NAME"
+          },
+          {
+            "start": 15,
+            "end": 16,
+            "label": "GENDER"
+          },
+          {
+            "start": 20,
+            "end": 22,
+            "label": "AGE"
+          },
+          {
+            "start": 26,
+            "end": 30,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 36,
+            "end": 43,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 47,
+            "end": 49,
+            "label": "DEGREE"
+          },
+          {
+            "start": 53,
+            "end": 57,
+            "label": "MAJOR"
+          },
+          {
+            "start": 63,
+            "end": 68,
+            "label": "TITLE"
+          },
+          {
+            "start": 75,
+            "end": 79,
+            "label": "COMPANY"
+          },
+          {
+            "start": 81,
+            "end": 87,
+            "label": "PROJECT"
+          },
+          {
+            "start": 90,
+            "end": 96,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 102,
+            "end": 109,
+            "label": "SKILL"
+          },
+          {
+            "start": 110,
+            "end": 114,
+            "label": "SKILL"
+          },
+          {
+            "start": 115,
+            "end": 118,
+            "label": "SKILL"
+          },
+          {
+            "start": 119,
+            "end": 123,
+            "label": "SKILL"
+          },
+          {
+            "start": 126,
+            "end": 137,
+            "label": "PHONE"
+          },
+          {
+            "start": 141,
+            "end": 149,
+            "label": "EMAIL"
+          }
+        ]
+      },
+      {
+        "text": "个人简介：赵子宁，男，26岁。教育背景为重庆邮电大学本科，主修软件工程，籍贯河南郑州。职业方向聚焦前端开发工程师，曾在极光互动参与招聘小程序，积累3年前端经验。技能侧重Vue、JavaScript、TypeScript、Element Plus。联系方式：13800000003，e8b5b5e5003@jobmail.cn。",
+        "gold": [
+          {
+            "start": 5,
+            "end": 8,
+            "label": "NAME"
+          },
+          {
+            "start": 9,
+            "end": 10,
+            "label": "GENDER"
+          },
+          {
+            "start": 11,
+            "end": 13,
+            "label": "AGE"
+          },
+          {
+            "start": 20,
+            "end": 26,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 26,
+            "end": 28,
+            "label": "DEGREE"
+          },
+          {
+            "start": 31,
+            "end": 35,
+            "label": "MAJOR"
+          },
+          {
+            "start": 38,
+            "end": 42,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 49,
+            "end": 56,
+            "label": "TITLE"
+          },
+          {
+            "start": 59,
+            "end": 63,
+            "label": "COMPANY"
+          },
+          {
+            "start": 65,
+            "end": 70,
+            "label": "PROJECT"
+          },
+          {
+            "start": 73,
+            "end": 79,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 84,
+            "end": 87,
+            "label": "SKILL"
+          },
+          {
+            "start": 88,
+            "end": 98,
+            "label": "SKILL"
+          },
+          {
+            "start": 99,
+            "end": 109,
+            "label": "SKILL"
+          },
+          {
+            "start": 110,
+            "end": 122,
+            "label": "SKILL"
+          },
+          {
+            "start": 128,
+            "end": 139,
+            "label": "PHONE"
+          },
+          {
+            "start": 140,
+            "end": 162,
+            "label": "EMAIL"
+          }
+        ],
+        "pred": [
+          {
+            "start": 5,
+            "end": 8,
+            "label": "NAME"
+          },
+          {
+            "start": 9,
+            "end": 10,
+            "label": "GENDER"
+          },
+          {
+            "start": 11,
+            "end": 13,
+            "label": "AGE"
+          },
+          {
+            "start": 20,
+            "end": 26,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 26,
+            "end": 28,
+            "label": "DEGREE"
+          },
+          {
+            "start": 31,
+            "end": 35,
+            "label": "MAJOR"
+          },
+          {
+            "start": 38,
+            "end": 42,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 49,
+            "end": 56,
+            "label": "TITLE"
+          },
+          {
+            "start": 59,
+            "end": 63,
+            "label": "COMPANY"
+          },
+          {
+            "start": 65,
+            "end": 70,
+            "label": "PROJECT"
+          },
+          {
+            "start": 73,
+            "end": 79,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 84,
+            "end": 87,
+            "label": "SKILL"
+          },
+          {
+            "start": 88,
+            "end": 98,
+            "label": "SKILL"
+          },
+          {
+            "start": 99,
+            "end": 109,
+            "label": "SKILL"
+          },
+          {
+            "start": 110,
+            "end": 122,
+            "label": "SKILL"
+          },
+          {
+            "start": 128,
+            "end": 138,
+            "label": "PHONE"
+          },
+          {
+            "start": 140,
+            "end": 161,
+            "label": "EMAIL"
+          }
+        ]
+      },
+      {
+        "text": "简历摘要\n姓名：赵子宁\n性别：男\n年龄：26\n籍贯：河南郑州\n毕业院校：重庆邮电大学\n学历：本科\n专业：软件工程\n目标岗位：前端开发工程师\n工作经历：在极光互动完成招聘小程序，具备3年前端经验\n技能标签：Vue、JavaScript、TypeScript、Element Plus\n电话：13800000003\n邮箱：e8b5b5e5003@jobmail.cn",
+        "gold": [
+          {
+            "start": 8,
+            "end": 11,
+            "label": "NAME"
+          },
+          {
+            "start": 15,
+            "end": 16,
+            "label": "GENDER"
+          },
+          {
+            "start": 20,
+            "end": 22,
+            "label": "AGE"
+          },
+          {
+            "start": 26,
+            "end": 30,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 36,
+            "end": 42,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 46,
+            "end": 48,
+            "label": "DEGREE"
+          },
+          {
+            "start": 52,
+            "end": 56,
+            "label": "MAJOR"
+          },
+          {
+            "start": 62,
+            "end": 69,
+            "label": "TITLE"
+          },
+          {
+            "start": 76,
+            "end": 80,
+            "label": "COMPANY"
+          },
+          {
+            "start": 82,
+            "end": 87,
+            "label": "PROJECT"
+          },
+          {
+            "start": 90,
+            "end": 96,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 102,
+            "end": 105,
+            "label": "SKILL"
+          },
+          {
+            "start": 106,
+            "end": 116,
+            "label": "SKILL"
+          },
+          {
+            "start": 117,
+            "end": 127,
+            "label": "SKILL"
+          },
+          {
+            "start": 128,
+            "end": 140,
+            "label": "SKILL"
+          },
+          {
+            "start": 144,
+            "end": 155,
+            "label": "PHONE"
+          },
+          {
+            "start": 159,
+            "end": 168,
+            "label": "EMAIL"
+          }
+        ],
+        "pred": [
+          {
+            "start": 8,
+            "end": 11,
+            "label": "NAME"
+          },
+          {
+            "start": 15,
+            "end": 16,
+            "label": "GENDER"
+          },
+          {
+            "start": 20,
+            "end": 22,
+            "label": "AGE"
+          },
+          {
+            "start": 26,
+            "end": 30,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 36,
+            "end": 42,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 46,
+            "end": 48,
+            "label": "DEGREE"
+          },
+          {
+            "start": 52,
+            "end": 56,
+            "label": "MAJOR"
+          },
+          {
+            "start": 62,
+            "end": 69,
+            "label": "TITLE"
+          },
+          {
+            "start": 76,
+            "end": 80,
+            "label": "COMPANY"
+          },
+          {
+            "start": 82,
+            "end": 87,
+            "label": "PROJECT"
+          },
+          {
+            "start": 90,
+            "end": 96,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 102,
+            "end": 105,
+            "label": "SKILL"
+          },
+          {
+            "start": 106,
+            "end": 116,
+            "label": "SKILL"
+          },
+          {
+            "start": 117,
+            "end": 127,
+            "label": "SKILL"
+          },
+          {
+            "start": 128,
+            "end": 140,
+            "label": "SKILL"
+          },
+          {
+            "start": 144,
+            "end": 154,
+            "label": "PHONE"
+          },
+          {
+            "start": 159,
+            "end": 168,
+            "label": "EMAIL"
+          }
+        ]
+      },
+      {
+        "text": "赵子宁的教育背景为重庆邮电大学本科，专业软件工程。她/他来自河南郑州，目前年龄26岁，性别男。在极光互动任职期间承担前端开发工程师职责，累计3年前端经验，代表成果为招聘小程序。擅长Vue、JavaScript、TypeScript和Element Plus。电话13800000003，邮箱e8b5b5e5003@jobmail.cn。",
+        "gold": [
+          {
+            "start": 0,
+            "end": 3,
+            "label": "NAME"
+          },
+          {
+            "start": 9,
+            "end": 15,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 15,
+            "end": 17,
+            "label": "DEGREE"
+          },
+          {
+            "start": 20,
+            "end": 24,
+            "label": "MAJOR"
+          },
+          {
+            "start": 30,
+            "end": 34,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 39,
+            "end": 41,
+            "label": "AGE"
+          },
+          {
+            "start": 45,
+            "end": 46,
+            "label": "GENDER"
+          },
+          {
+            "start": 48,
+            "end": 52,
+            "label": "COMPANY"
+          },
+          {
+            "start": 58,
+            "end": 65,
+            "label": "TITLE"
+          },
+          {
+            "start": 70,
+            "end": 76,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 82,
+            "end": 87,
+            "label": "PROJECT"
+          },
+          {
+            "start": 90,
+            "end": 93,
+            "label": "SKILL"
+          },
+          {
+            "start": 94,
+            "end": 104,
+            "label": "SKILL"
+          },
+          {
+            "start": 105,
+            "end": 115,
+            "label": "SKILL"
+          },
+          {
+            "start": 116,
+            "end": 128,
+            "label": "SKILL"
+          },
+          {
+            "start": 131,
+            "end": 142,
+            "label": "PHONE"
+          },
+          {
+            "start": 145,
+            "end": 167,
+            "label": "EMAIL"
+          }
+        ],
+        "pred": [
+          {
+            "start": 0,
+            "end": 3,
+            "label": "NAME"
+          },
+          {
+            "start": 9,
+            "end": 15,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 15,
+            "end": 17,
+            "label": "DEGREE"
+          },
+          {
+            "start": 20,
+            "end": 24,
+            "label": "MAJOR"
+          },
+          {
+            "start": 30,
+            "end": 34,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 39,
+            "end": 41,
+            "label": "AGE"
+          },
+          {
+            "start": 45,
+            "end": 46,
+            "label": "GENDER"
+          },
+          {
+            "start": 48,
+            "end": 52,
+            "label": "COMPANY"
+          },
+          {
+            "start": 58,
+            "end": 65,
+            "label": "TITLE"
+          },
+          {
+            "start": 70,
+            "end": 76,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 82,
+            "end": 87,
+            "label": "PROJECT"
+          },
+          {
+            "start": 90,
+            "end": 93,
+            "label": "SKILL"
+          },
+          {
+            "start": 94,
+            "end": 104,
+            "label": "SKILL"
+          },
+          {
+            "start": 105,
+            "end": 115,
+            "label": "SKILL"
+          },
+          {
+            "start": 116,
+            "end": 127,
+            "label": "SKILL"
+          },
+          {
+            "start": 131,
+            "end": 142,
+            "label": "PHONE"
+          },
+          {
+            "start": 145,
+            "end": 167,
+            "label": "EMAIL"
+          }
+        ]
+      },
+      {
+        "text": "简历摘要\n姓名：赵子涵\n性别：女\n年龄：24\n籍贯：湖南长沙\n毕业院校：电子科技大学\n学历：本科\n专业：数字媒体技术\n目标岗位：前端开发工程师\n工作经历：在云上未来完成客户门户网站，具备2年前端经验\n技能标签：React、Vite、ECharts、CSS\n电话：13800000002\n邮箱：e8b5b5e5002@resume.cn",
+        "gold": [
+          {
+            "start": 8,
+            "end": 11,
+            "label": "NAME"
+          },
+          {
+            "start": 15,
+            "end": 16,
+            "label": "GENDER"
+          },
+          {
+            "start": 20,
+            "end": 22,
+            "label": "AGE"
+          },
+          {
+            "start": 26,
+            "end": 30,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 36,
+            "end": 42,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 46,
+            "end": 48,
+            "label": "DEGREE"
+          },
+          {
+            "start": 52,
+            "end": 58,
+            "label": "MAJOR"
+          },
+          {
+            "start": 64,
+            "end": 71,
+            "label": "TITLE"
+          },
+          {
+            "start": 78,
+            "end": 82,
+            "label": "COMPANY"
+          },
+          {
+            "start": 84,
+            "end": 90,
+            "label": "PROJECT"
+          },
+          {
+            "start": 93,
+            "end": 99,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 105,
+            "end": 110,
+            "label": "SKILL"
+          },
+          {
+            "start": 111,
+            "end": 115,
+            "label": "SKILL"
+          },
+          {
+            "start": 116,
+            "end": 123,
+            "label": "SKILL"
+          },
+          {
+            "start": 124,
+            "end": 127,
+            "label": "SKILL"
+          },
+          {
+            "start": 131,
+            "end": 142,
+            "label": "PHONE"
+          },
+          {
+            "start": 146,
+            "end": 155,
+            "label": "EMAIL"
+          }
+        ],
+        "pred": [
+          {
+            "start": 8,
+            "end": 11,
+            "label": "NAME"
+          },
+          {
+            "start": 15,
+            "end": 16,
+            "label": "GENDER"
+          },
+          {
+            "start": 20,
+            "end": 22,
+            "label": "AGE"
+          },
+          {
+            "start": 26,
+            "end": 30,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 36,
+            "end": 42,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 46,
+            "end": 48,
+            "label": "DEGREE"
+          },
+          {
+            "start": 52,
+            "end": 58,
+            "label": "MAJOR"
+          },
+          {
+            "start": 64,
+            "end": 71,
+            "label": "TITLE"
+          },
+          {
+            "start": 78,
+            "end": 82,
+            "label": "COMPANY"
+          },
+          {
+            "start": 84,
+            "end": 90,
+            "label": "PROJECT"
+          },
+          {
+            "start": 93,
+            "end": 99,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 105,
+            "end": 110,
+            "label": "SKILL"
+          },
+          {
+            "start": 111,
+            "end": 115,
+            "label": "SKILL"
+          },
+          {
+            "start": 116,
+            "end": 123,
+            "label": "SKILL"
+          },
+          {
+            "start": 124,
+            "end": 128,
+            "label": "SKILL"
+          },
+          {
+            "start": 131,
+            "end": 143,
+            "label": "PHONE"
+          },
+          {
+            "start": 146,
+            "end": 155,
+            "label": "EMAIL"
+          }
+        ]
+      },
+      {
+        "text": "职业标签：前端开发工程师\n候选人赵子涵，女，24岁，湖南长沙。\n毕业于电子科技大学本科，专业数字媒体技术。\n历任单位：云上未来。\n项目亮点：客户门户网站。\n经验沉淀：2年前端经验。\n技能结构：React、Vite、ECharts、CSS。\n联系方式：13800000002；e8b5b5e5002@resume.cn",
+        "gold": [
+          {
+            "start": 5,
+            "end": 12,
+            "label": "TITLE"
+          },
+          {
+            "start": 16,
+            "end": 19,
+            "label": "NAME"
+          },
+          {
+            "start": 20,
+            "end": 21,
+            "label": "GENDER"
+          },
+          {
+            "start": 22,
+            "end": 24,
+            "label": "AGE"
+          },
+          {
+            "start": 26,
+            "end": 30,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 35,
+            "end": 41,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 41,
+            "end": 43,
+            "label": "DEGREE"
+          },
+          {
+            "start": 46,
+            "end": 52,
+            "label": "MAJOR"
+          },
+          {
+            "start": 59,
+            "end": 63,
+            "label": "COMPANY"
+          },
+          {
+            "start": 70,
+            "end": 76,
+            "label": "PROJECT"
+          },
+          {
+            "start": 83,
+            "end": 89,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 96,
+            "end": 101,
+            "label": "SKILL"
+          },
+          {
+            "start": 102,
+            "end": 106,
+            "label": "SKILL"
+          },
+          {
+            "start": 107,
+            "end": 114,
+            "label": "SKILL"
+          },
+          {
+            "start": 115,
+            "end": 118,
+            "label": "SKILL"
+          },
+          {
+            "start": 125,
+            "end": 136,
+            "label": "PHONE"
+          },
+          {
+            "start": 137,
+            "end": 151,
+            "label": "EMAIL"
+          }
+        ],
+        "pred": [
+          {
+            "start": 5,
+            "end": 12,
+            "label": "TITLE"
+          },
+          {
+            "start": 16,
+            "end": 19,
+            "label": "NAME"
+          },
+          {
+            "start": 20,
+            "end": 21,
+            "label": "GENDER"
+          },
+          {
+            "start": 22,
+            "end": 24,
+            "label": "AGE"
+          },
+          {
+            "start": 26,
+            "end": 30,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 35,
+            "end": 41,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 41,
+            "end": 43,
+            "label": "DEGREE"
+          },
+          {
+            "start": 46,
+            "end": 52,
+            "label": "MAJOR"
+          },
+          {
+            "start": 59,
+            "end": 63,
+            "label": "COMPANY"
+          },
+          {
+            "start": 70,
+            "end": 76,
+            "label": "PROJECT"
+          },
+          {
+            "start": 83,
+            "end": 89,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 96,
+            "end": 101,
+            "label": "SKILL"
+          },
+          {
+            "start": 102,
+            "end": 106,
+            "label": "SKILL"
+          },
+          {
+            "start": 107,
+            "end": 114,
+            "label": "SKILL"
+          },
+          {
+            "start": 115,
+            "end": 118,
+            "label": "SKILL"
+          },
+          {
+            "start": 126,
+            "end": 136,
+            "label": "PHONE"
+          },
+          {
+            "start": 137,
+            "end": 151,
+            "label": "EMAIL"
+          }
+        ]
+      },
+      {
+        "text": "求职意向：测试开发工程师\n基本信息：赵文婷，女，24岁，湖南长沙。\n教育背景：山东大学本科，信息管理与信息系统。\n工作经历：曾在鸣远信息从事测试开发工程师相关工作，拥有2年测试经验。\n项目经历：参与回归测试平台。\n核心技能：Java、Selenium、SQL、Linux。\n联系方式：13800000038 / e8b5b5e6038@resume.cn",
+        "gold": [
+          {
+            "start": 5,
+            "end": 12,
+            "label": "TITLE"
+          },
+          {
+            "start": 18,
+            "end": 21,
+            "label": "NAME"
+          },
+          {
+            "start": 22,
+            "end": 23,
+            "label": "GENDER"
+          },
+          {
+            "start": 24,
+            "end": 26,
+            "label": "AGE"
+          },
+          {
+            "start": 28,
+            "end": 32,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 39,
+            "end": 43,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 43,
+            "end": 45,
+            "label": "DEGREE"
+          },
+          {
+            "start": 46,
+            "end": 55,
+            "label": "MAJOR"
+          },
+          {
+            "start": 64,
+            "end": 68,
+            "label": "COMPANY"
+          },
+          {
+            "start": 70,
+            "end": 77,
+            "label": "TITLE"
+          },
+          {
+            "start": 84,
+            "end": 90,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 99,
+            "end": 105,
+            "label": "PROJECT"
+          },
+          {
+            "start": 112,
+            "end": 116,
+            "label": "SKILL"
+          },
+          {
+            "start": 117,
+            "end": 125,
+            "label": "SKILL"
+          },
+          {
+            "start": 126,
+            "end": 129,
+            "label": "SKILL"
+          },
+          {
+            "start": 130,
+            "end": 135,
+            "label": "SKILL"
+          },
+          {
+            "start": 142,
+            "end": 153,
+            "label": "PHONE"
+          },
+          {
+            "start": 156,
+            "end": 169,
+            "label": "EMAIL"
+          }
+        ],
+        "pred": [
+          {
+            "start": 5,
+            "end": 12,
+            "label": "TITLE"
+          },
+          {
+            "start": 18,
+            "end": 21,
+            "label": "NAME"
+          },
+          {
+            "start": 22,
+            "end": 23,
+            "label": "GENDER"
+          },
+          {
+            "start": 24,
+            "end": 26,
+            "label": "AGE"
+          },
+          {
+            "start": 28,
+            "end": 32,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 39,
+            "end": 43,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 43,
+            "end": 45,
+            "label": "DEGREE"
+          },
+          {
+            "start": 46,
+            "end": 55,
+            "label": "MAJOR"
+          },
+          {
+            "start": 64,
+            "end": 68,
+            "label": "COMPANY"
+          },
+          {
+            "start": 70,
+            "end": 77,
+            "label": "TITLE"
+          },
+          {
+            "start": 84,
+            "end": 90,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 98,
+            "end": 105,
+            "label": "PROJECT"
+          },
+          {
+            "start": 112,
+            "end": 116,
+            "label": "SKILL"
+          },
+          {
+            "start": 117,
+            "end": 130,
+            "label": "SKILL"
+          },
+          {
+            "start": 131,
+            "end": 135,
+            "label": "SKILL"
+          },
+          {
+            "start": 142,
+            "end": 153,
+            "label": "PHONE"
+          },
+          {
+            "start": 156,
+            "end": 169,
+            "label": "EMAIL"
+          }
+        ]
+      },
+      {
+        "text": "简历摘要\n姓名：赵文婷\n性别：女\n年龄：24\n籍贯：湖南长沙\n毕业院校：山东大学\n学历：本科\n专业：信息管理与信息系统\n目标岗位：测试开发工程师\n工作经历：在鸣远信息完成回归测试平台，具备2年测试经验\n技能标签：Java、Selenium、SQL、Linux\n电话：13800000038\n邮箱：e8b5b5e6038@resume.cn",
+        "gold": [
+          {
+            "start": 8,
+            "end": 11,
+            "label": "NAME"
+          },
+          {
+            "start": 15,
+            "end": 16,
+            "label": "GENDER"
+          },
+          {
+            "start": 20,
+            "end": 22,
+            "label": "AGE"
+          },
+          {
+            "start": 26,
+            "end": 30,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 36,
+            "end": 40,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 44,
+            "end": 46,
+            "label": "DEGREE"
+          },
+          {
+            "start": 50,
+            "end": 59,
+            "label": "MAJOR"
+          },
+          {
+            "start": 65,
+            "end": 72,
+            "label": "TITLE"
+          },
+          {
+            "start": 79,
+            "end": 83,
+            "label": "COMPANY"
+          },
+          {
+            "start": 85,
+            "end": 91,
+            "label": "PROJECT"
+          },
+          {
+            "start": 94,
+            "end": 100,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 106,
+            "end": 110,
+            "label": "SKILL"
+          },
+          {
+            "start": 111,
+            "end": 119,
+            "label": "SKILL"
+          },
+          {
+            "start": 120,
+            "end": 123,
+            "label": "SKILL"
+          },
+          {
+            "start": 124,
+            "end": 129,
+            "label": "SKILL"
+          },
+          {
+            "start": 133,
+            "end": 144,
+            "label": "PHONE"
+          },
+          {
+            "start": 148,
+            "end": 157,
+            "label": "EMAIL"
+          }
+        ],
+        "pred": [
+          {
+            "start": 8,
+            "end": 11,
+            "label": "NAME"
+          },
+          {
+            "start": 15,
+            "end": 16,
+            "label": "GENDER"
+          },
+          {
+            "start": 20,
+            "end": 22,
+            "label": "AGE"
+          },
+          {
+            "start": 26,
+            "end": 30,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 36,
+            "end": 40,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 44,
+            "end": 46,
+            "label": "DEGREE"
+          },
+          {
+            "start": 50,
+            "end": 59,
+            "label": "MAJOR"
+          },
+          {
+            "start": 65,
+            "end": 72,
+            "label": "TITLE"
+          },
+          {
+            "start": 79,
+            "end": 83,
+            "label": "COMPANY"
+          },
+          {
+            "start": 85,
+            "end": 91,
+            "label": "PROJECT"
+          },
+          {
+            "start": 94,
+            "end": 100,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 106,
+            "end": 111,
+            "label": "SKILL"
+          },
+          {
+            "start": 111,
+            "end": 124,
+            "label": "SKILL"
+          },
+          {
+            "start": 125,
+            "end": 129,
+            "label": "SKILL"
+          },
+          {
+            "start": 133,
+            "end": 144,
+            "label": "PHONE"
+          },
+          {
+            "start": 148,
+            "end": 157,
+            "label": "EMAIL"
+          }
+        ]
+      },
+      {
+        "text": "求职意向：数据分析师\n基本信息：赵明宁，女，28岁，河北石家庄。\n教育背景：湖南师范大学硕士，数据科学与大数据技术。\n工作经历：曾在增长引擎从事数据分析师相关工作，拥有3年分析经验。\n项目经历：参与会员画像项目。\n核心技能：Excel、Tableau、SQL、数据分析。\n联系方式：13800000084 / e8b5b5e6084@example.com",
+        "gold": [
+          {
+            "start": 5,
+            "end": 10,
+            "label": "TITLE"
+          },
+          {
+            "start": 16,
+            "end": 19,
+            "label": "NAME"
+          },
+          {
+            "start": 20,
+            "end": 21,
+            "label": "GENDER"
+          },
+          {
+            "start": 22,
+            "end": 24,
+            "label": "AGE"
+          },
+          {
+            "start": 26,
+            "end": 31,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 38,
+            "end": 44,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 44,
+            "end": 46,
+            "label": "DEGREE"
+          },
+          {
+            "start": 47,
+            "end": 57,
+            "label": "MAJOR"
+          },
+          {
+            "start": 66,
+            "end": 70,
+            "label": "COMPANY"
+          },
+          {
+            "start": 72,
+            "end": 77,
+            "label": "TITLE"
+          },
+          {
+            "start": 84,
+            "end": 90,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 99,
+            "end": 105,
+            "label": "PROJECT"
+          },
+          {
+            "start": 112,
+            "end": 117,
+            "label": "SKILL"
+          },
+          {
+            "start": 118,
+            "end": 125,
+            "label": "SKILL"
+          },
+          {
+            "start": 126,
+            "end": 129,
+            "label": "SKILL"
+          },
+          {
+            "start": 130,
+            "end": 134,
+            "label": "SKILL"
+          },
+          {
+            "start": 141,
+            "end": 152,
+            "label": "PHONE"
+          },
+          {
+            "start": 155,
+            "end": 170,
+            "label": "EMAIL"
+          }
+        ],
+        "pred": [
+          {
+            "start": 5,
+            "end": 10,
+            "label": "TITLE"
+          },
+          {
+            "start": 16,
+            "end": 19,
+            "label": "NAME"
+          },
+          {
+            "start": 20,
+            "end": 21,
+            "label": "GENDER"
+          },
+          {
+            "start": 22,
+            "end": 24,
+            "label": "AGE"
+          },
+          {
+            "start": 26,
+            "end": 31,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 38,
+            "end": 44,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 44,
+            "end": 46,
+            "label": "DEGREE"
+          },
+          {
+            "start": 47,
+            "end": 57,
+            "label": "MAJOR"
+          },
+          {
+            "start": 66,
+            "end": 70,
+            "label": "COMPANY"
+          },
+          {
+            "start": 72,
+            "end": 77,
+            "label": "TITLE"
+          },
+          {
+            "start": 84,
+            "end": 90,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 99,
+            "end": 105,
+            "label": "PROJECT"
+          },
+          {
+            "start": 112,
+            "end": 117,
+            "label": "SKILL"
+          },
+          {
+            "start": 118,
+            "end": 129,
+            "label": "SKILL"
+          },
+          {
+            "start": 130,
+            "end": 134,
+            "label": "SKILL"
+          },
+          {
+            "start": 141,
+            "end": 152,
+            "label": "PHONE"
+          },
+          {
+            "start": 155,
+            "end": 170,
+            "label": "EMAIL"
+          }
+        ]
+      },
+      {
+        "text": "候选人赵书珊，男，22岁，来自江苏苏州。毕业于暨南大学本科，专业为统计学。曾在北辰数据担任数据分析师，累计1年分析经验。主导用户增长分析平台，熟练掌握SQL、Python、Power BI和Pandas。联系电话13800000079，邮箱e8b5b5e4079@jobmail.cn。",
+        "gold": [
+          {
+            "start": 3,
+            "end": 6,
+            "label": "NAME"
+          },
+          {
+            "start": 7,
+            "end": 8,
+            "label": "GENDER"
+          },
+          {
+            "start": 9,
+            "end": 11,
+            "label": "AGE"
+          },
+          {
+            "start": 15,
+            "end": 19,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 23,
+            "end": 27,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 27,
+            "end": 29,
+            "label": "DEGREE"
+          },
+          {
+            "start": 33,
+            "end": 36,
+            "label": "MAJOR"
+          },
+          {
+            "start": 39,
+            "end": 43,
+            "label": "COMPANY"
+          },
+          {
+            "start": 45,
+            "end": 50,
+            "label": "TITLE"
+          },
+          {
+            "start": 53,
+            "end": 59,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 62,
+            "end": 70,
+            "label": "PROJECT"
+          },
+          {
+            "start": 75,
+            "end": 78,
+            "label": "SKILL"
+          },
+          {
+            "start": 79,
+            "end": 85,
+            "label": "SKILL"
+          },
+          {
+            "start": 86,
+            "end": 94,
+            "label": "SKILL"
+          },
+          {
+            "start": 95,
+            "end": 101,
+            "label": "SKILL"
+          },
+          {
+            "start": 106,
+            "end": 117,
+            "label": "PHONE"
+          },
+          {
+            "start": 120,
+            "end": 142,
+            "label": "EMAIL"
+          }
+        ],
+        "pred": [
+          {
+            "start": 3,
+            "end": 6,
+            "label": "NAME"
+          },
+          {
+            "start": 7,
+            "end": 8,
+            "label": "GENDER"
+          },
+          {
+            "start": 9,
+            "end": 11,
+            "label": "AGE"
+          },
+          {
+            "start": 15,
+            "end": 19,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 23,
+            "end": 27,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 27,
+            "end": 29,
+            "label": "DEGREE"
+          },
+          {
+            "start": 33,
+            "end": 36,
+            "label": "MAJOR"
+          },
+          {
+            "start": 39,
+            "end": 43,
+            "label": "COMPANY"
+          },
+          {
+            "start": 45,
+            "end": 50,
+            "label": "TITLE"
+          },
+          {
+            "start": 53,
+            "end": 59,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 62,
+            "end": 70,
+            "label": "PROJECT"
+          },
+          {
+            "start": 75,
+            "end": 78,
+            "label": "SKILL"
+          },
+          {
+            "start": 79,
+            "end": 85,
+            "label": "SKILL"
+          },
+          {
+            "start": 86,
+            "end": 94,
+            "label": "SKILL"
+          },
+          {
+            "start": 95,
+            "end": 101,
+            "label": "SKILL"
+          },
+          {
+            "start": 105,
+            "end": 117,
+            "label": "PHONE"
+          },
+          {
+            "start": 119,
+            "end": 142,
+            "label": "EMAIL"
+          }
+        ]
+      },
+      {
+        "text": "求职意向：数据分析师\n基本信息：赵书珊，男，22岁，江苏苏州。\n教育背景：暨南大学本科，统计学。\n工作经历：曾在北辰数据从事数据分析师相关工作，拥有1年分析经验。\n项目经历：参与用户增长分析平台。\n核心技能：SQL、Python、Power BI、Pandas。\n联系方式：13800000079 / e8b5b5e4079@jobmail.cn",
+        "gold": [
+          {
+            "start": 5,
+            "end": 10,
+            "label": "TITLE"
+          },
+          {
+            "start": 16,
+            "end": 19,
+            "label": "NAME"
+          },
+          {
+            "start": 20,
+            "end": 21,
+            "label": "GENDER"
+          },
+          {
+            "start": 22,
+            "end": 24,
+            "label": "AGE"
+          },
+          {
+            "start": 26,
+            "end": 30,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 37,
+            "end": 41,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 41,
+            "end": 43,
+            "label": "DEGREE"
+          },
+          {
+            "start": 44,
+            "end": 47,
+            "label": "MAJOR"
+          },
+          {
+            "start": 56,
+            "end": 60,
+            "label": "COMPANY"
+          },
+          {
+            "start": 62,
+            "end": 67,
+            "label": "TITLE"
+          },
+          {
+            "start": 74,
+            "end": 80,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 89,
+            "end": 97,
+            "label": "PROJECT"
+          },
+          {
+            "start": 104,
+            "end": 107,
+            "label": "SKILL"
+          },
+          {
+            "start": 108,
+            "end": 114,
+            "label": "SKILL"
+          },
+          {
+            "start": 115,
+            "end": 123,
+            "label": "SKILL"
+          },
+          {
+            "start": 124,
+            "end": 130,
+            "label": "SKILL"
+          },
+          {
+            "start": 137,
+            "end": 148,
+            "label": "PHONE"
+          },
+          {
+            "start": 151,
+            "end": 164,
+            "label": "EMAIL"
+          }
+        ],
+        "pred": [
+          {
+            "start": 5,
+            "end": 10,
+            "label": "TITLE"
+          },
+          {
+            "start": 16,
+            "end": 19,
+            "label": "NAME"
+          },
+          {
+            "start": 20,
+            "end": 21,
+            "label": "GENDER"
+          },
+          {
+            "start": 22,
+            "end": 24,
+            "label": "AGE"
+          },
+          {
+            "start": 26,
+            "end": 30,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 37,
+            "end": 41,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 41,
+            "end": 43,
+            "label": "DEGREE"
+          },
+          {
+            "start": 44,
+            "end": 47,
+            "label": "MAJOR"
+          },
+          {
+            "start": 56,
+            "end": 60,
+            "label": "COMPANY"
+          },
+          {
+            "start": 62,
+            "end": 67,
+            "label": "TITLE"
+          },
+          {
+            "start": 74,
+            "end": 80,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 89,
+            "end": 97,
+            "label": "PROJECT"
+          },
+          {
+            "start": 104,
+            "end": 107,
+            "label": "SKILL"
+          },
+          {
+            "start": 108,
+            "end": 114,
+            "label": "SKILL"
+          },
+          {
+            "start": 115,
+            "end": 123,
+            "label": "SKILL"
+          },
+          {
+            "start": 124,
+            "end": 130,
+            "label": "SKILL"
+          },
+          {
+            "start": 137,
+            "end": 147,
+            "label": "PHONE"
+          },
+          {
+            "start": 150,
+            "end": 164,
+            "label": "EMAIL"
+          }
+        ]
+      },
+      {
+        "text": "赵书珊希望应聘数据分析师岗位。男，22岁，籍贯江苏苏州。暨南大学本科毕业，专业方向为统计学。此前在北辰数据担任数据分析师，沉淀了1年分析经验。代表项目是用户增长分析平台，日常使用SQL、Python、Power BI与Pandas。可通过13800000079或e8b5b5e4079@jobmail.cn联系。",
+        "gold": [
+          {
+            "start": 0,
+            "end": 3,
+            "label": "NAME"
+          },
+          {
+            "start": 7,
+            "end": 12,
+            "label": "TITLE"
+          },
+          {
+            "start": 15,
+            "end": 16,
+            "label": "GENDER"
+          },
+          {
+            "start": 17,
+            "end": 19,
+            "label": "AGE"
+          },
+          {
+            "start": 23,
+            "end": 27,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 28,
+            "end": 32,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 32,
+            "end": 34,
+            "label": "DEGREE"
+          },
+          {
+            "start": 42,
+            "end": 45,
+            "label": "MAJOR"
+          },
+          {
+            "start": 49,
+            "end": 53,
+            "label": "COMPANY"
+          },
+          {
+            "start": 55,
+            "end": 60,
+            "label": "TITLE"
+          },
+          {
+            "start": 64,
+            "end": 70,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 76,
+            "end": 84,
+            "label": "PROJECT"
+          },
+          {
+            "start": 89,
+            "end": 92,
+            "label": "SKILL"
+          },
+          {
+            "start": 93,
+            "end": 99,
+            "label": "SKILL"
+          },
+          {
+            "start": 100,
+            "end": 108,
+            "label": "SKILL"
+          },
+          {
+            "start": 109,
+            "end": 115,
+            "label": "SKILL"
+          },
+          {
+            "start": 119,
+            "end": 130,
+            "label": "PHONE"
+          },
+          {
+            "start": 131,
+            "end": 153,
+            "label": "EMAIL"
+          }
+        ],
+        "pred": [
+          {
+            "start": 0,
+            "end": 3,
+            "label": "NAME"
+          },
+          {
+            "start": 7,
+            "end": 12,
+            "label": "TITLE"
+          },
+          {
+            "start": 15,
+            "end": 16,
+            "label": "GENDER"
+          },
+          {
+            "start": 17,
+            "end": 19,
+            "label": "AGE"
+          },
+          {
+            "start": 23,
+            "end": 27,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 28,
+            "end": 32,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 32,
+            "end": 34,
+            "label": "DEGREE"
+          },
+          {
+            "start": 42,
+            "end": 45,
+            "label": "MAJOR"
+          },
+          {
+            "start": 49,
+            "end": 53,
+            "label": "COMPANY"
+          },
+          {
+            "start": 55,
+            "end": 60,
+            "label": "TITLE"
+          },
+          {
+            "start": 64,
+            "end": 70,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 76,
+            "end": 84,
+            "label": "PROJECT"
+          },
+          {
+            "start": 89,
+            "end": 92,
+            "label": "SKILL"
+          },
+          {
+            "start": 93,
+            "end": 99,
+            "label": "SKILL"
+          },
+          {
+            "start": 100,
+            "end": 108,
+            "label": "SKILL"
+          },
+          {
+            "start": 109,
+            "end": 114,
+            "label": "SKILL"
+          },
+          {
+            "start": 119,
+            "end": 129,
+            "label": "PHONE"
+          },
+          {
+            "start": 131,
+            "end": 152,
+            "label": "EMAIL"
+          }
+        ]
+      },
+      {
+        "text": "简历摘要\n姓名：赵书珊\n性别：男\n年龄：22\n籍贯：江苏苏州\n毕业院校：暨南大学\n学历：本科\n专业：统计学\n目标岗位：数据分析师\n工作经历：在北辰数据完成用户增长分析平台，具备1年分析经验\n技能标签：SQL、Python、Power BI、Pandas\n电话：13800000079\n邮箱：e8b5b5e4079@jobmail.cn",
+        "gold": [
+          {
+            "start": 8,
+            "end": 11,
+            "label": "NAME"
+          },
+          {
+            "start": 15,
+            "end": 16,
+            "label": "GENDER"
+          },
+          {
+            "start": 20,
+            "end": 22,
+            "label": "AGE"
+          },
+          {
+            "start": 26,
+            "end": 30,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 36,
+            "end": 40,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 44,
+            "end": 46,
+            "label": "DEGREE"
+          },
+          {
+            "start": 50,
+            "end": 53,
+            "label": "MAJOR"
+          },
+          {
+            "start": 59,
+            "end": 64,
+            "label": "TITLE"
+          },
+          {
+            "start": 71,
+            "end": 75,
+            "label": "COMPANY"
+          },
+          {
+            "start": 77,
+            "end": 85,
+            "label": "PROJECT"
+          },
+          {
+            "start": 88,
+            "end": 94,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 100,
+            "end": 103,
+            "label": "SKILL"
+          },
+          {
+            "start": 104,
+            "end": 110,
+            "label": "SKILL"
+          },
+          {
+            "start": 111,
+            "end": 119,
+            "label": "SKILL"
+          },
+          {
+            "start": 120,
+            "end": 126,
+            "label": "SKILL"
+          },
+          {
+            "start": 130,
+            "end": 141,
+            "label": "PHONE"
+          },
+          {
+            "start": 145,
+            "end": 154,
+            "label": "EMAIL"
+          }
+        ],
+        "pred": [
+          {
+            "start": 8,
+            "end": 11,
+            "label": "NAME"
+          },
+          {
+            "start": 15,
+            "end": 16,
+            "label": "GENDER"
+          },
+          {
+            "start": 20,
+            "end": 22,
+            "label": "AGE"
+          },
+          {
+            "start": 26,
+            "end": 30,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 36,
+            "end": 40,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 44,
+            "end": 46,
+            "label": "DEGREE"
+          },
+          {
+            "start": 50,
+            "end": 53,
+            "label": "MAJOR"
+          },
+          {
+            "start": 59,
+            "end": 64,
+            "label": "TITLE"
+          },
+          {
+            "start": 71,
+            "end": 76,
+            "label": "COMPANY"
+          },
+          {
+            "start": 78,
+            "end": 85,
+            "label": "PROJECT"
+          },
+          {
+            "start": 88,
+            "end": 94,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 100,
+            "end": 103,
+            "label": "SKILL"
+          },
+          {
+            "start": 104,
+            "end": 110,
+            "label": "SKILL"
+          },
+          {
+            "start": 111,
+            "end": 119,
+            "label": "SKILL"
+          },
+          {
+            "start": 120,
+            "end": 125,
+            "label": "SKILL"
+          },
+          {
+            "start": 129,
+            "end": 140,
+            "label": "PHONE"
+          },
+          {
+            "start": 144,
+            "end": 154,
+            "label": "EMAIL"
+          }
+        ]
+      },
+      {
+        "text": "职业标签：数据分析师\n候选人赵书珊，男，22岁，江苏苏州。\n毕业于暨南大学本科，专业统计学。\n历任单位：北辰数据。\n项目亮点：用户增长分析平台。\n经验沉淀：1年分析经验。\n技能结构：SQL、Python、Power BI、Pandas。\n联系方式：13800000079；e8b5b5e4079@jobmail.cn",
+        "gold": [
+          {
+            "start": 5,
+            "end": 10,
+            "label": "TITLE"
+          },
+          {
+            "start": 14,
+            "end": 17,
+            "label": "NAME"
+          },
+          {
+            "start": 18,
+            "end": 19,
+            "label": "GENDER"
+          },
+          {
+            "start": 20,
+            "end": 22,
+            "label": "AGE"
+          },
+          {
+            "start": 24,
+            "end": 28,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 33,
+            "end": 37,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 37,
+            "end": 39,
+            "label": "DEGREE"
+          },
+          {
+            "start": 42,
+            "end": 45,
+            "label": "MAJOR"
+          },
+          {
+            "start": 52,
+            "end": 56,
+            "label": "COMPANY"
+          },
+          {
+            "start": 63,
+            "end": 71,
+            "label": "PROJECT"
+          },
+          {
+            "start": 78,
+            "end": 84,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 91,
+            "end": 94,
+            "label": "SKILL"
+          },
+          {
+            "start": 95,
+            "end": 101,
+            "label": "SKILL"
+          },
+          {
+            "start": 102,
+            "end": 110,
+            "label": "SKILL"
+          },
+          {
+            "start": 111,
+            "end": 117,
+            "label": "SKILL"
+          },
+          {
+            "start": 124,
+            "end": 135,
+            "label": "PHONE"
+          },
+          {
+            "start": 136,
+            "end": 150,
+            "label": "EMAIL"
+          }
+        ],
+        "pred": [
+          {
+            "start": 5,
+            "end": 10,
+            "label": "TITLE"
+          },
+          {
+            "start": 14,
+            "end": 17,
+            "label": "NAME"
+          },
+          {
+            "start": 18,
+            "end": 19,
+            "label": "GENDER"
+          },
+          {
+            "start": 20,
+            "end": 22,
+            "label": "AGE"
+          },
+          {
+            "start": 24,
+            "end": 28,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 33,
+            "end": 37,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 37,
+            "end": 39,
+            "label": "DEGREE"
+          },
+          {
+            "start": 42,
+            "end": 45,
+            "label": "MAJOR"
+          },
+          {
+            "start": 52,
+            "end": 56,
+            "label": "COMPANY"
+          },
+          {
+            "start": 63,
+            "end": 71,
+            "label": "PROJECT"
+          },
+          {
+            "start": 78,
+            "end": 84,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 91,
+            "end": 94,
+            "label": "SKILL"
+          },
+          {
+            "start": 95,
+            "end": 101,
+            "label": "SKILL"
+          },
+          {
+            "start": 102,
+            "end": 110,
+            "label": "SKILL"
+          },
+          {
+            "start": 111,
+            "end": 117,
+            "label": "SKILL"
+          },
+          {
+            "start": 124,
+            "end": 134,
+            "label": "PHONE"
+          },
+          {
+            "start": 135,
+            "end": 150,
+            "label": "EMAIL"
+          }
+        ]
+      },
+      {
+        "text": "如果岗位需要数据分析师候选人，可以优先关注赵书珊。其毕业于暨南大学本科，专业是统计学；男，22岁，籍贯江苏苏州。在北辰数据期间围绕用户增长分析平台展开工作，累计拥有1年分析经验。技术或工具栈包括SQL、Python、Power BI以及Pandas。联系电话13800000079，电子邮箱e8b5b5e4079@jobmail.cn。",
+        "gold": [
+          {
+            "start": 6,
+            "end": 11,
+            "label": "TITLE"
+          },
+          {
+            "start": 21,
+            "end": 24,
+            "label": "NAME"
+          },
+          {
+            "start": 29,
+            "end": 33,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 33,
+            "end": 35,
+            "label": "DEGREE"
+          },
+          {
+            "start": 39,
+            "end": 42,
+            "label": "MAJOR"
+          },
+          {
+            "start": 43,
+            "end": 44,
+            "label": "GENDER"
+          },
+          {
+            "start": 45,
+            "end": 47,
+            "label": "AGE"
+          },
+          {
+            "start": 51,
+            "end": 55,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 57,
+            "end": 61,
+            "label": "COMPANY"
+          },
+          {
+            "start": 65,
+            "end": 73,
+            "label": "PROJECT"
+          },
+          {
+            "start": 82,
+            "end": 88,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 97,
+            "end": 100,
+            "label": "SKILL"
+          },
+          {
+            "start": 101,
+            "end": 107,
+            "label": "SKILL"
+          },
+          {
+            "start": 108,
+            "end": 116,
+            "label": "SKILL"
+          },
+          {
+            "start": 118,
+            "end": 124,
+            "label": "SKILL"
+          },
+          {
+            "start": 129,
+            "end": 140,
+            "label": "PHONE"
+          },
+          {
+            "start": 145,
+            "end": 167,
+            "label": "EMAIL"
+          }
+        ],
+        "pred": [
+          {
+            "start": 6,
+            "end": 11,
+            "label": "TITLE"
+          },
+          {
+            "start": 21,
+            "end": 24,
+            "label": "NAME"
+          },
+          {
+            "start": 29,
+            "end": 33,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 33,
+            "end": 35,
+            "label": "DEGREE"
+          },
+          {
+            "start": 39,
+            "end": 42,
+            "label": "MAJOR"
+          },
+          {
+            "start": 43,
+            "end": 44,
+            "label": "GENDER"
+          },
+          {
+            "start": 45,
+            "end": 47,
+            "label": "AGE"
+          },
+          {
+            "start": 51,
+            "end": 55,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 57,
+            "end": 61,
+            "label": "COMPANY"
+          },
+          {
+            "start": 65,
+            "end": 73,
+            "label": "PROJECT"
+          },
+          {
+            "start": 82,
+            "end": 88,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 97,
+            "end": 100,
+            "label": "SKILL"
+          },
+          {
+            "start": 101,
+            "end": 107,
+            "label": "SKILL"
+          },
+          {
+            "start": 108,
+            "end": 116,
+            "label": "SKILL"
+          },
+          {
+            "start": 117,
+            "end": 123,
+            "label": "SKILL"
+          },
+          {
+            "start": 128,
+            "end": 139,
+            "label": "PHONE"
+          },
+          {
+            "start": 144,
+            "end": 166,
+            "label": "EMAIL"
+          }
+        ]
+      },
+      {
+        "text": "简历摘要\n姓名：赵安言\n性别：男\n年龄：27\n籍贯：四川成都\n毕业院校：中南大学\n学历：本科\n专业：计算机科学与技术\n目标岗位：后端开发工程师\n工作经历：在迅捷信息完成订单履约中心，具备4年开发经验\n技能标签：Python、FastAPI、MySQL、Docker\n电话：13800000141\n邮箱：e8b5b5e5141@mail.com",
+        "gold": [
+          {
+            "start": 8,
+            "end": 11,
+            "label": "NAME"
+          },
+          {
+            "start": 15,
+            "end": 16,
+            "label": "GENDER"
+          },
+          {
+            "start": 20,
+            "end": 22,
+            "label": "AGE"
+          },
+          {
+            "start": 26,
+            "end": 30,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 36,
+            "end": 40,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 44,
+            "end": 46,
+            "label": "DEGREE"
+          },
+          {
+            "start": 50,
+            "end": 58,
+            "label": "MAJOR"
+          },
+          {
+            "start": 64,
+            "end": 71,
+            "label": "TITLE"
+          },
+          {
+            "start": 78,
+            "end": 82,
+            "label": "COMPANY"
+          },
+          {
+            "start": 84,
+            "end": 90,
+            "label": "PROJECT"
+          },
+          {
+            "start": 93,
+            "end": 99,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 105,
+            "end": 111,
+            "label": "SKILL"
+          },
+          {
+            "start": 112,
+            "end": 119,
+            "label": "SKILL"
+          },
+          {
+            "start": 120,
+            "end": 125,
+            "label": "SKILL"
+          },
+          {
+            "start": 126,
+            "end": 132,
+            "label": "SKILL"
+          },
+          {
+            "start": 136,
+            "end": 147,
+            "label": "PHONE"
+          },
+          {
+            "start": 151,
+            "end": 159,
+            "label": "EMAIL"
+          }
+        ],
+        "pred": [
+          {
+            "start": 8,
+            "end": 11,
+            "label": "NAME"
+          },
+          {
+            "start": 15,
+            "end": 16,
+            "label": "GENDER"
+          },
+          {
+            "start": 20,
+            "end": 22,
+            "label": "AGE"
+          },
+          {
+            "start": 26,
+            "end": 30,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 36,
+            "end": 40,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 44,
+            "end": 46,
+            "label": "DEGREE"
+          },
+          {
+            "start": 50,
+            "end": 58,
+            "label": "MAJOR"
+          },
+          {
+            "start": 64,
+            "end": 71,
+            "label": "TITLE"
+          },
+          {
+            "start": 78,
+            "end": 82,
+            "label": "COMPANY"
+          },
+          {
+            "start": 84,
+            "end": 90,
+            "label": "PROJECT"
+          },
+          {
+            "start": 93,
+            "end": 99,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 105,
+            "end": 111,
+            "label": "SKILL"
+          },
+          {
+            "start": 112,
+            "end": 119,
+            "label": "SKILL"
+          },
+          {
+            "start": 120,
+            "end": 132,
+            "label": "SKILL"
+          },
+          {
+            "start": 136,
+            "end": 147,
+            "label": "PHONE"
+          },
+          {
+            "start": 151,
+            "end": 159,
+            "label": "EMAIL"
+          }
+        ]
+      },
+      {
+        "text": "候选人赵宇言，女，29岁，来自广东深圳。毕业于中南大学硕士，专业为软件工程。曾在迅捷信息担任后端开发工程师，累计4年开发经验。主导订单履约中心，熟练掌握Java、Spring Boot、Redis和MySQL。联系电话13800000114，邮箱e8b5b5e5114@resume.cn。",
+        "gold": [
+          {
+            "start": 3,
+            "end": 6,
+            "label": "NAME"
+          },
+          {
+            "start": 7,
+            "end": 8,
+            "label": "GENDER"
+          },
+          {
+            "start": 9,
+            "end": 11,
+            "label": "AGE"
+          },
+          {
+            "start": 15,
+            "end": 19,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 23,
+            "end": 27,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 27,
+            "end": 29,
+            "label": "DEGREE"
+          },
+          {
+            "start": 33,
+            "end": 37,
+            "label": "MAJOR"
+          },
+          {
+            "start": 40,
+            "end": 44,
+            "label": "COMPANY"
+          },
+          {
+            "start": 46,
+            "end": 53,
+            "label": "TITLE"
+          },
+          {
+            "start": 56,
+            "end": 62,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 65,
+            "end": 71,
+            "label": "PROJECT"
+          },
+          {
+            "start": 76,
+            "end": 80,
+            "label": "SKILL"
+          },
+          {
+            "start": 81,
+            "end": 92,
+            "label": "SKILL"
+          },
+          {
+            "start": 93,
+            "end": 98,
+            "label": "SKILL"
+          },
+          {
+            "start": 99,
+            "end": 104,
+            "label": "SKILL"
+          },
+          {
+            "start": 109,
+            "end": 120,
+            "label": "PHONE"
+          },
+          {
+            "start": 123,
+            "end": 144,
+            "label": "EMAIL"
+          }
+        ],
+        "pred": [
+          {
+            "start": 3,
+            "end": 6,
+            "label": "NAME"
+          },
+          {
+            "start": 7,
+            "end": 8,
+            "label": "GENDER"
+          },
+          {
+            "start": 9,
+            "end": 11,
+            "label": "AGE"
+          },
+          {
+            "start": 15,
+            "end": 19,
+            "label": "HOMETOWN"
+          },
+          {
+            "start": 23,
+            "end": 27,
+            "label": "SCHOOL"
+          },
+          {
+            "start": 27,
+            "end": 29,
+            "label": "DEGREE"
+          },
+          {
+            "start": 33,
+            "end": 37,
+            "label": "MAJOR"
+          },
+          {
+            "start": 40,
+            "end": 44,
+            "label": "COMPANY"
+          },
+          {
+            "start": 46,
+            "end": 53,
+            "label": "TITLE"
+          },
+          {
+            "start": 56,
+            "end": 62,
+            "label": "EXPERIENCE_YEARS"
+          },
+          {
+            "start": 65,
+            "end": 71,
+            "label": "PROJECT"
+          },
+          {
+            "start": 76,
+            "end": 80,
+            "label": "SKILL"
+          },
+          {
+            "start": 81,
+            "end": 92,
+            "label": "SKILL"
+          },
+          {
+            "start": 93,
+            "end": 98,
+            "label": "SKILL"
+          },
+          {
+            "start": 99,
+            "end": 104,
+            "label": "SKILL"
+          },
+          {
+            "start": 108,
+            "end": 119,
+            "label": "PHONE"
+          },
+          {
+            "start": 122,
+            "end": 143,
+            "label": "EMAIL"
+          }
+        ]
+      }
+    ],
+    "stage": "test",
+    "device": "cuda",
+    "model_version": "albert-bigru-crf-v2"
+  },
+  "config": {
+    "model_version": "albert-bigru-crf-v2",
+    "pretrained_model_name": "uer/albert-base-chinese-cluecorpussmall",
+    "warm_start_file": "data/annotations/warm_start.jsonl",
+    "train_file": "data/annotations/train.jsonl",
+    "dev_file": "data/annotations/dev.jsonl",
+    "test_file": "data/annotations/test.jsonl",
+    "max_length": 512,
+    "train_batch_size": 2,
+    "eval_batch_size": 4,
+    "gradient_accumulation_steps": 4,
+    "encoder_learning_rate": 2e-05,
+    "task_learning_rate": 0.0003,
+    "weight_decay": 0.01,
+    "warmup_ratio": 0.1,
+    "epochs": 12,
+    "warm_start_epochs": 4,
+    "hidden_size": 256,
+    "dropout": 0.1,
+    "seed": 42,
+    "max_grad_norm": 1.0,
+    "early_stopping_patience": 3,
+    "save_best_metric": "entity_micro_f1",
+    "fp16": true,
+    "oversample_tail_labels": true,
+    "dataloader_num_workers": 0,
+    "output_dir": "model/checkpoints/albert-bigru-crf-v2"
+  }
+}

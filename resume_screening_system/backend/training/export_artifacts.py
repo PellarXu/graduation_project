@@ -12,50 +12,50 @@ from algorithm.ner.labels import build_bio_labels
 
 def export_artifacts():
     root_dir = ROOT_DIR
-    config_path = root_dir / "training" / "configs" / "train_config.json"
-    config = json.loads(config_path.read_text(encoding="utf-8"))
-
-    output_dir = root_dir / config["output_dir"]
+    config = json.loads((root_dir / "training" / "configs" / "train_config.json").read_text(encoding="utf-8"))
+    checkpoint_dir = root_dir / config["output_dir"]
     artifacts_dir = root_dir / "model" / "artifacts"
     artifacts_dir.mkdir(parents=True, exist_ok=True)
 
-    model_path = output_dir / "model.pt"
-    tokenizer_dir = output_dir / "tokenizer"
-    if not model_path.exists():
-        raise FileNotFoundError("未找到训练后的 model.pt，请先完成训练。")
+    for file_name in [
+        "model.pt",
+        "metrics.json",
+        "evaluation_report.json",
+        "training_summary.json",
+        "error_cases.json",
+    ]:
+        source = checkpoint_dir / file_name
+        if source.exists():
+            shutil.copy2(source, artifacts_dir / file_name)
 
-    shutil.copy2(model_path, artifacts_dir / "model.pt")
-    if (artifacts_dir / "tokenizer").exists():
-        shutil.rmtree(artifacts_dir / "tokenizer")
-    shutil.copytree(tokenizer_dir, artifacts_dir / "tokenizer")
+    tokenizer_dir = checkpoint_dir / "tokenizer"
+    if tokenizer_dir.exists():
+        if (artifacts_dir / "tokenizer").exists():
+            shutil.rmtree(artifacts_dir / "tokenizer")
+        shutil.copytree(tokenizer_dir, artifacts_dir / "tokenizer")
 
-    labels = build_bio_labels()
     label_map = {
-        "label2id": {label: idx for idx, label in enumerate(labels)},
-        "id2label": {idx: label for idx, label in enumerate(labels)},
+        "labels": build_bio_labels(),
+        "id2label": {str(index): label for index, label in enumerate(build_bio_labels())},
+        "label2id": {label: index for index, label in enumerate(build_bio_labels())},
     }
-    (artifacts_dir / "label_map.json").write_text(
-        json.dumps(label_map, ensure_ascii=False, indent=2),
-        encoding="utf-8",
-    )
-    (artifacts_dir / "inference_config.json").write_text(
-        json.dumps(
-            {
-                "model_version": config["model_version"],
-                "pretrained_model_name": config["pretrained_model_name"],
-                "hidden_size": config["hidden_size"],
-                "dropout": config["dropout"],
-                "max_length": config["max_length"],
-            },
-            ensure_ascii=False,
-            indent=2,
-        ),
-        encoding="utf-8",
-    )
-    eval_report_path = output_dir / "eval_report.json"
-    if eval_report_path.exists():
-        shutil.copy2(eval_report_path, artifacts_dir / "eval_report.json")
-    print(f"推理资源已导出到 {artifacts_dir}")
+    (artifacts_dir / "label_map.json").write_text(json.dumps(label_map, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    inference_config = {
+        "model_version": config["model_version"],
+        "pretrained_model_name": config["pretrained_model_name"],
+        "hidden_size": config["hidden_size"],
+        "dropout": config["dropout"],
+        "max_length": config["max_length"],
+    }
+    (artifacts_dir / "inference_config.json").write_text(json.dumps(inference_config, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    for manifest_name in ["dataset_manifest.json", "source_manifest.json"]:
+        source = root_dir / "data" / "annotations" / manifest_name
+        if source.exists():
+            shutil.copy2(source, artifacts_dir / manifest_name)
+
+    print(f"artifacts exported to {artifacts_dir}")
 
 
 if __name__ == "__main__":

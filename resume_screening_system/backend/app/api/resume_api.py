@@ -4,8 +4,9 @@ from pathlib import Path
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 from sqlalchemy.orm import Session
 
+from algorithm.ner.inference import NERInferenceService
 from app.core.database import get_db
-from app.schemas.resume_schema import ResumeAnalysisOut, ResumeOut
+from app.schemas.resume_schema import ModelStatusOut, ResumeAnalysisOut, ResumeOut
 from app.services.analysis_service import analyze_resume_by_id, get_resume_analysis_by_id
 from app.services.parse_service import parse_resume_payload_by_id
 from app.services.resume_service import build_resume_list_payload, create_resume_record, delete_resume_record
@@ -38,6 +39,12 @@ def upload_resume(file: UploadFile = File(...), db: Session = Depends(get_db)):
 @router.get("/", response_model=list[ResumeOut], summary="获取简历列表")
 def get_resume_list(db: Session = Depends(get_db)):
     return build_resume_list_payload(db)
+
+
+@router.get("/model-status", response_model=ModelStatusOut, summary="获取模型状态")
+def get_model_status():
+    service = NERInferenceService()
+    return service.get_model_status()
 
 
 @router.get("/{resume_id}", response_model=ResumeAnalysisOut, summary="获取简历分析详情")

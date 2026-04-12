@@ -42,7 +42,11 @@ resume_screening_system/backend/htmlcov/
 
 resume_screening_system/backend/venv/
 resume_screening_system/backend/.venv/
+resume_screening_system/backend/.venv312/
 resume_screening_system/backend/env/
+resume_screening_system/backend/model/checkpoints/
+resume_screening_system/backend/data/public/raw/
+resume_screening_system/backend/training/configs/train_config.smoke.json
 
 resume_screening_system/backend/.env
 resume_screening_system/backend/.env.local

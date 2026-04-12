@@ -1,0 +1,87 @@
+{
+  "profiles": 150,
+  "templates_per_profile": 8,
+  "splits": {
+    "train": {
+      "samples": 816,
+      "avg_length": 157.51,
+      "max_length": 190,
+      "label_distribution": {
+        "AGE": 816,
+        "COMPANY": 816,
+        "DEGREE": 816,
+        "EMAIL": 816,
+        "EXPERIENCE_YEARS": 816,
+        "GENDER": 816,
+        "HOMETOWN": 816,
+        "MAJOR": 816,
+        "NAME": 816,
+        "PHONE": 816,
+        "PROJECT": 816,
+        "SCHOOL": 816,
+        "SKILL": 3264,
+        "TITLE": 1020
+      },
+      "source_breakdown": {
+        "generated_reviewed": 612,
+        "self_written": 204
+      }
+    },
+    "dev": {
+      "samples": 96,
+      "avg_length": 156.25,
+      "max_length": 182,
+      "label_distribution": {
+        "AGE": 96,
+        "COMPANY": 96,
+        "DEGREE": 96,
+        "EMAIL": 96,
+        "EXPERIENCE_YEARS": 96,
+        "GENDER": 96,
+        "HOMETOWN": 96,
+        "MAJOR": 96,
+        "NAME": 96,
+        "PHONE": 96,
+        "PROJECT": 96,
+        "SCHOOL": 96,
+        "SKILL": 384,
+        "TITLE": 120
+      },
+      "source_breakdown": {
+        "generated_reviewed": 72,
+        "self_written": 24
+      }
+    },
+    "test": {
+      "samples": 288,
+      "avg_length": 156.83,
+      "max_length": 189,
+      "label_distribution": {
+        "AGE": 288,
+        "COMPANY": 288,
+        "DEGREE": 288,
+        "EMAIL": 288,
+        "EXPERIENCE_YEARS": 288,
+        "GENDER": 288,
+        "HOMETOWN": 288,
+        "MAJOR": 288,
+        "NAME": 288,
+        "PHONE": 288,
+        "PROJECT": 288,
+        "SCHOOL": 288,
+        "SKILL": 1152,
+        "TITLE": 360
+      },
+      "source_breakdown": {
+        "generated_reviewed": 216,
+        "self_written": 72
+      }
+    }
+  },
+  "warm_start": {
+    "samples": 400,
+    "source_breakdown": {
+      "resume_ner": 400
+    }
+  }
+}

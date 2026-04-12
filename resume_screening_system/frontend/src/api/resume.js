@@ -12,6 +12,10 @@ export function getResumeList() {
   return request.get('/api/resumes/')
 }
 
+export function getModelStatus() {
+  return request.get('/api/resumes/model-status')
+}
+
 export function getResumeDetail(id) {
   return request.get(`/api/resumes/${id}`)
 }

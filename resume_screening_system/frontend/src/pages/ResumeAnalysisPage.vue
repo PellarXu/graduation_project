@@ -1,10 +1,50 @@
 <template>
   <div class="page-grid">
+    <el-card class="panel-card model-card">
+      <template #header>
+        <div>
+          <div class="panel-title">模型状态</div>
+          <div class="panel-subtitle">展示当前接入模型的版本、指标和达标情况</div>
+        </div>
+      </template>
+
+      <el-alert
+        :title="modelStatus.ready ? '模型已就绪' : '模型未就绪'"
+        :type="modelStatus.ready ? 'success' : 'warning'"
+        :closable="false"
+        :description="modelStatus.message || '尚未检测到训练后的推理资源。'"
+      />
+
+      <el-descriptions :column="2" border style="margin-top: 16px">
+        <el-descriptions-item label="模型版本">{{ modelStatus.model_version || '-' }}</el-descriptions-item>
+        <el-descriptions-item label="最近训练时间">{{ modelStatus.trained_at || '-' }}</el-descriptions-item>
+        <el-descriptions-item label="整体 F1">{{ formatMetric(modelStatus.overall_f1) }}</el-descriptions-item>
+        <el-descriptions-item label="宏平均 F1">{{ formatMetric(modelStatus.macro_f1) }}</el-descriptions-item>
+        <el-descriptions-item label="论文达标">{{ modelStatus.paper_ready ? '是' : '否' }}</el-descriptions-item>
+        <el-descriptions-item label="数据规模">
+          train {{ modelStatus.dataset_size?.train || 0 }} / dev {{ modelStatus.dataset_size?.dev || 0 }} / test
+          {{ modelStatus.dataset_size?.test || 0 }}
+        </el-descriptions-item>
+      </el-descriptions>
+
+      <div class="analysis-section" v-if="Object.keys(modelStatus.per_label_metrics || {}).length">
+        <div class="section-title">关键标签 F1</div>
+        <el-tag
+          v-for="label in keyMetricLabels"
+          :key="label"
+          class="tag-item"
+          :type="metricTagType(modelStatus.per_label_metrics?.[label]?.f1)"
+        >
+          {{ label }}: {{ formatMetric(modelStatus.per_label_metrics?.[label]?.f1) }}
+        </el-tag>
+      </div>
+    </el-card>
+
     <el-card class="panel-card">
       <template #header>
         <div>
           <div class="panel-title">简历上传与分析</div>
-          <div class="panel-subtitle">支持简历上传、文本解析、结构化提取与脱敏画像展示。</div>
+          <div class="panel-subtitle">支持简历上传、文本解析、结构化提取与脱敏画像展示</div>
         </div>
       </template>
 
@@ -69,7 +109,7 @@
               :key="`${entity.label}-${entity.start}-${entity.end}-${entity.text}`"
               class="tag-item"
             >
-              {{ entity.label }} · {{ entity.text }}
+              {{ entity.label }} / {{ entity.text }}
             </el-tag>
           </div>
         </el-card>
@@ -121,13 +161,49 @@
 import { onMounted, ref } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 
-import { analyzeResume, deleteResume, getResumeDetail, getResumeList, parseResume, uploadResume } from '../api/resume'
+import {
+  analyzeResume,
+  deleteResume,
+  getModelStatus,
+  getResumeDetail,
+  getResumeList,
+  parseResume,
+  uploadResume,
+} from '../api/resume'
 
 const resumeList = ref([])
 const detail = ref(null)
+const modelStatus = ref({
+  status: 'artifacts_missing',
+  ready: false,
+  message: '尚未检测到训练后的推理资源。',
+  model_version: null,
+  overall_f1: null,
+  macro_f1: null,
+  per_label_metrics: {},
+  dataset_size: {},
+  dataset_source_breakdown: {},
+  paper_ready: false,
+  trained_at: null,
+})
+
+const keyMetricLabels = ['NAME', 'PHONE', 'EMAIL', 'DEGREE', 'MAJOR', 'SCHOOL', 'SKILL', 'EXPERIENCE_YEARS']
+
+const formatMetric = (value) => (typeof value === 'number' ? value.toFixed(4) : '-')
+
+const metricTagType = (value) => {
+  if (typeof value !== 'number') return 'info'
+  if (value >= 0.8) return 'success'
+  if (value >= 0.7) return 'warning'
+  return 'danger'
+}
 
 const loadResumeList = async () => {
   resumeList.value = await getResumeList()
+}
+
+const loadModelStatus = async () => {
+  modelStatus.value = await getModelStatus()
 }
 
 const handleSelect = async (id) => {
@@ -164,6 +240,7 @@ const handleAnalyze = async (id) => {
     detail.value = await analyzeResume(id)
     ElMessage.success(detail.value.message || '简历分析完成')
     await loadResumeList()
+    await loadModelStatus()
   } catch (error) {
     ElMessage.error(error?.response?.data?.detail || '简历分析失败')
   }
@@ -187,10 +264,16 @@ const handleDelete = async (id) => {
 
 const formatJson = (value) => JSON.stringify(value || {}, null, 2)
 
-onMounted(loadResumeList)
+onMounted(async () => {
+  await Promise.all([loadResumeList(), loadModelStatus()])
+})
 </script>
 
 <style scoped>
+.model-card {
+  margin-bottom: 20px;
+}
+
 .upload-area {
   width: 100%;
 }
