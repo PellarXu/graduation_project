@@ -8,38 +8,34 @@
         </div>
       </template>
 
-      <el-row :gutter="20">
-        <el-col :span="10">
-          <el-select v-model="selectedJobId" placeholder="请选择岗位" style="width: 100%">
-            <el-option
-              v-for="job in jobList"
-              :key="job.id"
-              :label="`${job.job_name} / ${job.job_type}`"
-              :value="job.id"
-            />
-          </el-select>
-        </el-col>
-        <el-col :span="10">
-          <el-select
-            v-model="selectedResumeIds"
-            multiple
-            collapse-tags
-            collapse-tags-tooltip
-            placeholder="请选择参与匹配的简历"
-            style="width: 100%"
-          >
-            <el-option
-              v-for="resume in resumeList"
-              :key="resume.id"
-              :label="`${resume.file_name}（${resume.extract_status || '待分析'}）`"
-              :value="resume.id"
-            />
-          </el-select>
-        </el-col>
-        <el-col :span="4">
-          <el-button type="primary" style="width: 100%" @click="runMatch">开始匹配</el-button>
-        </el-col>
-      </el-row>
+      <div class="filter-grid">
+        <el-select v-model="selectedJobId" placeholder="请选择岗位" class="filter-control">
+          <el-option
+            v-for="job in jobList"
+            :key="job.id"
+            :label="`${job.job_name} / ${job.job_type}`"
+            :value="job.id"
+          />
+        </el-select>
+
+        <el-select
+          v-model="selectedResumeIds"
+          multiple
+          collapse-tags
+          collapse-tags-tooltip
+          placeholder="请选择参与匹配的简历"
+          class="filter-control"
+        >
+          <el-option
+            v-for="resume in resumeList"
+            :key="resume.id"
+            :label="`${resume.file_name}（${resume.extract_status || '待分析'}）`"
+            :value="resume.id"
+          />
+        </el-select>
+
+        <el-button type="primary" class="match-button" @click="runMatch">开始匹配</el-button>
+      </div>
     </el-card>
 
     <div class="metric-grid" v-if="matchResult">
@@ -58,6 +54,14 @@
       <div class="metric-card">
         <div class="metric-label">经验权重</div>
         <div class="metric-value">{{ formatWeight(matchResult.weights.experience_weight) }}</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">学历权重</div>
+        <div class="metric-value">{{ formatWeight(matchResult.weights.degree_weight) }}</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">专业权重</div>
+        <div class="metric-value">{{ formatWeight(matchResult.weights.major_weight) }}</div>
       </div>
     </div>
 
@@ -80,7 +84,7 @@
             <div class="chart-header">
               <div>
                 <div class="panel-title">候选人维度雷达图</div>
-                <div class="panel-subtitle">默认展示当前最高分候选人，也可手动切换查看四个维度的原始得分。</div>
+                <div class="panel-subtitle">默认展示当前高分候选人，也可切换查看四个维度的原始得分。</div>
               </div>
               <el-select
                 v-if="candidateOptions.length"
@@ -106,7 +110,7 @@
       <template #header>
         <div>
           <div class="panel-title">候选人匹配明细</div>
-          <div class="panel-subtitle">点击表格可查看候选人的解释文本、公平说明与脱敏画像。</div>
+          <div class="panel-subtitle">点击表格可查看候选人的评分依据、命中证据、公平说明与脱敏画像。</div>
         </div>
       </template>
 
@@ -134,49 +138,64 @@
       </el-table>
     </el-card>
 
-    <el-row :gutter="20" v-if="selectedCandidate">
-      <el-col :span="12">
-        <el-card class="panel-card">
-          <template #header>
-            <div>
-              <div class="panel-title">匹配解释</div>
-              <div class="panel-subtitle">{{ selectedCandidate.file_name }}</div>
-            </div>
-          </template>
-          <el-timeline>
-            <el-timeline-item
-              v-for="item in selectedCandidate.final_explanations"
-              :key="item"
-              type="primary"
-              hollow
-            >
-              {{ item }}
-            </el-timeline-item>
-          </el-timeline>
-          <div class="section-title">公平说明</div>
-          <el-tag
-            v-for="note in selectedCandidate.fairness_notes"
-            :key="note"
-            class="tag-item"
-            type="warning"
-          >
-            {{ note }}
-          </el-tag>
-        </el-card>
-      </el-col>
+    <el-card v-if="selectedCandidate" class="panel-card">
+      <template #header>
+        <div>
+          <div class="panel-title">匹配解释</div>
+          <div class="panel-subtitle">{{ selectedCandidate.file_name }}</div>
+        </div>
+      </template>
 
-      <el-col :span="12">
-        <el-card class="panel-card">
-          <template #header>
+      <div class="summary-list">
+        <div v-for="item in scoreSummary" :key="item" class="summary-item">{{ item }}</div>
+      </div>
+
+      <el-timeline class="explanation-timeline">
+        <el-timeline-item v-for="item in selectedCandidate.final_explanations" :key="item" type="primary" hollow>
+          {{ item }}
+        </el-timeline-item>
+      </el-timeline>
+
+      <div class="dimension-grid">
+        <div v-for="item in dimensionCards" :key="item.key" class="dimension-card">
+          <div class="dimension-head">
             <div>
-              <div class="panel-title">脱敏画像</div>
-              <div class="panel-subtitle">用于人工复核时的展示数据</div>
+              <div class="dimension-title">{{ item.label }}</div>
+              <div class="dimension-score">
+                原始分 {{ item.rawScore }} / 加权分 {{ item.weightedScore }}
+              </div>
             </div>
-          </template>
-          <pre class="json-panel">{{ JSON.stringify(selectedCandidate.profile_masked || {}, null, 2) }}</pre>
-        </el-card>
-      </el-col>
-    </el-row>
+          </div>
+          <div class="dimension-evidence-list">
+            <div v-for="evidence in item.evidence" :key="evidence" class="dimension-evidence-item">{{ evidence }}</div>
+          </div>
+        </div>
+      </div>
+    </el-card>
+
+    <el-card v-if="selectedCandidate" class="panel-card">
+      <template #header>
+        <div>
+          <div class="panel-title">公平说明</div>
+          <div class="panel-subtitle">明确哪些字段参与评分、哪些字段仅展示、哪些字段在评分前已脱敏。</div>
+        </div>
+      </template>
+
+      <div class="fairness-list">
+        <div v-for="note in selectedCandidate.fairness_notes || []" :key="note" class="fairness-item">{{ note }}</div>
+      </div>
+    </el-card>
+
+    <el-card v-if="selectedCandidate" class="panel-card">
+      <template #header>
+        <div>
+          <div class="panel-title">脱敏画像</div>
+          <div class="panel-subtitle">主视图只保留适合人工复核的字段，避免将内部调试结构直接暴露到页面。</div>
+        </div>
+      </template>
+
+      <ProfileFieldsBoard :profile="selectedCandidate.profile_masked || {}" />
+    </el-card>
   </div>
 </template>
 
@@ -185,6 +204,7 @@ import { computed, onMounted, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 
 import BaseChart from '../components/BaseChart.vue'
+import ProfileFieldsBoard from '../components/ProfileFieldsBoard.vue'
 import { getJobList } from '../api/job'
 import { getMatchResult } from '../api/match'
 import { getResumeList } from '../api/resume'
@@ -202,20 +222,20 @@ const loadBaseData = async () => {
 
 const runMatch = async () => {
   if (!selectedJobId.value) {
-    ElMessage.warning('请先选择一个岗位')
+    ElMessage.warning('请先选择一个岗位。')
     return
   }
   if (!selectedResumeIds.value.length) {
-    ElMessage.warning('请至少选择一份简历')
+    ElMessage.warning('请至少选择一份简历。')
     return
   }
 
   try {
     matchResult.value = await getMatchResult(selectedJobId.value, selectedResumeIds.value)
     selectedCandidateId.value = matchResult.value.results?.[0]?.resume_id || null
-    ElMessage.success('匹配完成')
+    ElMessage.success('匹配完成。')
   } catch (error) {
-    ElMessage.error(error?.response?.data?.detail || '匹配失败')
+    ElMessage.error(error?.response?.data?.detail || '匹配失败。')
   }
 }
 
@@ -232,36 +252,57 @@ const selectedCandidate = computed(() => {
   if (!candidates.length) {
     return null
   }
-  return (
-    candidates.find((candidate) => candidate.resume_id === selectedCandidateId.value) ||
-    candidates[0] ||
-    null
-  )
+  return candidates.find((candidate) => candidate.resume_id === selectedCandidateId.value) || candidates[0]
 })
 
-const getRowClassName = ({ row }) => {
-  return row.resume_id === selectedCandidateId.value ? 'selected-candidate-row' : ''
+const dimensionLabelMap = {
+  skills: '技能',
+  experience: '经验',
+  degree: '学历',
+  major: '专业',
 }
+
+const dimensionCards = computed(() => {
+  const scores = selectedCandidate.value?.dimension_scores || {}
+  return Object.entries(dimensionLabelMap).map(([key, label]) => ({
+    key,
+    label,
+    rawScore: scores[key]?.raw_score ?? 0,
+    weightedScore: scores[key]?.weighted_score ?? 0,
+    evidence: scores[key]?.evidence || ['暂无评分证据。'],
+  }))
+})
+
+const scoreSummary = computed(() => {
+  if (!selectedCandidate.value || !matchResult.value) {
+    return []
+  }
+  const total = selectedCandidate.value.total_score ?? '--'
+  const weights = matchResult.value.weights || {}
+  const strongest = [...dimensionCards.value].sort((a, b) => b.rawScore - a.rawScore)[0]
+  const weakest = [...dimensionCards.value].sort((a, b) => a.rawScore - b.rawScore)[0]
+
+  return [
+    `当前总分为 ${total}，由技能、经验、学历、专业四个维度按岗位权重加权得到。`,
+    `当前岗位权重为：技能 ${formatWeight(weights.skill_weight)}，经验 ${formatWeight(weights.experience_weight)}，学历 ${formatWeight(weights.degree_weight)}，专业 ${formatWeight(weights.major_weight)}。`,
+    `当前最强项是 ${strongest?.label || '暂无'}，主要短板是 ${weakest?.label || '暂无'}。`,
+    `命中技能：${selectedCandidate.value.matched_skills?.length ? selectedCandidate.value.matched_skills.join('、') : '暂无'}；缺失技能：${selectedCandidate.value.missing_skills?.length ? selectedCandidate.value.missing_skills.join('、') : '暂无'}。`,
+  ]
+})
+
+const getRowClassName = ({ row }) => (row.resume_id === selectedCandidateId.value ? 'selected-candidate-row' : '')
 
 const scoreBarOption = computed(() => {
   const results = matchResult.value?.results || []
   return {
-    tooltip: { trigger: 'axis' },
-    grid: { left: 50, right: 20, top: 40, bottom: 40 },
     xAxis: {
       type: 'category',
       data: results.map((item) => item.file_name),
-      axisLabel: { interval: 0, rotate: 18 },
     },
-    yAxis: { type: 'value', max: 100 },
     series: [
       {
         type: 'bar',
-        data: results.map((item) => item.total_score || 0),
-        itemStyle: {
-          color: '#d49d2a',
-          borderRadius: [10, 10, 0, 0],
-        },
+        data: results.map((item) => Number(item.total_score || 0)),
       },
     ],
   }
@@ -271,9 +312,7 @@ const radarOption = computed(() => {
   const candidate = selectedCandidate.value
   const scores = candidate?.dimension_scores || {}
   return {
-    tooltip: {},
     radar: {
-      radius: '64%',
       indicator: [
         { name: '技能', max: 100 },
         { name: '经验', max: 100 },
@@ -292,8 +331,6 @@ const radarOption = computed(() => {
               scores.degree?.raw_score || 0,
               scores.major?.raw_score || 0,
             ],
-            areaStyle: { color: 'rgba(212, 157, 42, 0.28)' },
-            lineStyle: { color: '#18304b' },
           },
         ],
       },
@@ -305,30 +342,19 @@ onMounted(loadBaseData)
 </script>
 
 <style scoped>
-.tag-item {
-  margin-right: 8px;
-  margin-bottom: 8px;
+.filter-grid {
+  display: grid;
+  grid-template-columns: minmax(240px, 1fr) minmax(280px, 1fr) 180px;
+  gap: 20px;
+  align-items: center;
 }
 
-.section-title {
-  margin-top: 14px;
-  margin-bottom: 12px;
-  font-size: 15px;
-  font-weight: 700;
-  color: #18304b;
+.filter-control {
+  width: 100%;
 }
 
-.json-panel {
-  margin: 0;
-  padding: 14px;
-  min-height: 300px;
-  border-radius: 18px;
-  white-space: pre-wrap;
-  word-break: break-word;
-  background: #0f2134;
-  color: #f8f2da;
-  font-size: 13px;
-  line-height: 1.7;
+.match-button {
+  width: 100%;
 }
 
 .chart-header {
@@ -336,6 +362,65 @@ onMounted(loadBaseData)
   justify-content: space-between;
   gap: 16px;
   align-items: center;
+}
+
+.summary-list,
+.fairness-list {
+  display: grid;
+  gap: 10px;
+}
+
+.summary-item,
+.fairness-item {
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #f8fbff;
+  color: #30465e;
+  line-height: 1.7;
+}
+
+.explanation-timeline {
+  margin-top: 22px;
+}
+
+.dimension-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.dimension-card {
+  padding: 18px;
+  border-radius: 18px;
+  background: linear-gradient(180deg, #ffffff 0%, #f6f8fb 100%);
+  box-shadow: inset 0 0 0 1px rgba(24, 48, 75, 0.08);
+}
+
+.dimension-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #18304b;
+}
+
+.dimension-score {
+  margin-top: 6px;
+  color: #6a7c8f;
+}
+
+.dimension-evidence-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.dimension-evidence-item {
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: #fff;
+  color: #30465e;
+  line-height: 1.7;
+  box-shadow: inset 0 0 0 1px rgba(24, 48, 75, 0.06);
 }
 
 :deep(.selected-candidate-row) {

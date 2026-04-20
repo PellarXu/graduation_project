@@ -5,6 +5,8 @@ import urllib.request
 import httpx
 from docx import Document
 from reportlab.lib.pagesizes import A4
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
 
 
@@ -161,36 +163,36 @@ RESUMES = [
         "file_name": "alicechen_dataanalyst.pdf",
         "type": "pdf",
         "lines": [
-            "Name: Alice Chen",
-            "Phone: 13688880001",
-            "Email: alice.chen@example.com",
-            "Degree: Bachelor",
-            "Major: Data Science",
-            "Skills: Python, SQL, Tableau, Excel, Statistics",
-            "Years of Experience: 1.5 years",
+            "姓名：陈雨桐",
+            "电话：13688880001",
+            "邮箱：chenyutong@example.com",
+            "学历：本科",
+            "专业：数据科学与大数据技术",
+            "技能：Python、SQL、Tableau、Excel、统计分析",
+            "工作年限：1.5年",
             "",
-            "Work Experience:",
-            "Maintained weekly dashboards and business analysis reports.",
-            "Project Experience:",
-            "Built KPI monitoring dashboards and automated sales reports.",
+            "工作经历：",
+            "负责每周经营看板维护和业务分析报告整理，跟进核心指标波动。",
+            "项目经历：",
+            "参与销售数据监控看板建设，并输出自动化日报和周报。",
         ],
     },
     {
         "file_name": "kevinliu_testengineer.pdf",
         "type": "pdf",
         "lines": [
-            "Name: Kevin Liu",
-            "Phone: 13688880002",
-            "Email: kevin.liu@example.com",
-            "Degree: Bachelor",
-            "Major: Computer Science",
-            "Skills: Python, Pytest, SQL, Linux, API Testing",
-            "Years of Experience: 2 years",
+            "姓名：刘凯",
+            "电话：13688880002",
+            "邮箱：liukai@example.com",
+            "学历：本科",
+            "专业：计算机科学与技术",
+            "技能：Python、Pytest、SQL、Linux、接口测试",
+            "工作年限：2年",
             "",
-            "Work Experience:",
-            "Executed regression testing and API validation for backend services.",
-            "Project Experience:",
-            "Designed automated API test suites and defect tracking workflows.",
+            "工作经历：",
+            "负责后端接口回归测试和联调验证，跟踪缺陷闭环处理。",
+            "项目经历：",
+            "搭建自动化接口测试脚本，完善测试用例和缺陷管理流程。",
         ],
     },
 ]
@@ -214,8 +216,16 @@ def write_docx(path: Path, lines: list[str]):
 
 
 def write_pdf(path: Path, lines: list[str]):
+    font_name = "Helvetica"
+    font_path = Path(r"C:\Windows\Fonts\simhei.ttf")
+    if font_path.exists():
+        try:
+            pdfmetrics.registerFont(TTFont("SimHei", str(font_path)))
+            font_name = "SimHei"
+        except Exception:
+            font_name = "Helvetica"
     pdf = canvas.Canvas(str(path), pagesize=A4)
-    pdf.setFont("Helvetica", 11)
+    pdf.setFont(font_name, 11)
     y = 800
     for line in lines:
         if not line:
@@ -225,9 +235,13 @@ def write_pdf(path: Path, lines: list[str]):
         y -= 22
         if y < 60:
             pdf.showPage()
-            pdf.setFont("Helvetica", 11)
+            pdf.setFont(font_name, 11)
             y = 800
     pdf.save()
+
+
+def write_pdf_sidecar(path: Path, lines: list[str]):
+    Path(f"{path}.txt").write_text("\n".join(lines), encoding="utf-8-sig")
 
 
 def ensure_resume_files():
@@ -239,6 +253,7 @@ def ensure_resume_files():
             write_docx(path, spec["lines"])
         elif spec["type"] == "pdf":
             write_pdf(path, spec["lines"])
+            write_pdf_sidecar(path, spec["lines"])
 
 
 def delete_bad_demo_data():

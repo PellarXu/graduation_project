@@ -28,9 +28,9 @@ def match_resumes_for_job(db: Session, job_id: int, selected_resume_ids=None):
     for resume in resumes:
         profile_masked = resume.profile_masked or {}
         if resume.extract_status != "ready" or not resume.profile_raw:
-            explanation = "该简历尚未完成分析，暂不能生成匹配结果。"
+            explanation = "该简历尚未完成分析，暂时无法生成匹配结果。"
             if resume.extract_status == "failed":
-                explanation = "该简历的分析结果暂不可用，暂不能生成匹配结果。"
+                explanation = "该简历的分析结果不可用，暂时无法生成匹配结果。"
             results.append(
                 {
                     "resume_id": resume.id,

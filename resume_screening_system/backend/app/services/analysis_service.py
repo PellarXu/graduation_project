@@ -16,6 +16,18 @@ def get_resume_analysis_by_id(db: Session, resume_id: int):
     return build_resume_analysis_payload(resume)
 
 
+def _mark_analysis_failed(resume: Resume, db: Session, message: str):
+    resume.extract_status = "failed"
+    resume.entity_result = []
+    resume.profile_raw = {}
+    resume.profile_masked = {}
+    resume.sensitive_summary = {}
+    resume.analyzed_at = datetime.utcnow()
+    db.commit()
+    db.refresh(resume)
+    return build_resume_analysis_payload(resume, message=message)
+
+
 def analyze_resume_by_id(db: Session, resume_id: int):
     resume = db.query(Resume).filter(Resume.id == resume_id).first()
     if not resume:
@@ -31,30 +43,18 @@ def analyze_resume_by_id(db: Session, resume_id: int):
     try:
         entities, model_version = service.predict(resume.clean_text)
     except ModelNotReadyError as exc:
-        resume.extract_status = "failed"
         resume.model_version = exc.model_version
-        resume.entity_result = []
-        resume.profile_raw = {}
-        resume.profile_masked = {}
-        resume.sensitive_summary = {}
-        resume.analyzed_at = datetime.utcnow()
-        db.commit()
-        db.refresh(resume)
-        return build_resume_analysis_payload(resume, message="分析结果暂不可用，请稍后重试。")
-    except Exception:
-        resume.extract_status = "failed"
-        resume.entity_result = []
-        resume.profile_raw = {}
-        resume.profile_masked = {}
-        resume.sensitive_summary = {}
-        resume.analyzed_at = datetime.utcnow()
-        db.commit()
-        db.refresh(resume)
-        return build_resume_analysis_payload(resume, message="分析执行失败，请稍后重试。")
+        return _mark_analysis_failed(resume, db, "模型尚未就绪，暂时无法执行结构化分析。")
+    except Exception as exc:  # pragma: no cover - defensive error branch
+        return _mark_analysis_failed(resume, db, f"实体抽取失败：{exc}")
 
-    profile_raw = build_profile(resume.clean_text, entities)
-    profile_masked = build_masked_profile(profile_raw)
-    sensitive_summary = build_sensitive_summary(profile_raw, profile_masked)
+    try:
+        profile_raw = build_profile(resume.clean_text, entities)
+        profile_masked = build_masked_profile(profile_raw)
+        sensitive_summary = build_sensitive_summary(profile_raw, profile_masked)
+    except Exception as exc:  # pragma: no cover - defensive error branch
+        resume.model_version = model_version
+        return _mark_analysis_failed(resume, db, f"画像构建失败：{exc}")
 
     resume.extract_status = "ready"
     resume.model_version = model_version
@@ -66,4 +66,4 @@ def analyze_resume_by_id(db: Session, resume_id: int):
     db.commit()
     db.refresh(resume)
 
-    return build_resume_analysis_payload(resume, message="简历分析完成")
+    return build_resume_analysis_payload(resume, message="简历分析完成。")
